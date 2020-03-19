@@ -1,0 +1,11788 @@
+launcherBootRequire=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\launcherBoot.js":[function(require,module,exports){
+const or = require('overwrite-require');
+or.enableForEnvironment(or.constants.NODEJS_ENVIRONMENT_TYPE);
+
+require("./launcherBoot_intermediar");
+},{"./launcherBoot_intermediar":"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\launcherBoot_intermediar.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\launcherBoot_intermediar.js":[function(require,module,exports){
+(function (global){
+global.launcherBootLoadModules = function(){ 
+
+	if(typeof $$.__runtimeModules["source-map-support"] === "undefined"){
+		$$.__runtimeModules["source-map-support"] = require("source-map-support");
+	}
+
+	if(typeof $$.__runtimeModules["source-map"] === "undefined"){
+		$$.__runtimeModules["source-map"] = require("source-map");
+	}
+
+	if(typeof $$.__runtimeModules["buffer-from"] === "undefined"){
+		$$.__runtimeModules["buffer-from"] = require("buffer-from");
+	}
+
+	if(typeof $$.__runtimeModules["overwrite-require"] === "undefined"){
+		$$.__runtimeModules["overwrite-require"] = require("overwrite-require");
+	}
+
+	if(typeof $$.__runtimeModules["zmq_adapter"] === "undefined"){
+		$$.__runtimeModules["zmq_adapter"] = require("zmq_adapter");
+	}
+
+	if(typeof $$.__runtimeModules["psk-security-context"] === "undefined"){
+		$$.__runtimeModules["psk-security-context"] = require("psk-security-context");
+	}
+
+	if(typeof $$.__runtimeModules["bar"] === "undefined"){
+		$$.__runtimeModules["bar"] = require("bar");
+	}
+
+	if(typeof $$.__runtimeModules["psk-http-client"] === "undefined"){
+		$$.__runtimeModules["psk-http-client"] = require("psk-http-client");
+	}
+
+	if(typeof $$.__runtimeModules["edfs"] === "undefined"){
+		$$.__runtimeModules["edfs"] = require("edfs");
+	}
+
+	if(typeof $$.__runtimeModules["edfs-middleware"] === "undefined"){
+		$$.__runtimeModules["edfs-middleware"] = require("edfs-middleware");
+	}
+
+	if(typeof $$.__runtimeModules["edfs-brick-storage"] === "undefined"){
+		$$.__runtimeModules["edfs-brick-storage"] = require("edfs-brick-storage");
+	}
+
+	if(typeof $$.__runtimeModules["bar-fs-adapter"] === "undefined"){
+		$$.__runtimeModules["bar-fs-adapter"] = require("bar-fs-adapter");
+	}
+
+	if(typeof $$.__runtimeModules["adler32"] === "undefined"){
+		$$.__runtimeModules["adler32"] = require("adler32");
+	}
+
+	if(typeof $$.__runtimeModules["pskcrypto"] === "undefined"){
+		$$.__runtimeModules["pskcrypto"] = require("pskcrypto");
+	}
+
+	if(typeof $$.__runtimeModules["swarmutils"] === "undefined"){
+		$$.__runtimeModules["swarmutils"] = require("swarmutils");
+	}
+
+	if(typeof $$.__runtimeModules["syndicate"] === "undefined"){
+		$$.__runtimeModules["syndicate"] = require("syndicate");
+	}
+
+	if(typeof $$.__runtimeModules["boot-script"] === "undefined"){
+		$$.__runtimeModules["boot-script"] = require("swarm-engine/bootScripts/launcherBootScript");
+	}
+}
+if (true) {
+	launcherBootLoadModules();
+}; 
+global.launcherBootRequire = require;
+if (typeof $$ !== "undefined") {            
+    $$.requireBundle("launcherBoot");
+    };
+    require('source-map-support').install({});
+    
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"adler32":"adler32","bar":"bar","bar-fs-adapter":"bar-fs-adapter","buffer-from":"buffer-from","edfs":"edfs","edfs-brick-storage":"edfs-brick-storage","edfs-middleware":"edfs-middleware","overwrite-require":"overwrite-require","psk-http-client":"psk-http-client","psk-security-context":"psk-security-context","pskcrypto":"pskcrypto","source-map":"source-map","source-map-support":"source-map-support","swarm-engine/bootScripts/launcherBootScript":"swarm-engine/bootScripts/launcherBootScript","swarmutils":"swarmutils","syndicate":"syndicate","zmq_adapter":"zmq_adapter"}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js":[function(require,module,exports){
+(function (Buffer){
+"use strict";
+
+var util = require('util');
+var Transform = require('stream').Transform;
+var crypto = require('crypto');
+var algorithm = require('./algorithm');
+
+// Provides a node.js Hash style interface for _sum32: http://nodejs.org/api/crypto.html#crypto_class_hash
+var Hash = module.exports = function Hash(options)
+{
+	if (!(this instanceof Hash))
+		return new Hash(options);
+
+	Transform.call(this, options);
+
+	this._sum = 1;
+};
+
+util.inherits(Hash, Transform);
+
+Hash.prototype.update = function(data, encoding)
+{
+	if (this._done)
+		throw new TypeError('HashUpdate fail');
+
+	encoding = encoding || crypto.DEFAULT_ENCODING;
+
+	if (!(data instanceof Buffer)) {
+		data = new Buffer(''+data, encoding === 'buffer' ? 'binary' : encoding);
+	}
+
+	this._sum = algorithm.sum(data, this._sum);
+
+	return this;
+};
+
+Hash.prototype.digest = function(encoding)
+{
+	if (this._done)
+		throw new Error('Not initialized');
+	
+	this._done = true;
+
+	var buf = new Buffer(4);
+	buf.writeUInt32BE(this._sum, 0);
+
+	encoding = encoding || crypto.DEFAULT_ENCODING;
+
+	if (encoding === 'buffer')
+		return buf;
+	else
+		return buf.toString(encoding);
+};
+
+Hash.prototype._transform = function(chunk, encoding, callback)
+{
+	this.update(chunk, encoding);
+	callback();
+};
+
+Hash.prototype._flush = function(callback)
+{
+	var encoding = this._readableState.encoding || 'buffer';
+	this.push(this.digest(encoding), encoding);
+	callback();
+};
+}).call(this,require("buffer").Buffer)
+
+},{"./algorithm":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js","buffer":false,"crypto":false,"stream":false,"util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js":[function(require,module,exports){
+"use strict";
+
+/**
+ * Largest prime smaller than 2^16 (65536)
+ */
+var BASE = 65521;
+
+/**
+ * Largest value n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
+ *
+ * NMAX is just how often modulo needs to be taken of the two checksum word halves to prevent overflowing a 32 bit
+ * integer. This is an optimization. We "could" take the modulo after each byte, and it must be taken before each
+ * digest.
+ */
+var NMAX = 5552;
+
+exports.sum = function(buf, sum)
+{
+	if (sum == null)
+		sum = 1;
+
+	var a = sum & 0xFFFF,
+		b = (sum >>> 16) & 0xFFFF,
+		i = 0,
+		max = buf.length,
+		n, value;
+
+	while (i < max)
+	{
+		n = Math.min(NMAX, max - i);
+
+		do
+		{
+			a += buf[i++]<<0;
+			b += a;
+		}
+		while (--n);
+
+		a %= BASE;
+		b %= BASE;
+	}
+
+	return ((b << 16) | a) >>> 0;
+};
+
+exports.roll = function(sum, length, oldByte, newByte)
+{
+	var a = sum & 0xFFFF,
+		b = (sum >>> 16) & 0xFFFF;
+
+	if (newByte != null)
+	{
+		a = (a - oldByte + newByte + BASE) % BASE;
+		b = (b - ((length * oldByte) % BASE) + a - 1 + BASE) % BASE;
+	}
+	else
+	{
+		a = (a - oldByte + BASE) % BASE;
+		b = (b - ((length * oldByte) % BASE) - 1 + BASE) % BASE;
+	}
+
+	return ((b << 16) | a) >>> 0;
+};
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\register.js":[function(require,module,exports){
+"use strict";
+
+module.exports = function()
+{
+	var crypto = require('crypto');
+	var Hash = require('./Hash');
+
+	// Silently abort if the adler32 algorithm is already supported by the
+	// crypto module.
+	if (crypto.getHashes().indexOf('adler32') != -1)
+		return;
+
+	crypto.getHashes = function()
+	{
+		return this().concat(['adler32']);
+	}
+	.bind(crypto.getHashes.bind(crypto));
+
+	crypto.createHash = function(algorithm)
+	{
+		if (algorithm === 'adler32')
+			return new Hash();
+		else
+			return this(algorithm);
+	}
+	.bind(crypto.createHash.bind(this));
+};
+},{"./Hash":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js","crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\FsAdapter.js":[function(require,module,exports){
+(function (Buffer){
+const fsModule = "fs";
+const fs = require(fsModule);
+const pathModule = "path";
+const path = require(pathModule);
+const PathAsyncIterator = require('./PathAsyncIterator');
+
+function FsAdapter() {
+
+    let pathAsyncIterator;
+
+    this.getFileSize = function (filePath, callback) {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, stats.size);
+        });
+    };
+
+    this.readBlockFromFile = function (filePath, blockStart, blockEnd, callback) {
+        const readStream = fs.createReadStream(filePath, {
+            start: blockStart,
+            end: blockEnd
+        });
+
+        let data = Buffer.alloc(0);
+
+        readStream.on("data", (chunk) => {
+            data = Buffer.concat([data, chunk]);
+        });
+
+        readStream.on("error", (err) => {
+            callback(err);
+        });
+
+        readStream.on("end", () => {
+            callback(undefined, data);
+        });
+    };
+
+    this.getFilesIterator = function(inputPath) {
+        return new PathAsyncIterator(inputPath);
+    };
+
+    this.getNextFile = function (inputPath, restart, callback) {
+        if(typeof restart === "function") {
+            callback = restart;
+            restart = false;
+        }
+
+        if(restart === true) {
+            pathAsyncIterator = new PathAsyncIterator(inputPath);
+        }
+
+        pathAsyncIterator = pathAsyncIterator || new PathAsyncIterator(inputPath);
+        pathAsyncIterator.next(callback);
+    };
+
+    this.appendBlockToFile = function (filePath, data, callback) {
+        const pth = constructPath(filePath);
+        if (pth !== '') {
+            fs.mkdir(pth, {recursive: true}, (err) => {
+                if (err && err.code !== "EEXIST") {
+                    return callback(err);
+                }
+
+                fs.appendFile(filePath, data, callback);
+            });
+        } else {
+            fs.appendFile(filePath, data, callback);
+        }
+    };
+
+    this.writeBlockToFile = function (filePath, data, position, length, callback) {
+        const folderPath = path.dirname(filePath);
+        fs.access(folderPath, (err) => {
+            if (err) {
+                fs.mkdir(folderPath, {recursive: true}, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    __writeBlock();
+                });
+            } else {
+                __writeBlock();
+            }
+        });
+
+        function __writeBlock() {
+            const writeStream = fs.createWriteStream(filePath, {flags: "a+", start: position});
+
+            writeStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            writeStream.write(data, callback);
+        }
+    };
+
+    function constructPath(filePath) {
+        let slices = filePath.split(path.sep);
+        slices.pop();
+        return slices.join(path.sep);
+    }
+
+}
+
+module.exports = FsAdapter;
+}).call(this,require("buffer").Buffer)
+
+},{"./PathAsyncIterator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\PathAsyncIterator.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\PathAsyncIterator.js":[function(require,module,exports){
+const fsModule = "fs";
+const fs = require(fsModule);
+const pathModule = "path";
+const path = require(pathModule);
+const TaskCounter = require("swarmutils").TaskCounter;
+
+
+function PathAsyncIterator(inputPath) {
+    let removablePathLen;
+    const fileList = [];
+    const folderList = [];
+    let isFirstCall = true;
+    let pathIsFolder;
+
+    this.next = function (callback) {
+        if (isFirstCall === true) {
+            isDir(inputPath, (err, status) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                isFirstCall = false;
+                pathIsFolder = status;
+                if (status === true) {
+                    if(!inputPath.endsWith(path.sep)) {
+                        inputPath += path.sep;
+                    }
+
+                    removablePathLen = inputPath.length;
+                    folderList.push(inputPath);
+                    getNextFileFromFolder(callback);
+                } else {
+                    const fileName = path.basename(inputPath);
+                    const fileParentFolder = path.dirname(inputPath);
+                    callback(undefined, fileName, fileParentFolder);
+                }
+            });
+        } else if (pathIsFolder) {
+            getNextFileFromFolder(callback);
+        } else {
+            callback();
+        }
+    };
+
+    function walkFolder(folderPath, callback) {
+        const taskCounter = new TaskCounter((errors, results) => {
+            if (fileList.length > 0) {
+                const fileName = fileList.shift();
+                return callback(undefined, fileName, inputPath);
+            }
+
+            if (folderList.length > 0) {
+                const folderName = folderList.shift();
+                return walkFolder(folderName, callback);
+            }
+
+            return callback();
+        });
+
+        fs.readdir(folderPath, (err, files) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (files.length === 0 && folderList.length === 0) {
+                return callback();
+            }
+
+            if (files.length === 0) {
+                walkFolder(folderList.shift(), callback);
+            }
+            taskCounter.increment(files.length);
+
+            files.forEach(file => {
+                let filePath = path.join(folderPath, file);
+                isDir(filePath, (err, status) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    if (status) {
+                        folderList.push(filePath);
+                    } else {
+                        fileList.push(filePath.substring(removablePathLen));
+                    }
+
+                    taskCounter.decrement();
+                });
+            });
+        });
+    }
+
+    function isDir(filePath, callback) {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                return callback(err);
+            }
+
+            return callback(undefined, stats.isDirectory());
+        });
+    }
+
+    function getNextFileFromFolder(callback) {
+        if (fileList.length === 0 && folderList.length === 0) {
+            return callback();
+        }
+
+        if (fileList.length > 0) {
+            const fileName = fileList.shift();
+            return callback(undefined, fileName, inputPath);
+        }
+
+
+        walkFolder(folderList.shift(), (err, file) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, file, inputPath);
+        });
+    }
+}
+
+module.exports = PathAsyncIterator;
+},{"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Archive.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require('./Brick');
+const pathModule = "path";
+const path = require(pathModule);
+const isStream = require("../utils/isStream");
+const TaskCounter = require("swarmutils").TaskCounter;
+const crypto = require('pskcrypto');
+const adler32 = require('adler32');
+
+function Archive(archiveConfigurator) {
+
+    const archiveFsAdapter = archiveConfigurator.getFsAdapter();
+    const storageProvider = archiveConfigurator.getStorageProvider();
+    let cachedSEED;
+    let barMap;
+    let cachedMapDigest;
+
+    this.getMapDigest = () => {
+        if (cachedMapDigest) {
+            return cachedMapDigest;
+        }
+
+        cachedMapDigest = archiveConfigurator.getMapDigest();
+        return cachedMapDigest;
+    };
+
+    this.setSeed = (seed) => {
+        cachedSEED = seed;
+        archiveConfigurator.setSeed(Buffer.from(seed));
+    };
+
+    this.getSeed = () => {
+        if (cachedSEED) {
+            return cachedSEED;
+        }
+
+        cachedSEED = archiveConfigurator.getSeed().toString();
+        return cachedSEED;
+    };
+
+    this.getFileHash = (fileBarPath, callback) => {
+        loadBarMapThenExecute(() => {
+            callback(undefined, __computeFileHash(fileBarPath).toString("hex"));
+        }, callback)
+    };
+
+    this.getFolderHash = (folderBarPath, callback) => {
+        loadBarMapThenExecute(() => {
+            const fileList = barMap.getFileList(folderBarPath);
+            let xor;
+            for (let i = 0; i < fileList.length - 1; i++) {
+                xor = crypto.xorBuffers(__computeFileHash(fileList[i]), __computeFileHash(fileList[i + 1]));
+            }
+
+            callback(undefined, crypto.pskHash(xor, "hex"));
+        }, callback);
+    };
+
+    this.update = (fsPath, callback) => {
+        let blocksPositions = {};
+        let checksSumMap = barMap.getDictionaryObject();
+        let fileNameHashes = __setFromHashList();
+        let fileState = {};
+        loadBarMapThenExecute(__update, callback);
+
+        /**
+         * in this function, i do a directory traversal and process every file that i find, looking for blocks that already exists in our archive
+         * @private
+         */
+
+        function __setFromHashList() {
+            let folderHashList = {};
+            barMap.getFileList().forEach((file) => {
+                folderHashList[file.slice(file.indexOf('/'))] = new Set(barMap.getHashList(file));
+            });
+            return folderHashList;
+        }
+
+        function __readDirectoryRecursively(folderPath, sign, callback) {
+            archiveFsAdapter.getNextFile(folderPath, sign, __readFileChk);
+
+            function __readFileChk(err, file) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof file === 'undefined') {
+                    return callback(undefined, blocksPositions, fileNameHashes);
+                }
+
+                const goodPath = path.posix.normalize(path.join(path.dirname(folderPath), file).split(path.sep).join(path.posix.sep));
+                archiveFsAdapter.getFileSize(goodPath, (err, size) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    __readBlock(goodPath, goodPath.slice(goodPath.indexOf('/')), size, 0, archiveConfigurator.getBufferSize(), undefined, undefined, barMap.isInHeader(goodPath), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        __readDirectoryRecursively(folderPath, false, callback);
+                    });
+                });
+
+            }
+
+            function __readBlock(file, cutFile, fileSize, index, blockSize, currentBlockCheckSum, firstByte, alreadyInBarMap, callback) {
+                if (index >= fileSize) {
+                    if (blocksPositions[file] === undefined) {
+                        blocksPositions[file] = [];
+                    }
+                    blocksPositions[file].push({start: fileSize, end: fileSize});
+                    return callback();
+                }
+                archiveFsAdapter.readBlockFromFile(file, index, index + blockSize - 1, (err, data) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (currentBlockCheckSum === undefined) {
+                        currentBlockCheckSum = adler32.sum(data);
+                    } else {
+                        currentBlockCheckSum = adler32.roll(currentBlockCheckSum, blockSize, firstByte, data[blockSize - 1]);
+                    }
+                    let matchFound = false;
+                    if (checksSumMap[currentBlockCheckSum] !== undefined) {
+                        let hardDigest = crypto.pskHash(data).toString('hex');
+                        for (let k = 0; k < checksSumMap[currentBlockCheckSum].length; k++) {
+                            if (checksSumMap[currentBlockCheckSum][k] === hardDigest) {
+                                if (blocksPositions[file] === undefined) {
+                                    blocksPositions[file] = [];
+                                }
+                                blocksPositions[file].push({start: index, end: index + blockSize});
+                                // if(alreadyInBarMap === false){
+                                //     let tempBrick = new Brick();
+                                //     tempBrick.setTransformedData(data);
+                                // }
+                                fileState[file] = alreadyInBarMap;
+                                if (typeof fileNameHashes[cutFile] !== 'undefined') {
+                                    fileNameHashes[cutFile].delete(hardDigest);
+                                }
+                                matchFound = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (matchFound === false) {
+                        __readBlock(file, cutFile, fileSize, index + 1, blockSize, currentBlockCheckSum, data[0], alreadyInBarMap, callback);
+                    } else {
+                        __readBlock(file, cutFile, fileSize, index + blockSize, blockSize, undefined, undefined, alreadyInBarMap, callback);
+                    }
+                });
+            }
+
+        }
+
+        function iterateThroughOffsets(fileName, goodPath, precedence, iteratorIndex, filePositions, callback) {
+            if (iteratorIndex >= filePositions.length) {
+                return callback();
+            }
+            let positionObj = filePositions[iteratorIndex];
+            if (positionObj === undefined) {
+                return callback();
+            }
+            if (positionObj.start > precedence) {
+                archiveFsAdapter.readBlockFromFile(goodPath, precedence, positionObj.end - 1, (err, blockData) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    let bufferSize = archiveConfigurator.getBufferSize();
+                    for (let index = 0; index < blockData.length; index += bufferSize) {
+                        let brick = new Brick();
+                        brick.setTransformedData(blockData.slice(index, index + bufferSize));
+                        barMap.add(fileName, brick);
+                        storageProvider.putBrick(brick, (err) => {
+                            if (err) {
+                                return callback(err);
+                            }
+                            if (index + bufferSize >= blockData.length) {
+                                iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                            }
+                        });
+                    }
+                });
+            } else {
+                if (fileState[goodPath] === false) {
+                    archiveFsAdapter.readBlockFromFile(goodPath, positionObj.start, positionObj.end - 1, (err, blockData) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        let brick = new Brick();
+                        brick.setTransformedData(blockData);
+                        barMap.add(fileName, brick);
+                        iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                    });
+                } else {
+                    iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                }
+            }
+        }
+
+        function __addBricks(positions, callback) {
+            let precedence;
+            const taskCounter = new TaskCounter((errs, results) => {
+                return callback();
+            });
+            taskCounter.increment(Object.keys(positions).length);
+            Object.keys(positions).forEach((fileName) => {
+                precedence = 0;
+                let goodPath = path.posix.normalize(fileName.split(path.sep).join(path.posix.sep));
+
+                iterateThroughOffsets(fileName, goodPath, precedence, 0, positions[fileName], (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    taskCounter.decrement(undefined, fileName);
+                });
+            });
+        }
+
+        function __deleteBricks(deletions) {
+            //de adaugat, barMap.removeBrick(filePath,brickHash);
+            Object.keys(deletions).forEach((fileName) => {
+                deletions[fileName].forEach((brickHash) => {
+                    barMap.removeBrick(fileName, brickHash);
+                });
+            });
+        }
+
+        function __update() {
+            __readDirectoryRecursively(fsPath, true, (err, positions, deletions) => {
+                if (err) {
+                    return callback(err);
+                }
+                __addBricks(positions, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    __deleteBricks(deletions);
+                    storageProvider.putBarMap(barMap, callback);
+                });
+            });
+        }
+    };
+
+    this.writeFile = (fileBarPath, data, callback) => {
+        loadBarMapThenExecute(__addData, callback);
+
+        function __addData() {
+            const brick = new Brick(archiveConfigurator);
+            if (typeof data === "string") {
+                data = Buffer.from(data);
+            }
+
+            if (!Buffer.isBuffer(data)) {
+                return callback(Error(`Type of data is ${typeof data}. Expected Buffer.`));
+            }
+
+            brick.setRawData(data);
+
+            if (!barMap.isEmpty(fileBarPath)) {
+                barMap.emptyList(fileBarPath);
+            }
+            barMap.add(fileBarPath, brick);
+            storageProvider.putBrick(brick, (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                storageProvider.putBarMap(barMap, (err, digest) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    callback(undefined, digest);
+                });
+            });
+        }
+    };
+
+    this.readFile = (barPath, callback) => {
+        loadBarMapThenExecute(__readFile, callback);
+
+        function __readFile() {
+            let fileData = Buffer.alloc(0);
+            let brickIds;
+            try {
+                brickIds = barMap.getHashList(barPath);
+            } catch (err) {
+                return callback(err);
+            }
+
+            getFileRecursively(0, callback);
+
+            function getFileRecursively(brickIndex, callback) {
+                const brickId = brickIds[brickIndex];
+                storageProvider.getBrick(brickId, (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brick.setConfig(archiveConfigurator);
+                    brick.setTransformParameters(barMap.getTransformParameters(brickId));
+                    fileData = Buffer.concat([fileData, brick.getRawData()]);
+                    ++brickIndex;
+
+                    if (brickIndex < brickIds.length) {
+                        getFileRecursively(brickIndex, callback);
+                    } else {
+                        callback(undefined, fileData);
+                    }
+                });
+            }
+        }
+    };
+
+    this.addFile = (fsFilePath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFilePath;
+        }
+        loadBarMapThenExecute(__addFile, callback);
+
+        function __addFile() {
+            createBricks(fsFilePath, barPath, archiveConfigurator.getBufferSize(), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                barMap.setConfig(archiveConfigurator);
+                if (archiveConfigurator.getMapEncryptionKey()) {
+                    barMap.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+                }
+
+                storageProvider.putBarMap(barMap, callback);
+            });
+        }
+    };
+
+    /* TODO: do not create multiple BARMaps... */
+    this.addFiles = (arrWithFilePaths, barPath, callback) => {
+        let arr = arrWithFilePaths.slice();
+        let self = this;
+
+        function recAdd() {
+            if (arr.length > 0) {
+                let filePath = arr.pop();
+
+                let fileName = path.basename(filePath);
+                self.addFile(filePath, barPath + "/" + fileName, function (err, res) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        recAdd();
+                    }
+                });
+            } else {
+                callback(null, true);
+            }
+        }
+
+        recAdd();
+    };
+
+    this.extractFile = (fsFilePath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFilePath;
+        }
+
+
+        loadBarMapThenExecute(__extractFile, callback);
+
+        function __extractFile() {
+            const brickIds = barMap.getHashList(barPath);
+            getFileRecursively(0, callback);
+
+            function getFileRecursively(brickIndex, callback) {
+                const brickId = brickIds[brickIndex];
+                storageProvider.getBrick(brickId, (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brick.setConfig(archiveConfigurator);
+                    brick.setTransformParameters(barMap.getTransformParameters(brickId));
+                    archiveFsAdapter.appendBlockToFile(fsFilePath, brick.getRawData(), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        ++brickIndex;
+                        if (brickIndex < brickIds.length) {
+                            getFileRecursively(brickIndex, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                });
+            }
+        }
+    };
+
+    this.appendToFile = (filePath, data, callback) => {
+
+        loadBarMapThenExecute(__appendToFile, callback);
+
+        function __appendToFile() {
+            filePath = path.normalize(filePath);
+
+            if (typeof data === "string") {
+                data = Buffer.from(data);
+            }
+            if (Buffer.isBuffer(data)) {
+                const dataBrick = new Brick(data);
+                storageProvider.putBrick(dataBrick, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    barMap.add(filePath, dataBrick);
+                    putBarMap(callback);
+                });
+                return;
+            }
+
+            if (isStream.isReadable(data)) {
+                data.on('error', (err) => {
+                    return callback(err);
+                }).on('data', (chunk) => {
+                    const dataBrick = new Brick(chunk);
+                    barMap.add(filePath, dataBrick);
+                    storageProvider.putBrick(dataBrick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                    });
+                }).on("end", () => {
+                    putBarMap(callback);
+                });
+                return;
+            }
+            callback(new Error("Invalid type of parameter data"));
+        }
+    };
+
+
+    this.replaceFile = (fileName, stream, callback) => {
+        if (typeof stream !== 'object') {
+            return callback(new Error('Wrong stream!'));
+        }
+
+        loadBarMapThenExecute(__replaceFile, callback);
+
+        function __replaceFile() {
+            fileName = path.normalize(fileName);
+            stream.on('error', () => {
+                return callback(new Error("File does not exist!"));
+            }).on('open', () => {
+                storageProvider.deleteFile(fileName, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    barMap.emptyList(fileName);
+                });
+            }).on('data', (chunk) => {
+                let tempBrick = new Brick(chunk);
+                barMap.add(fileName, tempBrick);
+                storageProvider.putBrick(tempBrick, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    putBarMap(callback);
+                });
+            });
+        }
+    };
+
+    this.deleteFile = (filePath, callback) => {
+        loadBarMapThenExecute(() => {
+            storageProvider.deleteFile(filePath, callback);
+        }, callback);
+    };
+
+    this.addFolder = (fsFolderPath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFolderPath;
+        }
+        const filesIterator = archiveFsAdapter.getFilesIterator(fsFolderPath);
+
+        loadBarMapThenExecute(__addFolder, callback);
+
+        function __addFolder() {
+
+            filesIterator.next(readFileCb);
+
+            function readFileCb(err, file, rootFsPath) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof file !== "undefined") {
+                    const normalizedFilePath = file.split(path.sep).join("/");
+                    createBricks(path.join(rootFsPath, file), barPath + "/" + normalizedFilePath, archiveConfigurator.getBufferSize(), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        filesIterator.next(readFileCb);
+                    });
+                } else {
+                    storageProvider.putBarMap(barMap, (err, mapDigest) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        archiveConfigurator.setMapDigest(mapDigest);
+                        callback(undefined, mapDigest);
+                    });
+                }
+            }
+        }
+    };
+
+
+    this.extractFolder = (fsFolderPath, barPath, callback) => {
+        if (typeof fsFolderPath === "function") {
+            callback = fsFolderPath;
+            fsFolderPath = undefined;
+        }
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = undefined;
+        }
+
+        loadBarMapThenExecute(() => {
+            const filePaths = barMap.getFileList(barPath);
+            const taskCounter = new TaskCounter(() => {
+                callback();
+            });
+            taskCounter.increment(filePaths.length);
+            filePaths.forEach(filePath => {
+                let actualPath;
+                if (fsFolderPath) {
+                    if (fsFolderPath.includes(filePath)) {
+                        actualPath = fsFolderPath;
+                    } else {
+                        actualPath = path.join(fsFolderPath, filePath);
+                    }
+                } else {
+                    actualPath = filePath;
+                }
+
+                this.extractFile(actualPath, filePath, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    taskCounter.decrement();
+                });
+            });
+        }, callback);
+    };
+
+    this.store = (callback) => {
+        storageProvider.putBarMap(barMap, callback);
+    };
+
+    this.listFiles = (folderBarPath, callback) => {
+        if (typeof folderBarPath === "function") {
+            callback = folderBarPath;
+            folderBarPath = undefined;
+        }
+        loadBarMapThenExecute(() => {
+            callback(undefined, barMap.getFileList(folderBarPath));
+        }, callback);
+    };
+
+    this.listFolders = (folderBarPath, callback) => {
+        if (typeof folderBarPath === "function") {
+            callback = folderBarPath;
+            folderBarPath = undefined;
+        }
+
+        loadBarMapThenExecute(() => {
+            callback(undefined, barMap.getFolderList(folderBarPath));
+        }, callback);
+    };
+
+    this.clone = (targetStorage, preserveKeys = true, callback
+    ) => {
+        targetStorage.getBarMap((err, targetBarMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            loadBarMapThenExecute(__cloneBricks, callback);
+
+            function __cloneBricks() {
+                const fileList = barMap.getFileList();
+
+                __getFilesRecursively(fileList, 0, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    cachedSEED = archiveConfigurator.getSeed();
+                    archiveConfigurator.generateSeed();
+                    targetBarMap.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+                    targetBarMap.setConfig(archiveConfigurator);
+                    targetStorage.putBarMap(targetBarMap, err => callback(err, archiveConfigurator.getSeed()));
+                });
+            }
+
+            function __getFilesRecursively(fileList, fileIndex, callback) {
+                const filePath = fileList[fileIndex];
+                __getBricksRecursively(filePath, barMap.getHashList(filePath), 0, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    ++fileIndex;
+                    if (fileIndex === fileList.length) {
+                        return callback();
+                    }
+
+                    __getFilesRecursively(fileList, fileIndex, callback);
+                });
+            }
+
+            function __getBricksRecursively(filePath, brickList, brickIndex, callback) {
+                storageProvider.getBrick(brickList[brickIndex], (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    if (barMap.getTransformParameters(brickList[brickIndex])) {
+                        brick.setTransformParameters(barMap.getTransformParameters(brickList[brickIndex]));
+                    }
+                    __addBrickToTarget(brick, callback);
+                });
+
+                function __addBrickToTarget(brick, callback) {
+                    brick.setConfig(archiveConfigurator);
+                    if (!preserveKeys) {
+                        brick.createNewTransform();
+                    }
+
+                    ++brickIndex;
+                    targetBarMap.add(filePath, brick);
+                    targetStorage.putBrick(brick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        if (brickIndex === brickList.length) {
+                            return callback();
+                        }
+
+                        __getBricksRecursively(filePath, brickList, brickIndex, callback);
+                    });
+                }
+            }
+        });
+    };
+
+    //------------------------------------------- internal methods -----------------------------------------------------
+
+    function __computeFileHash(fileBarPath) {
+        const hashList = barMap.getHashList(fileBarPath);
+        const PskHash = crypto.PskHash;
+        const pskHash = new PskHash();
+        hashList.forEach(hash => {
+            pskHash.update(hash);
+        });
+
+        return pskHash.digest();
+    }
+
+    function putBarMap(callback) {
+        if (typeof archiveConfigurator.getMapDigest() !== "undefined") {
+            storageProvider.deleteFile(archiveConfigurator.getMapDigest(), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                __putBarMap(callback);
+            });
+            return;
+        }
+        __putBarMap(callback);
+    }
+
+    function __putBarMap(callback) {
+        storageProvider.putBarMap(barMap, (err, newMapDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            archiveConfigurator.setMapDigest(newMapDigest);
+            callback(undefined, archiveConfigurator.getMapDigest());
+        });
+    }
+
+    function createBricks(fsFilePath, barPath, blockSize, callback) {
+
+        archiveFsAdapter.getFileSize(fsFilePath, (err, fileSize) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let noBlocks = Math.floor(fileSize / blockSize);
+            if (fileSize % blockSize > 0) {
+                ++noBlocks;
+            }
+
+            //todo: check if emptyList is called ok in this place.
+            // the scenario: adding a new file at an existing barPath should overwrite the initial content found there.
+            if (!barMap.isEmpty(barPath)) {
+                barMap.emptyList(barPath);
+            }
+            __createBricksRecursively(0, callback);
+
+            function __createBricksRecursively(blockIndex, callback) {
+                archiveFsAdapter.readBlockFromFile(fsFilePath, blockIndex * blockSize, (blockIndex + 1) * blockSize - 1, (err, blockData) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    const brick = new Brick(archiveConfigurator);
+
+                    brick.setRawData(blockData);
+                    barMap.add(barPath, brick);
+                    storageProvider.putBrick(brick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        ++blockIndex;
+                        if (blockIndex < noBlocks) {
+                            __createBricksRecursively(blockIndex, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function loadBarMapThenExecute(functionToBeExecuted, callback) {
+        storageProvider.getBarMap(archiveConfigurator.getMapDigest(), (err, map) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (archiveConfigurator.getMapEncryptionKey()) {
+                map.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+            }
+
+            if (!map.getConfig()) {
+                map.setConfig(archiveConfigurator);
+            }
+
+            map.load();
+            barMap = map;
+            storageProvider.setBarMap(barMap);
+            functionToBeExecuted();
+        });
+    }
+}
+
+module.exports = Archive;
+
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/isStream":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\isStream.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","adler32":"adler32","buffer":false,"pskcrypto":"pskcrypto","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\ArchiveConfigurator.js":[function(require,module,exports){
+const storageProviders = {};
+const fsAdapters = {};
+const Seed = require("./Seed");
+
+function ArchiveConfigurator() {
+    const config = {};
+
+    let self = this;
+    this.setBufferSize = (bufferSize) => {
+        if (bufferSize < 65535) {
+            throw Error(`Brick size should be equal to or greater than 65535. The provided brick size is ${bufferSize}`);
+        }
+        config.bufferSize = bufferSize;
+    };
+
+    this.getBufferSize = () => {
+        return config.bufferSize;
+    };
+
+    this.setStorageProvider = (storageProviderName, ...args) => {
+        if (!storageProviders[storageProviderName]) {
+            throw new Error(storageProviderName + " is not registered! Did you forget to register it?");
+        }
+        config.storageProvider = storageProviders[storageProviderName](...args);
+    };
+
+    this.getStorageProvider = () => {
+        return config.storageProvider;
+    };
+
+    this.setFsAdapter = (fsAdapterName, ...args) => {
+        config.fsAdapter = fsAdapters[fsAdapterName](...args);
+    };
+
+    this.getFsAdapter = () => {
+        return config.fsAdapter;
+    };
+
+    this.setMapDigest = (mapDigest) => {
+        config.mapDigest = mapDigest;
+    };
+
+    this.getMapDigest = () => {
+        return config.mapDigest;
+    };
+
+    this.setEncryptionAlgorithm = (algorithm) => {
+        if (!config.encryption) {
+            config.encryption = {};
+        }
+
+        config.encryption.algorithm = algorithm;
+    };
+
+    this.getEncryptionAlgorithm = () => {
+        if (!config.encryption) {
+            return;
+        }
+        return config.encryption.algorithm;
+    };
+
+    this.setEncryptionOptions = (options) => {
+        if (!config.encryption) {
+            config.encryption = {};
+        }
+
+        config.encryption.encOptions = options;
+    };
+
+    this.getEncryptionOptions = () => {
+        if (!config.encryption) {
+            return;
+        }
+        return config.encryption.encOptions;
+    };
+
+    this.setCompressionAlgorithm = (algorithm) => {
+        if (!config.compression) {
+            config.compression = {};
+        }
+
+        config.compression.algorithm = algorithm;
+    };
+
+    this.getCompressionAlgorithm = () => {
+        if (!config.compression) {
+            return;
+        }
+
+        return config.compression.algorithm;
+
+    };
+
+    this.setCompressionOptions = (options) => {
+        if (!config.compression) {
+            config.compression = {};
+        }
+
+        config.compression.options = options;
+    };
+
+    this.getCompressionOptions = () => {
+        if (!config.compression) {
+            return;
+        }
+        return config.compression.options;
+    };
+
+    this.setAuthTagLength = (authTagLength = 16) => {
+        const encOptions = this.getEncryptionOptions();
+        if (!encOptions) {
+            config.encryption.encOptions = {};
+        }
+
+        config.encryption.encOptions.authTagLength = authTagLength;
+    };
+
+    this.getAuthTagLength = () => {
+        if (!config.encryption || !config.encryption.encOptions) {
+            return;
+        }
+
+        return config.encryption.encOptions.authTagLength;
+    };
+
+    this.setSeedEndpoint = (endpoint) => {
+        config.seedEndpoint = endpoint;
+    };
+
+    this.setSeedId = (id) => {
+        config.seed.setId(id);
+        this.setMapDigest(id);
+    };
+
+    this.getSeedId = () => {
+        loadSeed();
+        if (config.seed) {
+            return config.seed.getId();
+        }
+    };
+
+    this.setSeed = (compactSeed) => {
+        config.seed = new Seed(compactSeed);
+        const endpoint = config.seed.getEndpoint();
+        if (endpoint) {
+            this.setStorageProvider("EDFSBrickStorage", endpoint);
+        }
+        this.setMapDigest(config.seed.getId());
+    };
+
+    this.getSeed = () => {
+        loadSeed();
+        if (config.seed) {
+            return config.seed.getCompactForm();
+        }
+    };
+
+    this.getMapEncryptionKey = () => {
+        loadSeed();
+        if (!config.seed) {
+            return;
+        }
+
+        if (!config.encryption) {
+            return;
+        }
+
+        return config.seed.getEncryptionKey(config.encryption.algorithm);
+    };
+
+    this.generateSeed = () => {
+        if (!config.seedEndpoint && config.seed) {
+            config.seedEndpoint = config.seed.getEndpoint();
+        }
+        config.seed = new Seed(undefined, undefined, config.seedEndpoint, !!config.encryption);
+        if (config.seed.getId()) {
+            self.setMapDigest(config.seed.getId());
+        }
+    };
+
+    //--------------------------
+    function loadSeed() {
+        if (!config.seed) {
+            config.seed = new Seed(undefined, undefined, config.seedEndpoint, !!config.encryption);
+            if (config.seed.getId()) {
+                self.setMapDigest(config.seed.getId());
+            }
+        }
+    }
+}
+
+ArchiveConfigurator.prototype.registerStorageProvider = (storageProviderName, factory) => {
+    storageProviders[storageProviderName] = factory;
+};
+
+ArchiveConfigurator.prototype.registerFsAdapter = (fsAdapterName, factory) => {
+    fsAdapters[fsAdapterName] = factory;
+};
+
+module.exports = ArchiveConfigurator;
+},{"./Seed":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js":[function(require,module,exports){
+const crypto = require('pskcrypto');
+const BrickTransformFactory = require("./transforms/BrickTransformFactory");
+const transformFactory = new BrickTransformFactory();
+const adler32 = require('adler32');
+
+function Brick(config) {
+    let rawData;
+    let transformedData;
+    let hash;
+    let transformParameters;
+    let transform = transformFactory.createBrickTransform(config);
+
+    this.setConfig = (newConfig)=> {
+        config = newConfig;
+        if (transform) {
+            transform.setConfig(newConfig);
+        }else{
+            transform = transformFactory.createBrickTransform(config);
+        }
+    };
+
+    this.createNewTransform = ()=> {
+        transform = transformFactory.createBrickTransform(config);
+        transformParameters = undefined;
+        transformData();
+    };
+
+    this.getHash = ()=> {
+        if (!hash) {
+            hash = crypto.pskHash(this.getTransformedData()).toString("hex");
+        }
+
+        return hash;
+    };
+
+    this.getId = () => {
+        const seedId = config.getSeedId();
+        if (seedId) {
+            return seedId;
+        }
+        return config.getMapDigest();
+    };
+
+    this.setId = (id) => {
+        config.setSeedId(id);
+    };
+
+    this.getSeed = () => {
+        return config.getSeed().toString();
+    };
+    this.getAdler32 = ()=> {
+        return adler32.sum(this.getTransformedData());
+    };
+
+    this.setRawData = function (data) {
+        rawData = data;
+        if (!transform) {
+            transformedData = rawData;
+        }
+    };
+
+    this.getRawData = ()=> {
+        if (rawData) {
+            return rawData;
+        }
+
+        if (transformedData) {
+            if (!transform) {
+                return transformedData;
+            }
+
+            rawData = transform.applyInverseTransform(transformedData, transformParameters);
+            if (rawData) {
+                return rawData;
+            }
+
+            return transformedData;
+        }
+
+        throw new Error("The brick does not contain any data.");
+    };
+
+    this.setTransformedData = (data)=> {
+        transformedData = data;
+    };
+
+    this.getTransformedData = ()=> {
+        if (!transformedData) {
+            transformData();
+        }
+
+        if (transformedData) {
+            return transformedData;
+        }
+
+        if (rawData) {
+            return rawData;
+        }
+
+        throw new Error("The brick does not contain any data.");
+    };
+
+    this.getTransformParameters = ()=> {
+        if (!transformedData) {
+            transformData();
+        }
+        return transformParameters;
+    };
+
+    this.setTransformParameters =  (newTransformParams) =>{
+        if (!newTransformParams) {
+            return;
+        }
+
+        if (!transformParameters) {
+            transformParameters = newTransformParams;
+            return;
+        }
+
+        Object.keys(newTransformParams).forEach(key => {
+            transformParameters[key] = newTransformParams[key];
+        });
+    };
+
+    this.getRawSize = ()=> {
+        return rawData.length;
+    };
+
+    this.getTransformedSize = ()=> {
+        if (!transformedData) {
+            return rawData.length;
+        }
+
+        return transformedData.length;
+    };
+
+//----------------------------------------------- internal methods -----------------------------------------------------
+    function transformData() {
+        if (!transform) {
+            throw new Error("transform undefined");
+        }
+
+        if (rawData) {
+            transformedData = transform.applyDirectTransform(rawData, transformParameters);
+            if (!transformedData) {
+                transformedData = rawData;
+            }
+        }
+
+        transformParameters = transform.getTransformParameters();
+    }
+
+}
+
+module.exports = Brick;
+
+},{"./transforms/BrickTransformFactory":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransformFactory.js","adler32":"adler32","pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBarMap.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require("./Brick");
+const util = require("../utils/utilities");
+const pathModule = "path";
+const path = require(pathModule);
+
+function FileBarMap(header) {
+    header = header || {};
+
+    let brickOffset = util.getBarMapOffsetSize();
+    let archiveConfig;
+    let encryptionKey;
+
+    this.add = (filePath, brick) => {
+        filePath = filePath.split(path.sep).join(path.posix.sep);
+        this.load();
+        if (typeof header[filePath] === "undefined") {
+            header[filePath] = [];
+        }
+
+        const brickObj = {
+            checkSum: brick.getAdler32(),
+            offset: brickOffset,
+            hash: brick.getHash()
+        };
+
+        const encKey = brick.getTransformParameters() ? brick.getTransformParameters().key : undefined;
+        if (encKey) {
+            brickObj.key = encKey;
+        }
+
+        header[filePath].push(brickObj);
+        brickOffset += brick.getTransformedSize();
+    };
+
+    this.getHashList = (filePath) => {
+        this.load();
+        return header[filePath].map(brickObj => brickObj.offset);
+    };
+
+    this.getFileList = (folderBarPath) => {
+        this.load();
+        if (!folderBarPath) {
+            return Object.keys(header);
+        }
+        return Object.keys(header).filter(fileName => fileName.includes(folderBarPath));
+    };
+
+    this.getDictionaryObject = () => {
+        let objectDict = {};
+        Object.keys(header).forEach((fileName) => {
+            let brickObjects = header[fileName];
+            for (let j = 0; j < brickObjects.length; j++) {
+                if (typeof objectDict[brickObjects[j]['checkSum']] === 'undefined') {
+                    objectDict[brickObjects[j]['checkSum']] = [];
+                }
+                objectDict[brickObjects[j]['checkSum']].push(brickObjects[j]['hash']);
+            }
+        });
+        return objectDict;
+    };
+
+    this.getTransformParameters = (brickId) => {
+        if (!brickId) {
+            return encryptionKey ? {key: encryptionKey} : {};
+        }
+
+        this.load();
+        let bricks = [];
+        const files = this.getFileList();
+
+        files.forEach(filePath => {
+            bricks = bricks.concat(header[filePath]);
+        });
+
+        const brickObj = bricks.find(brick => {
+            return brick.offset === brickId;
+        });
+
+        const addTransformData = {};
+        if (brickObj.key) {
+            addTransformData.key = Buffer.from(brickObj.key);
+        }
+
+        return addTransformData;
+    };
+
+    this.toBrick = () => {
+        this.load();
+        const brick = new Brick(archiveConfig);
+        brick.setTransformParameters({key: encryptionKey});
+        brick.setRawData(Buffer.from(JSON.stringify(header)));
+        return brick;
+    };
+
+    this.load = () => {
+        if (header instanceof Brick) {
+            header.setConfig(archiveConfig);
+            if (encryptionKey) {
+                header.setTransformParameters({key: encryptionKey});
+            }
+            header = JSON.parse(header.getRawData().toString());
+        }
+    };
+
+    this.setConfig = (config) => {
+        archiveConfig = config;
+    };
+
+    this.getConfig = () => {
+        return archiveConfig;
+    };
+
+    this.setEncryptionKey = (encKey) => {
+        encryptionKey = encKey;
+    };
+
+    this.removeFile = (filePath) => {
+        this.load();
+        delete header[filePath];
+    };
+}
+
+module.exports = FileBarMap;
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/utilities":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBrickStorage.js":[function(require,module,exports){
+(function (Buffer){
+const BarMap = require("./FileBarMap");
+const util = require("../utils/utilities");
+const fs = require("fs");
+const Brick = require("./Brick");
+const AsyncDispatcher = require("../utils/AsyncDispatcher");
+
+function FileBrickStorage(filePath) {
+
+    let isFirstBrick = true;
+    let map;
+    let mapOffset;
+
+    this.setBarMap = (barMap) => {
+        map = barMap;
+    };
+
+    this.putBrick = (brick, callback) => {
+        if (isFirstBrick) {
+            isFirstBrick = false;
+            const writeStream = fs.createWriteStream(filePath, {start: util.getBarMapOffsetSize()});
+            writeStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            writeStream.write(brick.getTransformedData(), callback);
+        } else {
+            fs.appendFile(filePath, brick.getTransformedData(), callback);
+        }
+    };
+
+    this.getBrick = (brickId, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+            let brickOffsets = [];
+            const fileList = barMap.getFileList();
+            fileList.forEach(file => {
+                brickOffsets = brickOffsets.concat(barMap.getHashList(file));
+            });
+
+            const brickIndex = brickOffsets.findIndex(el => {
+                return el === brickId;
+            });
+
+            let nextBrickId = brickOffsets[brickIndex + 1];
+            if (!nextBrickId) {
+                nextBrickId = Number(mapOffset);
+            }
+
+            readBrick(brickId, nextBrickId, callback);
+        });
+
+    };
+
+    this.deleteFile = (fileName, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            barMap.removeFile(fileName);
+            this.putBarMap(barMap, callback);
+        });
+    };
+
+
+    this.putBarMap = (barMap, callback) => {
+        map = barMap;
+        readBarMapOffset((err, offset) => {
+            if(offset) {
+                offset = Number(offset);
+                fs.truncate(filePath, offset, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    __writeBarMap(offset);
+                });
+            }else{
+                fs.stat(filePath, (err, stats) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    const barMapOffset = stats.size;
+
+                    const bufferBarMapOffset = Buffer.alloc(util.getBarMapOffsetSize());
+                    bufferBarMapOffset.writeBigUInt64LE(BigInt(barMapOffset));
+                    mapOffset = barMapOffset;
+                    const offsetWriteStream = fs.createWriteStream(filePath, {flags: "r+", start: 0});
+
+                    offsetWriteStream.on("error", (err) => {
+                        return callback(err);
+                    });
+
+                    offsetWriteStream.write(bufferBarMapOffset, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        __writeBarMap(barMapOffset);
+                    });
+                });
+            }
+        });
+
+        function __writeBarMap(offset) {
+            const mapWriteStream = fs.createWriteStream(filePath, {flags: "r+", start: offset});
+            mapWriteStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            const mapBrick = barMap.toBrick();
+            mapBrick.setTransformParameters(barMap.getTransformParameters());
+            mapWriteStream.write(mapBrick.getTransformedData(), callback);
+        }
+
+    };
+
+    this.getBarMap = (mapDigest, callback) => {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        readBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            map = barMap;
+            callback(undefined, barMap);
+        });
+    };
+
+    //------------------------------------------ Internal functions ---------------------------------------------------
+
+    function readBarMapOffset(callback) {
+        const readStream = fs.createReadStream(filePath, {start: 0, end: util.getBarMapOffsetSize() - 1});
+
+        const buffer = Buffer.alloc(util.getBarMapOffsetSize());
+        let offsetBuffer = 0;
+
+        readStream.on("data", (chunk) => {
+            chunk.copy(buffer, offsetBuffer);
+            offsetBuffer += chunk.length;
+        });
+
+        readStream.on("end", () => {
+            callback(undefined, buffer.readBigUInt64LE());
+        });
+
+        readStream.on("error", (err) => {
+            return callback(err);
+        });
+    }
+
+    function readBarMap(callback) {
+        readBarMapOffset((err, barMapOffset) => {
+            if (err) {
+                if (err.code === "ENOENT") {
+                    return callback(undefined, new BarMap());
+                }
+
+                return callback(err)
+            }
+
+            mapOffset = barMapOffset;
+            const readStream = fs.createReadStream(filePath, {start: Number(barMapOffset)});
+            let barMapData = Buffer.alloc(0);
+
+            readStream.on("data", (chunk) => {
+                barMapData = Buffer.concat([barMapData, chunk]);
+            });
+
+            readStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            readStream.on("end", () => {
+                const mapBrick = new Brick();
+                mapBrick.setTransformedData(barMapData);
+                callback(undefined, new BarMap(mapBrick));
+            });
+        });
+    }
+
+    function readBrick(brickOffsetStart, brickOffsetEnd, callback) {
+        const readStream = fs.createReadStream(filePath, {start: brickOffsetStart, end: brickOffsetEnd - 1});
+        let brickData = Buffer.alloc(0);
+
+        readStream.on("data", (chunk) => {
+            brickData = Buffer.concat([brickData, chunk]);
+        });
+
+        readStream.on("error", (err) => {
+            return callback(err);
+        });
+
+        readStream.on("end", () => {
+            const brick = new Brick();
+            brick.setTransformedData(brickData);
+            callback(undefined, brick);
+        });
+    }
+}
+
+module.exports = {
+    createFileBrickStorage(filePath) {
+        return new FileBrickStorage(filePath);
+    }
+};
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/AsyncDispatcher":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\AsyncDispatcher.js","../utils/utilities":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./FileBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBarMap.js","buffer":false,"fs":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require("./Brick");
+const pathModule = "path";
+const path = require(pathModule);
+
+function FolderBarMap(header) {
+    header = header || {};
+
+    let archiveConfig;
+    let encryptionKey;
+
+    this.add = (filePath, brick) => {
+        filePath = filePath.split(path.sep).join("/");
+        this.load();
+        const splitPath = filePath.split("/");
+        if (splitPath.length === 0) {
+            throw Error("No filepath specified");
+        }
+
+        __addFileRecursively(header, splitPath, brick);
+
+
+        function __addFileRecursively(barMapObj, splitPath, brick) {
+            let fileName = splitPath.shift();
+            if (fileName === "") {
+                fileName = splitPath.shift();
+            }
+            if (splitPath.length === 0) {
+                const brickObj = {
+                    checkSum: brick.getAdler32(),
+                    hash: brick.getHash()
+                };
+
+                const encKey = brick.getTransformParameters() ? brick.getTransformParameters().key : undefined;
+                if (encKey) {
+                    brickObj.key = encKey;
+                }
+
+
+                if (!barMapObj[fileName]) {
+                    barMapObj[fileName] = [];
+                }
+
+
+                barMapObj[fileName].push(brickObj);
+            } else {
+                if (!barMapObj[fileName]) {
+                    barMapObj[fileName] = {};
+                }
+                __addFileRecursively(barMapObj[fileName], splitPath, brick);
+            }
+        }
+    };
+
+    this.isInHeader = (filePath) => {
+        return header[filePath] !== undefined;
+    };
+
+    this.removeBrick = (filePath, brickHash) => {
+        let indexToRemove = header[filePath].findIndex(brickObj => brickObj.hash === brickHash);
+        header[filePath].splice(indexToRemove, 1);
+    };
+
+    this.getDictionaryObject = () => {
+        let objectDict = {};
+        Object.keys(header).forEach((fileName) => {
+            let brickObjects = header[fileName];
+            for (let j = 0; j < brickObjects.length; j++) {
+                if (typeof objectDict[brickObjects[j]['checkSum']] === 'undefined') {
+                    objectDict[brickObjects[j]['checkSum']] = [];
+                }
+                objectDict[brickObjects[j]['checkSum']].push(brickObjects[j]['hash']);
+            }
+        });
+        return objectDict;
+    };
+
+    this.getHashList = (filePath) => {
+        this.load();
+        const splitPath = filePath.split("/");
+        if (splitPath.length === 0) {
+            throw Error("No path was provided.");
+        }
+
+        return __getHashListRecursively(header, splitPath);
+
+        function __getHashListRecursively(barMapObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (barMapObj[folderName]) {
+                if (splitPath.length === 0) {
+                    return barMapObj[folderName].map(brickObj => brickObj.hash);
+                } else {
+                    return __getHashListRecursively(barMapObj[folderName], splitPath);
+                }
+            } else {
+                throw Error(`Invalid path ${filePath}`);
+            }
+        }
+    };
+
+    this.getCheckSumList = (filePath) => {
+        this.load();
+        return header[filePath].map(brickObj => brickObj.checkSum);
+    };
+
+    this.isEmpty = (filePath) => {
+        filePath = filePath.split(path.sep).join("/");
+        this.load();
+
+        if (!filePath || filePath === "" || filePath === "/") {
+            return Object.keys(header).length === 0;
+        } else {
+            const splitPath = filePath.split("/");
+            return __checkIsEmptyRecursively(header, splitPath);
+        }
+
+        function __checkIsEmptyRecursively(folderObj, splitPath) {
+            if (Object.keys(folderObj).length === 0) {
+                return true;
+            }
+
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        return folderObj[folderName].length === 0;
+                    } else {
+                        return Object.keys(folderObj[folderName]).length === 0;
+                    }
+                } else {
+                    return __checkIsEmptyRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                return true;
+            }
+        }
+    };
+
+    this.emptyList = (filePath) => {
+        this.load();
+
+        const splitPath = filePath.split("/");
+        __emptyListRecursively(header, splitPath);
+
+        function __emptyListRecursively(folderObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        folderObj[folderName] = []
+                    } else {
+                        throw Error("Invalid path");
+                    }
+                } else {
+                    __emptyListRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                throw Error("Invalid path");
+            }
+        }
+    };
+
+
+    this.toBrick = () => {
+        this.load();
+        const brick = new Brick(archiveConfig);
+        if (encryptionKey) {
+            brick.setTransformParameters({key: encryptionKey});
+        }
+        brick.setRawData(Buffer.from(JSON.stringify(header)));
+        return brick;
+    };
+
+
+    this.getFileList = (folderBarPath) => {
+        this.load();
+        let files = [];
+
+        if (!folderBarPath || folderBarPath === "" || folderBarPath === "/") {
+            __getAllFilesRecursively(header, "");
+
+            return files;
+        } else {
+            const splitFolderBarPath = folderBarPath.split("/");
+            __getFileListRecursively(header, splitFolderBarPath);
+            return files.map(file => folderBarPath + "/" + file);
+        }
+
+        function __getFileListRecursively(folderObj, splitFolderBarPath) {
+            let folderName = splitFolderBarPath.shift();
+            if (folderName === "") {
+                folderName = splitFolderBarPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitFolderBarPath.length === 0) {
+                    Object.keys(folderObj[folderName]).forEach(file => {
+                        if (Array.isArray(folderObj[folderName][file])) {
+                            files.push(file);
+                        }
+                    });
+                } else {
+                    __getFileListRecursively(folderObj[folderName], splitFolderBarPath);
+                }
+            } else {
+                throw Error(`Invalid path ${folderBarPath}`);
+            }
+        }
+
+        function __getAllFilesRecursively(folderObj, path) {
+            Object.keys(folderObj).forEach(folderName => {
+
+                if (folderObj[folderName]) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        files.push(path + "/" + folderName);
+                    } else {
+                        __getAllFilesRecursively(folderObj[folderName], path + "/" + folderName);
+                    }
+                }
+            });
+        }
+
+
+    };
+
+    this.getFolderList = (barPath) => {
+        let folders = [];
+        if (!barPath || barPath === "" || barPath === "/") {
+             __getAllFolders(header, "");
+            return folders;
+        } else {
+            const splitPath = barPath.split("/");
+            __getFoldersRecursively(header, splitPath, "");
+            return folders;
+        }
+
+        function __getAllFolders(folderObj, path) {
+            Object.keys(folderObj).forEach(folderName => {
+                if (typeof folderObj[folderName] === "object" && !Array.isArray(folderObj[folderName])) {
+                    folders.push(path + "/" + folderName);
+                    __getAllFolders(folderObj[folderName], path + "/" + folderName);
+                }
+            });
+        }
+
+        function __getFoldersRecursively(folderObj, splitPath, folderPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    folders.push(folderPath + "/" + folderName);
+                    Object.keys(folderObj[folderName]).forEach(fileName => {
+                        if (typeof folderObj[folderName][fileName] === "object" && !Array.isArray(folderObj[folderName][fileName])) {
+                            folders.push(folderPath + "/" + fileName);
+                            __getFoldersRecursively(folderObj[folderName][fileName], splitPath, folderPath + "/" + fileName);
+                        }
+                    });
+                } else {
+                    __getFoldersRecursively(folderObj[folderName], splitPath, folderPath + "/" + folderName);
+                }
+            }
+        }
+    };
+
+    this.getTransformParameters = (brickId) => {
+        this.load();
+        if (!brickId) {
+            return encryptionKey ? {key: encryptionKey} : undefined;
+        }
+        let bricks = [];
+        const files = this.getFileList();
+        files.forEach(file => {
+            bricks = bricks.concat(getBricksForFile(file));
+        });
+
+        const brickObj = bricks.find(brick => {
+            return brick.hash === brickId;
+        });
+
+        const addTransformData = {};
+        if (brickObj.key) {
+            addTransformData.key = Buffer.from(brickObj.key);
+        }
+
+        return addTransformData;
+    };
+
+    this.load = () => {
+        if (header instanceof Brick) {
+            header.setConfig(archiveConfig);
+            header.setTransformParameters({key: encryptionKey});
+            header = JSON.parse(header.getRawData().toString());
+        } else {
+            if (Buffer.isBuffer(header)) {
+                header = header.toString();
+            }
+
+            if (typeof header === "string") {
+                header = JSON.parse(header);
+            }
+        }
+    };
+
+    this.setConfig = (config) => {
+        archiveConfig = config;
+    };
+
+    this.getConfig = () => {
+        return archiveConfig;
+    };
+
+    this.setEncryptionKey = (encKey) => {
+        encryptionKey = encKey;
+    };
+
+    this.removeFile = (filePath) => {
+        this.load();
+        delete header[filePath];
+    };
+
+    function getBricksForFile(filePath) {
+        filePath = filePath.split(path.sep).join("/");
+        const splitPath = filePath.split("/");
+        return __getBricksForFileRecursively(header, splitPath);
+
+
+        function __getBricksForFileRecursively(folderObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        return folderObj[folderName];
+                    } else {
+                        throw Error("Invalid path");
+                    }
+                } else {
+                    return __getBricksForFileRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                throw Error("Invalid path");
+            }
+        }
+    }
+}
+
+module.exports = FolderBarMap;
+}).call(this,require("buffer").Buffer)
+
+},{"./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBrickStorage.js":[function(require,module,exports){
+const fs = require("fs");
+const path = require("path");
+const BarMap = require("./FolderBarMap");
+const Brick = require("./Brick");
+
+function FolderBrickStorage(location) {
+    let map;
+
+    this.setBarMap = (barMap) => {
+        map = barMap;
+    };
+
+    this.putBrick = (brick, callback) => {
+        const writeStream = fs.createWriteStream(path.join(location, brick.getHash()));
+        writeStream.write(brick.getTransformedData(), (...args) => {
+            writeStream.end();
+            callback(...args);
+        });
+    };
+
+    this.getBrick = (brickHash, callback) => {
+        fs.readFile(path.join(location, brickHash), (err, brickData) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const brick = new Brick();
+            brick.setTransformedData(brickData);
+            callback(err, brick);
+        });
+    };
+
+    this.deleteFile = (filePath, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            fs.unlink(path.join(location, barMap.toBrick().getHash()), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                barMap.removeFile(filePath);
+                this.putBarMap(barMap, callback);
+            });
+        });
+    };
+
+    this.putBarMap = (barMap, callback) => {
+        map = barMap;
+        const barMapBrick = barMap.toBrick();
+        barMapBrick.setTransformParameters(barMap.getTransformParameters());
+       
+        let brickId = barMapBrick.getId();
+        if (!brickId) {
+            brickId = barMapBrick.getHash();
+        }
+
+        barMapBrick.setId(brickId);
+        const writeStream = fs.createWriteStream(path.join(location, brickId));
+        writeStream.write(barMapBrick.getTransformedData(), (err) => {
+            writeStream.end();
+            callback(err, barMapBrick.getSeed());
+        });
+    };
+
+    this.getBarMap = (mapDigest, callback) => {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+            mapDigest = undefined;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        if (typeof mapDigest === "undefined") {
+            return callback(undefined, new BarMap());
+        }
+
+        this.getBrick(mapDigest, (err, mapBrick) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const barMap = new BarMap(mapBrick);
+            map = barMap;
+            callback(undefined, barMap);
+        });
+    }
+}
+
+module.exports = {
+    createFolderBrickStorage(location) {
+        return new FolderBrickStorage(location);
+    }
+};
+},{"./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./FolderBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js","fs":false,"path":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js":[function(require,module,exports){
+(function (Buffer){
+const crypto = require("pskcrypto");
+
+function Seed(compactSeed, id, endpoint, usedForEncryption  = true, randomLength = 32) {
+    let seed;
+
+    init();
+
+    this.getCompactForm = () => {
+        if (!seed) {
+            throw Error("Cannot return seed");
+        }
+
+        return generateCompactForm(seed);
+    };
+
+    this.getLocation = () => {
+        if (!seed) {
+            throw Error("Cannot retrieve location");
+        }
+
+        return seed.endpoint + "/" + seed.id.toString("hex");
+    };
+
+    this.getEndpoint = () => {
+        if (!seed) {
+            throw Error("Cannot retrieve endpoint");
+        }
+
+        return seed.endpoint.toString();
+    };
+
+    this.getId = () => {
+        if (!seed.id) {
+            return;
+        }
+        return seed.id.toString("hex");
+    };
+
+    this.setId = (localId) => {
+        seed.id = localId;
+    };
+
+    this.getEncryptionKey = (algorithm) => {
+        if (seed.tag === 'r') {
+            return;
+        }
+
+        return crypto.deriveKey(algorithm, generateCompactForm(seed));
+    };
+
+    //--------------------------------------- internal methods --------------------------------------------
+    function init() {
+        if (!compactSeed) {
+            seed = create();
+        } else {
+            seed = load(compactSeed);
+        }
+    }
+
+    function create() {
+        const localSeed = {};
+        localSeed.id = id;
+        if (!id && usedForEncryption) {
+            //Bugfix: randomBytes in browser returns an Uint8Array object that has a wrong constructor and prototype
+            //that is why we create a new instance of Buffer/Uint8Array based on the result of randomBytes
+            localSeed.id = Buffer.from(crypto.randomBytes(randomLength));
+            //TODO: why don't we use ID Generator from swarmutils?
+        }
+
+        if (endpoint) {
+            localSeed.endpoint = endpoint;
+        }else{
+            throw Error("The SEED could not be created because an endpoint was not provided.")
+        }
+
+        if (usedForEncryption === true) {
+            localSeed.flag = 'e';
+        }else{
+            localSeed.flag = 'r';
+        }
+
+        return localSeed;
+    }
+
+    function generateCompactForm(expandedSeed) {
+        if (typeof expandedSeed === "string") {
+            return expandedSeed;
+        }
+
+        if(!expandedSeed.id){
+            throw Error("The seed does not contain an id");
+        }
+        let compactSeed = expandedSeed.id.toString('base64');
+        if (expandedSeed.endpoint) {
+            compactSeed += '|' + Buffer.from(JSON.stringify(expandedSeed.endpoint)).toString('base64');
+        }
+
+        compactSeed += expandedSeed.flag;
+        return Buffer.from(encodeURIComponent(compactSeed));
+    }
+
+    function load(compactFormSeed) {
+        if (typeof compactFormSeed === "undefined") {
+            throw new Error(`Expected type string or Buffer. Received undefined`);
+        }
+
+        if (typeof compactFormSeed !== "string") {
+            if (typeof compactFormSeed === "object" && !Buffer.isBuffer(compactFormSeed)) {
+                compactFormSeed = Buffer.from(compactFormSeed);
+            }
+
+            compactFormSeed = compactFormSeed.toString();
+        }
+
+        const decodedCompactSeed = decodeURIComponent(compactFormSeed);
+        const localSeed = {};
+        const splitCompactSeed = decodedCompactSeed.split('|');
+
+        localSeed.flag = splitCompactSeed[1][splitCompactSeed[1].length - 1];
+        splitCompactSeed[1] = splitCompactSeed[1].slice(0, -1);
+        localSeed.id = Buffer.from(splitCompactSeed[0], 'base64');
+
+        if (splitCompactSeed[1] && splitCompactSeed[1].length > 0) {
+            localSeed.endpoint = JSON.parse(Buffer.from(splitCompactSeed[1], 'base64').toString());
+        } else {
+            console.warn('Cannot find endpoint in compact seed')
+        }
+
+        return localSeed;
+    }
+}
+
+module.exports = Seed;
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false,"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransform.js":[function(require,module,exports){
+(function (Buffer){
+function BrickTransform(transformGenerator) {
+    let directTransform;
+    let inverseTransform;
+
+    this.getTransformParameters = () => {
+        return directTransform ? directTransform.transformParameters : undefined;
+    };
+
+    this.applyDirectTransform = (data, transformParameters) => {
+        if (!directTransform) {
+            directTransform = transformGenerator.createDirectTransform(transformParameters);
+        }
+
+        if (!directTransform) {
+            return undefined;
+        }
+
+        let transformedData = directTransform.transform(data);
+
+        if(directTransform.transformParameters){
+            if (directTransform.transformParameters.iv) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.iv]);
+            }
+
+            if (directTransform.transformParameters.aad) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.aad]);
+            }
+
+            if (directTransform.transformParameters.tag) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.tag]);
+            }
+        }
+
+        return transformedData;
+    };
+
+    this.applyInverseTransform = (data, transformParameters) => {
+        const inverseTransformParams = transformGenerator.getInverseTransformParameters(data);
+        if(inverseTransformParams.params) {
+            Object.keys(inverseTransformParams.params).forEach(param => transformParameters[param] = inverseTransformParams.params[param]);
+        }
+
+        if (!inverseTransform) {
+            inverseTransform = transformGenerator.createInverseTransform(transformParameters);
+        }
+
+        return inverseTransform ? inverseTransform.transform(inverseTransformParams.data) : undefined;
+    };
+}
+
+module.exports = BrickTransform;
+
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransformFactory.js":[function(require,module,exports){
+const CompressionGenerator = require("./CompressionGenerator");
+const EncryptionGenerator= require("./EncryptionGenerator");
+const CompressionEncryptionGenerator = require("./CompressionEncryptionGenerator");
+const BrickTransform = require("./BrickTransform");
+
+function BrickTransformFactory() {
+    this.createBrickTransform = function (config) {
+        if (!config) {
+            return;
+        }
+
+        const encryption = config.getEncryptionAlgorithm();
+        const compression = config.getCompressionAlgorithm();
+
+        let generator;
+        if (!encryption && !compression) {
+            return;
+        }
+
+        if (compression) {
+            if (encryption) {
+                generator = new CompressionEncryptionGenerator(config);
+            } else {
+                generator = new CompressionGenerator(config);
+            }
+        }else{
+            generator = new EncryptionGenerator(config);
+        }
+
+        return new BrickTransform(generator);
+    }
+}
+
+module.exports = BrickTransformFactory;
+
+
+},{"./BrickTransform":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransform.js","./CompressionEncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionEncryptionGenerator.js","./CompressionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js","./EncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionEncryptionGenerator.js":[function(require,module,exports){
+const CompressionGenerator = require("./CompressionGenerator");
+const EncryptionGenerator = require("./EncryptionGenerator");
+
+function CompressionEncryptionGenerator(config) {
+    let compressionGenerator = new CompressionGenerator(config);
+    let encryptionGenerator = new EncryptionGenerator(config);
+
+    this.getInverseTransformParameters = (transformedData) => {
+        return encryptionGenerator.getInverseTransformParameters(transformedData);
+    };
+
+    this.createDirectTransform = (transformParameters) => {
+        const compression = compressionGenerator.createDirectTransform();
+        const encryption = encryptionGenerator.createDirectTransform(transformParameters);
+        const compressionEncryption = {};
+        Object.keys(encryption).forEach(key => {
+            compressionEncryption[key] = encryption[key]
+        });
+
+        compressionEncryption.transform = (data) => {
+            return encryption.transform(compression.transform(data));
+        };
+
+        return compressionEncryption;
+    };
+
+    this.createInverseTransform = (transformParameters) => {
+        const decompression = compressionGenerator.createInverseTransform();
+        const decryption = encryptionGenerator.createInverseTransform(transformParameters);
+        const compressionEncryption = {};
+        Object.keys(decompression).forEach(key => {
+            compressionEncryption[key] = decompression[key]
+        });
+        compressionEncryption.transform = (data) => {
+            return decompression.transform(decryption.transform(data));
+        };
+
+        return compressionEncryption;
+    };
+}
+
+module.exports = CompressionEncryptionGenerator;
+},{"./CompressionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js","./EncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js":[function(require,module,exports){
+const zlib = require("zlib");
+
+function CompressionGenerator(config) {
+
+    this.getInverseTransformParameters = (transformedData) => {
+        return {data: transformedData};
+    };
+
+    this.createDirectTransform = () => {
+        return getCompression(true);
+    };
+
+    this.createInverseTransform = () => {
+        return getCompression(false);
+    };
+
+    function getCompression(isCompression) {
+        const algorithm = config.getCompressionAlgorithm();
+        switch (algorithm) {
+            case "gzip":
+                return __createCompress(zlib.gzipSync, zlib.gunzipSync, isCompression);
+            case "br":
+                return __createCompress(zlib.brotliCompressSync, zlib.brotliDecompressSync, isCompression);
+            case "deflate":
+                return __createCompress(zlib.deflateSync, zlib.inflateSync, isCompression);
+            case "deflateRaw":
+                return __createCompress(zlib.deflateRawSync, zlib.inflateRawSync, isCompression);
+            default:
+                return;
+        }
+    }
+
+    function __createCompress(compress, decompress, isCompression) {
+        const options = config.getCompressionOptions();
+        if (!isCompression) {
+            return {
+                transform(data) {
+                    return decompress(data, options);
+                }
+            }
+        }
+
+        return {
+            transform(data) {
+                return compress(data, options);
+            }
+        }
+    }
+}
+
+module.exports = CompressionGenerator;
+
+
+},{"zlib":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js":[function(require,module,exports){
+const crypto = require("pskcrypto");
+
+function EncryptionGenerator(config) {
+    let key;
+    const pskEncryption = crypto.createPskEncryption(config.getEncryptionAlgorithm());
+    this.setConfig = (newConfig) => {
+        config = newConfig;
+    };
+
+    this.getInverseTransformParameters = (transformedData) => {
+        let decryptionParameters = pskEncryption.getDecryptionParameters(transformedData);
+        const data = decryptionParameters.data;
+        delete decryptionParameters.data;
+        return {
+            data: data,
+            params:decryptionParameters
+        };
+    };
+
+    this.createDirectTransform = (transformParameters) => {
+        return getEncryption(transformParameters);
+    };
+
+    this.createInverseTransform = (transformParameters) => {
+        return getDecryption(transformParameters);
+    };
+
+    //--------------------------------------- internal methods ------------------------------------------------------
+    function getEncryption(transformParameters) {
+        const algorithm = config.getEncryptionAlgorithm();
+        if (!algorithm) {
+            return;
+        }
+
+        const encOptions = config.getEncryptionOptions();
+        if(transformParameters && transformParameters.key){
+            key = transformParameters.key;
+        }else{
+            key = pskEncryption.generateEncryptionKey(algorithm);
+        }
+
+
+        const ret = {
+            transform(data) {
+                const encData = pskEncryption.encrypt(data, key, encOptions);
+                ret.transformParameters = pskEncryption.getEncryptionParameters();
+                return encData;
+            }
+        };
+
+        return ret;
+    }
+
+
+    function getDecryption(transformConfig) {
+        const algorithm = config.getEncryptionAlgorithm();
+        if (!algorithm) {
+            return;
+        }
+        const encOptions = config.getEncryptionOptions();
+        let authTagLength = 0;
+        if (!config.getEncryptionOptions() || !config.getAuthTagLength()) {
+            authTagLength = 16;
+        } else {
+            authTagLength = config.getAuthTagLength();
+        }
+
+        return {
+            transform(data) {
+                return pskEncryption.decrypt(data, transformConfig.key, authTagLength, encOptions);
+            }
+        }
+    }
+
+}
+
+module.exports = EncryptionGenerator;
+},{"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\AsyncDispatcher.js":[function(require,module,exports){
+
+function AsyncDispatcher(finalCallback) {
+	let results = [];
+	let errors = [];
+
+	let started = 0;
+
+	function markOneAsFinished(err, res) {
+		if(err) {
+			errors.push(err);
+		}
+
+		if(arguments.length > 2) {
+			arguments[0] = undefined;
+			res = arguments;
+		}
+
+		if(typeof res !== "undefined") {
+			results.push(res);
+		}
+
+		if(--started <= 0) {
+            return callCallback();
+		}
+	}
+
+	function dispatchEmpty(amount = 1) {
+		started += amount;
+	}
+
+	function callCallback() {
+	    if(errors && errors.length === 0) {
+	        errors = undefined;
+        }
+
+	    if(results && results.length === 0) {
+	        results = undefined;
+        }
+
+        finalCallback(errors, results);
+    }
+
+	return {
+		dispatchEmpty,
+		markOneAsFinished
+	};
+}
+
+module.exports = AsyncDispatcher;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\isStream.js":[function(require,module,exports){
+function isStream(stream){
+    return stream !== null && typeof stream === 'object' && typeof stream.pipe === 'function';
+}
+
+function isWritable(stream) {
+    return isStream(stream) &&
+        stream.writable !== false &&
+        typeof stream._write === 'function' &&
+        typeof stream._writableState === 'object';
+
+}
+
+function isReadable(stream) {
+    return isStream(stream) &&
+        stream.readable !== false &&
+        typeof stream._read === 'function' &&
+        typeof stream._readableState === 'object';
+}
+
+function isDuplex(stream){
+    return isWritable(stream) &&
+        isReadable(stream);
+}
+
+module.exports = {
+    isStream,
+    isReadable,
+    isWritable,
+    isDuplex
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js":[function(require,module,exports){
+const fs = require('fs');
+const OFFSET_SIZE = 8;
+
+function getBarMapOffsetSize() {
+    return OFFSET_SIZE;
+}
+
+function ensureFileDoesNotExist(filePath, callback) {
+    fs.access(filePath, (err) => {
+        if (!err) {
+            fs.unlink(filePath, callback);
+        } else {
+            return callback();
+        }
+    });
+}
+
+module.exports = {getBarMapOffsetSize, ensureFileDoesNotExist};
+},{"fs":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-brick-storage\\EDFSBrickStorage.js":[function(require,module,exports){
+function EDFSBrickStorage(endpoint) {
+
+    const bar = require("bar");
+    const brickTransportStrategy = $$.brickTransportStrategiesRegistry.get(endpoint);
+    let map;
+
+    this.setBarMap = function (barMap) {
+        map = barMap;
+    };
+
+    this.putBrick = function (brick, callback) {
+        brickTransportStrategy.send(brick.getHash(), brick.getTransformedData(), callback);
+    };
+
+    this.getBrick = function (brickHash, callback) {
+
+        brickTransportStrategy.get(brickHash, (err, brickData) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const brick = bar.createBrick();
+            brick.setTransformedData(brickData);
+            callback(undefined, brick);
+        });
+    };
+
+    this.deleteBrick = function (brickHash, callback) {
+        throw new Error("Not implemented");
+    };
+
+    this.putBarMap = function (barMap, callback) {
+        map = barMap;
+        const barMapBrick = barMap.toBrick();
+        barMapBrick.setTransformParameters(barMap.getTransformParameters());
+
+        let brickId = barMapBrick.getId();
+        if (!brickId) {
+            brickId = barMapBrick.getHash();
+            barMapBrick.setId(brickId);
+        }
+
+        brickTransportStrategy.getHashForAlias(brickId, (err, hashesList) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (hashesList.length === 0) {
+                __sendBarMapBrick();
+            } else {
+                const barMapHash = hashesList[hashesList.length - 1];
+                if (barMapHash !== barMapBrick.getHash()) {
+                    __sendBarMapBrick();
+                } else {
+                    callback();
+                }
+            }
+
+            function __sendBarMapBrick() {
+                brickTransportStrategy.attachHashToAlias(brickId, barMapBrick.getHash(), (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brickTransportStrategy.send(barMapBrick.getHash(), barMapBrick.getTransformedData(), callback);
+                });
+            }
+        });
+    };
+
+    this.getBarMap = function (mapDigest, callback) {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+            mapDigest = undefined;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        if (typeof mapDigest === "undefined") {
+            return callback(undefined, bar.createBarMap());
+        }
+
+        brickTransportStrategy.getHashForAlias(mapDigest, (err, hashesList) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let barMapId;
+            if (hashesList.length === 0) {
+                barMapId = mapDigest;
+            } else {
+                barMapId = hashesList[hashesList.length - 1];
+            }
+            brickTransportStrategy.get(barMapId, (err, barMapData) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                const mapBrick = bar.createBrick();
+                mapBrick.setTransformedData(barMapData);
+                map = bar.createBarMap(mapBrick);
+                callback(undefined, map);
+            });
+        });
+    };
+}
+
+module.exports = EDFSBrickStorage;
+
+
+},{"bar":"bar"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\flows\\BricksManager.js":[function(require,module,exports){
+const pathModule = "path";
+const path = require(pathModule);
+const fsModule = "fs";
+const fs = require(fsModule);
+const osModule = "os";
+const endOfLine = require(osModule).EOL;
+const crypto = require("pskcrypto");
+const folderNameSize = process.env.FOLDER_NAME_SIZE || 5;
+const FILE_SEPARATOR = '-';
+let brickStorageFolder;
+
+$$.flow.describe("BricksManager", {
+    init: function (rootFolder, callback) {
+
+        if (!rootFolder) {
+            callback(new Error("No root folder specified!"));
+            return;
+        }
+        rootFolder = path.resolve(rootFolder);
+        this.__ensureFolderStructure(rootFolder, (err, pth) => {
+            brickStorageFolder = rootFolder;
+            callback(err, rootFolder);
+        });
+    },
+    write: function (fileName, readFileStream, callback) {
+        if (!this.__verifyFileName(fileName, callback)) {
+            return;
+        }
+
+        if (!readFileStream || !readFileStream.pipe || typeof readFileStream.pipe !== "function") {
+            callback(new Error("Something wrong happened"));
+            return;
+        }
+
+        const folderName = path.join(brickStorageFolder, fileName.substr(0, folderNameSize));
+
+        this.__ensureFolderStructure(folderName, (err) => {
+            if (err) {
+                return callback(err);
+            }
+
+            this.__writeFile(readFileStream, folderName, fileName, callback);
+        });
+
+    },
+    read: function (fileName, writeFileStream, callback) {
+        if (!this.__verifyFileName(fileName, callback)) {
+            return;
+        }
+
+        const folderPath = path.join(brickStorageFolder, fileName.substr(0, folderNameSize));
+        const filePath = path.join(folderPath, fileName);
+
+        this.__verifyFileExistence(filePath, (err, result) => {
+            if (!err) {
+                this.__readFile(writeFileStream, filePath, callback);
+            } else {
+                callback(new Error(`File ${filePath} was not found.`));
+            }
+        });
+    },
+    addAlias: function (fileHash, readStream, callback) {
+        if (!this.__verifyFileName(fileHash, callback)) {
+            return;
+        }
+
+        this.__streamToString(readStream, (err, alias) => {
+            if (err) {
+                return callback(err);
+            }
+            if (!alias) {
+                return callback(new Error("No alias was provided"));
+            }
+
+            const filePath = path.join(brickStorageFolder, alias);
+            this.__verifyFileExistence(filePath, (err) => {
+                if (err) {
+                    fs.writeFile(filePath, fileHash + endOfLine, callback);
+                } else {
+                    fs.appendFile(filePath, fileHash + endOfLine, callback);
+                }
+            });
+
+        });
+    },
+    readVersions: function (alias, callback) {
+        const filePath = path.join(brickStorageFolder, alias);
+        fs.readFile(filePath, (err, fileHashes) => {
+            if (err) {
+                if (err.code === "ENOENT") {
+                    return callback(undefined, []);
+                }
+                return callback(err);
+            }
+            callback(undefined, fileHashes.toString().trimEnd().split(endOfLine));
+        });
+    },
+    __verifyFileName: function (fileName, callback) {
+        if (!fileName || typeof fileName !== "string") {
+            return callback(new Error("No fileId specified."));
+        }
+
+        if (fileName.length < folderNameSize) {
+            return callback(new Error("FileId too small. " + fileName));
+        }
+
+        return true;
+    },
+    __ensureFolderStructure: function (folder, callback) {
+        fs.mkdir(folder, {recursive: true}, callback);
+    },
+    __writeFile: function (readStream, folderPath, fileName, callback) {
+        const PskHash = crypto.PskHash;
+        const hash = new PskHash();
+        const filePath = path.join(folderPath, fileName);
+        fs.access(filePath, (err) => {
+            if (err) {
+                readStream.on('data', (data) => {
+                    hash.update(data);
+                });
+
+                const writeStream = fs.createWriteStream(filePath, {mode: 0o444});
+
+                writeStream.on("finish", () => {
+                    callback(undefined, hash.digest("hex"));
+                });
+
+                writeStream.on("error", (err) => {
+                    writeStream.close();
+                    callback(err);
+                });
+
+                readStream.pipe(writeStream);
+            } else {
+                callback();
+
+            }
+        });
+    },
+    __readFile: function (writeFileStream, filePath, callback) {
+        const readStream = fs.createReadStream(filePath);
+
+        writeFileStream.on("finish", callback);
+        writeFileStream.on("error", callback);
+
+        readStream.pipe(writeFileStream);
+    },
+    __verifyFileExistence: function (filePath, callback) {
+        fs.access(filePath, callback);
+    },
+    __streamToString: function (readStream, callback) {
+        let str = '';
+        readStream.on("data", (chunk) => {
+            str += chunk;
+        });
+
+        readStream.on("end", () => {
+            callback(undefined, str);
+        });
+
+        readStream.on("error", callback);
+    }
+});
+
+},{"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSClient.js":[function(require,module,exports){
+require("psk-http-client");
+
+function EDFSClient(url) {
+    this.attachAlias = (fileName, alias, callback) => {
+        $$.remote.doHttpPost(url + "/EDFS/attachHashToAlias/" + fileName, alias, callback);
+    };
+
+    this.writeToAlias = (alias, data, callback) => {
+        $$.remote.doHttpPost(url + "/EDFS/alias/" + alias, data, callback);
+    };
+
+    this.readFromAlias = (alias, callback) => {
+        $$.remote.doHttpGet(url + "/EDFS/alias/" + alias, callback);
+    };
+
+    this.writeFile = (fileName, data, callback) => {
+        $$.remote.doHttpPost(url + "/EDFS/" + fileName, data, callback);
+    };
+
+    this.readFile = (fileName, callback) => {
+        $$.remote.doHttpGet(url + "/EDFS/" + fileName, callback);
+    };
+}
+
+module.exports = EDFSClient;
+},{"psk-http-client":"psk-http-client"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSMiddleware.js":[function(require,module,exports){
+require("../flows/BricksManager");
+
+function EDFSMiddleware(server) {
+
+    server.use('/*',function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        // Request methods you wish to allow
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+        // Request headers you wish to allow
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Content-Length, X-Content-Length');
+        next();
+
+    });
+
+    server.post('/:fileId', (req, res) => {
+        $$.flow.start("BricksManager").write(req.params.fileId, req, (err, result) => {
+            res.statusCode = 201;
+            if (err) {
+                res.statusCode = 500;
+
+                if (err.code === 'EACCES') {
+                    res.statusCode = 409;
+                }
+            }
+            res.end();
+        });
+    });
+
+    server.get('/:fileId', (req, res) => {
+        res.setHeader("content-type", "application/octet-stream");
+        $$.flow.start("BricksManager").read(req.params.fileId, res, (err, result) => {
+            res.statusCode = 200;
+            if (err) {
+                console.log(err);
+                res.statusCode = 404;
+            }
+            res.end();
+        });
+    });
+
+    server.post('/attachHashToAlias/:fileId', (req, res) => {
+        $$.flow.start("BricksManager").addAlias(req.params.fileId, req, (err, result) => {
+            res.statusCode = 201;
+            if (err) {
+                res.statusCode = 500;
+
+                if (err.code === 'EACCES') {
+                    res.statusCode = 409;
+                }
+            }
+            res.end();
+        });
+    });
+
+    server.get('/getVersions/:alias', (req, res) => {
+        $$.flow.start("BricksManager").readVersions(req.params.alias, (err, fileHashes) => {
+            res.statusCode = 200;
+            if(err) {
+                console.error(err);
+                res.statusCode = 404;
+            }
+            res.setHeader("content-type", "application/json");
+            res.end(JSON.stringify(fileHashes));
+        });
+    });
+}
+
+module.exports = EDFSMiddleware;
+
+},{"../flows/BricksManager":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\flows\\BricksManager.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js":[function(require,module,exports){
+(function (Buffer){
+
+function FetchBrickTransportStrategy(initialConfig) {
+    const url = initialConfig;
+    this.send = (name, data, callback) => {
+
+        fetch(url + "/EDFS/", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+            body: data
+        }).then(function(response) {
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.json();
+        }).then(function(data) {
+            callback(null, data)
+        }).catch(error=>{
+            callback(error);
+        });
+
+    };
+
+    this.get = (name, callback) => {
+        fetch(url + "/EDFS/"+name,{
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+        }).then(response=>{
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.arrayBuffer();
+        }).then(arrayBuffer=>{
+                let buffer = new Buffer(arrayBuffer.byteLength);
+                let view = new Uint8Array(arrayBuffer);
+                for (let i = 0; i < buffer.length; ++i) {
+                    buffer[i] = view[i];
+                }
+
+            callback(null, buffer);
+        }).catch(error=>{
+            callback(error);
+        });
+    };
+
+    this.getHashForAlias = (alias, callback) => {
+        fetch(url + "/EDFS/getVersions/" + alias, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+        }).then(response => {
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.json().then(data => {
+                callback(null, data);
+            }).catch(error => {
+                callback(error);
+            })
+        });
+    };
+
+    this.getLocator = () => {
+        return url;
+    };
+}
+//TODO:why we use this?
+FetchBrickTransportStrategy.prototype.FETCH_BRICK_TRANSPORT_STRATEGY = "FETCH_BRICK_TRANSPORT_STRATEGY";
+
+
+module.exports = FetchBrickTransportStrategy;
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js":[function(require,module,exports){
+
+function HTTPBrickTransportStrategy(endpoint) {
+    require("psk-http-client");
+
+    this.send = (name, data, callback) => {
+        $$.remote.doHttpPost(endpoint + "/EDFS/" + name, data, callback);
+    };
+
+    this.get = (name, callback) => {
+        $$.remote.doHttpGet(endpoint + "/EDFS/" + name, callback);
+    };
+
+    this.getHashForAlias = (alias, callback) => {
+        $$.remote.doHttpGet(endpoint + "/EDFS/getVersions/" + alias, (err, hashesList) => {
+            if(err) {
+                return callback(err)
+            }
+
+            callback(undefined, JSON.parse(hashesList.toString()))
+        });
+    };
+
+    this.attachHashToAlias = (alias, name, callback) => {
+        $$.remote.doHttpPost(endpoint + "/EDFS/attachHashToAlias/" + name, alias, callback);
+    };
+
+    this.getLocator = () => {
+        return endpoint;
+    };
+}
+
+HTTPBrickTransportStrategy.prototype.canHandleEndpoint = (endpoint) => {
+    return endpoint.indexOf("http:") === 0 || endpoint.indexOf("https:") === 0;
+};
+
+module.exports = HTTPBrickTransportStrategy;
+},{"psk-http-client":"psk-http-client"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js":[function(require,module,exports){
+function BrickTransportStrategiesRegistry() {
+    const strategies = {};
+
+    this.remove = (transportStrategyName) => {
+        strategies[transportStrategyName] = undefined;
+    };
+
+    this.add = (transportStrategyName, strategy) => {
+        if (typeof strategy.prototype.canHandleEndpoint === "function") {
+            strategies[transportStrategyName] = strategy;
+        } else {
+            throw Error("Missing function from strategy prototype");
+        }
+    };
+
+    this.get = (endpoint) => {
+        if (typeof endpoint !== "string" || endpoint.length === 0) {
+            throw Error("Invalid endpoint");
+        }
+
+        const strategyName = getStrategyNameFromEndpoint(endpoint);
+        if (!strategyName) {
+            throw Error(`No strategy available to handle endpoint ${endpoint}`);
+        }
+
+        return new strategies[strategyName](endpoint);
+    };
+
+    this.has = (transportStrategyName) => {
+        return strategies.hasOwnProperty(transportStrategyName);
+    };
+
+    function getStrategyNameFromEndpoint(endpoint) {
+        for(let key in strategies){
+            if (strategies[key] && strategies[key].prototype.canHandleEndpoint(endpoint)) {
+                return key;
+            }
+        }
+    }
+}
+
+if (!$$.brickTransportStrategiesRegistry) {
+    $$.brickTransportStrategiesRegistry = new BrickTransportStrategiesRegistry();
+}
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js":[function(require,module,exports){
+function EDFS(endpoint) {
+    const RawDossier = require("./RawDossier");
+    const barModule = require("bar");
+    const fsAdapter = require("bar-fs-adapter");
+    const constants = require('../moduleConstants');
+    const self = this;
+
+    this.createCSB = () => {
+        return new RawDossier(endpoint);
+    };
+
+    this.createBar = () => {
+        return barModule.createArchive(createArchiveConfig());
+    };
+
+    this.bootCSB = (seed, callback) => {
+        const rawDossier = new RawDossier(endpoint, seed);
+        rawDossier.start(err => callback(err, rawDossier));
+    };
+
+    this.loadBar = (seed) => {
+        return barModule.createArchive(createArchiveConfig(seed));
+    };
+
+    this.clone = (seed, callback) => {
+        const edfsBrickStorage = require("edfs-brick-storage").create(endpoint);
+        const bar = this.loadBar(seed);
+        bar.clone(edfsBrickStorage, true, callback);
+    };
+
+    this.createWallet = (templateSeed, pin, overwrite = false, callback) => {
+        const wallet = this.createCSB();
+        wallet.mount("/", constants.CSB.CONSTITUTION_FOLDER, templateSeed, (err => {
+            if (err) {
+                return callback(err);
+            }
+
+            const seed = wallet.getSeed();
+            if (typeof pin !== "undefined") {
+                require("../seedCage").putSeed(seed, pin, overwrite, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(undefined, seed.toString());
+                });
+            } else {
+                callback(undefined, seed.toString());
+            }
+        }));
+    };
+
+    this.loadWallet = function (walletSeed, pin, overwrite, callback) {
+        if (typeof overwrite === "function") {
+            callback = overwrite;
+            overwrite = pin;
+            pin = walletSeed;
+            walletSeed = undefined;
+        }
+        if (typeof walletSeed === "undefined") {
+            require("../seedCage").getSeed(pin, (err, seed) => {
+                if (err) {
+                    return callback(err);
+                }
+                this.bootCSB(seed, (err, wallet) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(undefined, wallet);
+                });
+
+            });
+        } else {
+           
+            this.bootCSB(walletSeed, (err, wallet) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof pin !== "undefined" && pin !== null) {
+                    require("../seedCage").putSeed(walletSeed, pin, overwrite, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        callback(undefined, wallet);
+                    });
+                } else {
+                    return callback(undefined, wallet);
+                }
+            });
+        }
+    };
+
+    this.createBarWithConstitution = function (folderConstitution, callback) {
+        const bar = this.createBar();
+        bar.addFolder(folderConstitution, constants.CSB.CONSTITUTION_FOLDER, (err, mapDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, bar);
+        });
+    };
+
+//------------------------------------------------ internal methods -------------------------------------------------
+    function createArchiveConfig(seed) {
+        const ArchiveConfigurator = barModule.ArchiveConfigurator;
+        ArchiveConfigurator.prototype.registerFsAdapter("FsAdapter", fsAdapter.createFsAdapter);
+        ArchiveConfigurator.prototype.registerStorageProvider("EDFSBrickStorage", require("edfs-brick-storage").create);
+        const archiveConfigurator = new ArchiveConfigurator();
+        archiveConfigurator.setFsAdapter("FsAdapter");
+        archiveConfigurator.setStorageProvider("EDFSBrickStorage", endpoint);
+        archiveConfigurator.setBufferSize(65535);
+        archiveConfigurator.setEncryptionAlgorithm("aes-256-gcm");
+
+        if (seed) {
+            archiveConfigurator.setSeed(seed);
+        } else {
+            archiveConfigurator.setSeedEndpoint(endpoint);
+        }
+
+        return archiveConfigurator;
+    }
+}
+
+module.exports = EDFS;
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","../seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","./RawDossier":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js","bar":"bar","bar-fs-adapter":"bar-fs-adapter","edfs-brick-storage":"edfs-brick-storage"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js":[function(require,module,exports){
+/*
+
+Sinica: to be renamed CSBHandler. RootCSB should be deleted
+*/
+
+function RawDossier(endpoint, seed) {
+    const barModule = require("bar");
+    const constants = require("../moduleConstants").CSB;
+    let bar = createBar(seed);
+    this.getSeed = () => {
+        return bar.getSeed();
+    };
+
+    this.start = (callback) => {
+        createBlockchain(bar).start(callback);
+    };
+
+    this.addFolder = (fsFolderPath, barPath, callback) => {
+        bar.addFolder(fsFolderPath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.addFile = (fsFilePath, barPath, callback) => {
+        bar.addFile(fsFilePath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.readFile = (fileBarPath, callback) => {
+        this.loadBarForPath(fileBarPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.rawDossier.readFile(dossierContext.relativePath, callback);
+        });
+    };
+
+    this.extractFolder = bar.extractFolder;
+
+    this.extractFile = bar.extractFile;
+
+    this.writeFile = (barPath, data, callback) => {
+        bar.writeFile(barPath, data, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.listFiles = bar.listFiles;
+
+    this.mount = (path, name, archiveIdentifier, callback) => {
+        bar.readFile(constants.MANIFEST_FILE, (err, data) => {
+            let manifest;
+            if (err) {
+                manifest = {};
+                manifest.mounts = [];
+            }
+
+            if (data) {
+                manifest = JSON.parse(data.toString());
+                const pathNames = manifest.mounts.filter(el => el.localPath === path);
+                const index = pathNames.findIndex(el => el === name);
+                if (index >= 0) {
+                    return callback(Error(`A mount point at path ${path} with the name ${name} already exists.`));
+                }
+            }
+
+            const mount = {};
+            mount.localPath = path;
+            mount.mountName = name;
+            mount.archiveIdentifier = archiveIdentifier;
+
+            manifest.mounts.push(mount);
+
+            bar.writeFile(constants.MANIFEST_FILE, JSON.stringify(manifest), callback);
+        });
+    };
+
+    this.unmount = (path, name, callback) => {
+        bar.readFile(constants.MANIFEST_FILE, (err, data) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (data.length === 0) {
+                return callback(Error("Nothing to unmount"));
+            }
+
+            const manifest = JSON.parse(data.toString());
+            const index = manifest.mounts.findIndex(el => el.localPath === path);
+            if (index >= 0) {
+                manifest.mounts.splice(index, 1);
+            } else {
+                return callback(Error(`No mount point exists at path ${path}`));
+            }
+
+            bar.writeFile(constants.MANIFEST_FILE, JSON.stringify(manifest), callback);
+        });
+    };
+
+    //------------------------------------------------- internal functions ---------------------------------------------
+    function createBlockchain(bar) {
+        const blockchainModule = require("blockchain");
+        const worldStateCache = blockchainModule.createWorldStateCache("bar", bar);
+        const historyStorage = blockchainModule.createHistoryStorage("bar", bar);
+        const consensusAlgorithm = blockchainModule.createConsensusAlgorithm("direct");
+        const signatureProvider = blockchainModule.createSignatureProvider("permissive");
+        return blockchainModule.createBlockchain(worldStateCache, historyStorage, consensusAlgorithm, signatureProvider, true);
+    }
+
+    function createBar(localSeed) {
+        const createEDFSBrickStorage = require("edfs-brick-storage").create;
+        const createFsAdapter = require("bar-fs-adapter").createFsAdapter;
+
+        const ArchiveConfigurator = barModule.ArchiveConfigurator;
+        ArchiveConfigurator.prototype.registerStorageProvider("EDFSBrickStorage", createEDFSBrickStorage);
+        ArchiveConfigurator.prototype.registerFsAdapter("FsAdapter", createFsAdapter);
+
+        const archiveConfigurator = new ArchiveConfigurator();
+        archiveConfigurator.setFsAdapter("FsAdapter");
+
+        archiveConfigurator.setEncryptionAlgorithm("aes-256-gcm");
+        archiveConfigurator.setBufferSize(65535);
+        if (!localSeed) {
+            archiveConfigurator.setStorageProvider("EDFSBrickStorage", endpoint);
+            archiveConfigurator.setSeedEndpoint(endpoint);
+        } else {
+            archiveConfigurator.setSeed(localSeed);
+        }
+
+        return barModule.createArchive(archiveConfigurator);
+    }
+
+    this.loadBarForPath = (path, callback) => {
+        return __loadBarForPathRecursively(bar, "", path, callback);
+
+        function __loadBarForPathRecursively(archive, prefixPath, relativePath, callback) {
+            archive.listFiles((err, files) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (files.length === 0) {
+                    return callback();
+                }
+
+                let pathRest = [];
+
+                let barPath = files.find(file => {
+                    let pth;
+                    if (relativePath[0] === "/") {
+                        if (prefixPath === "/") {
+                            pth = relativePath;
+                        } else {
+                            pth = prefixPath + relativePath
+                        }
+                    } else {
+                        if (prefixPath === "/") {
+                            pth = prefixPath + relativePath;
+                        } else {
+                            pth = prefixPath + "/" + relativePath;
+                        }
+                    }
+                    return file === pth;
+                });
+                if (barPath) {
+                    return callback(undefined, {rawDossier: archive, prefixPath, relativePath});
+                } else {
+                    let splitPath = relativePath.split("/");
+                    if (splitPath[0] === "") {
+                        splitPath[0] = "/";
+                    }
+                    archive.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        const manifest = JSON.parse(manifestContent.toString());
+                        pathRest.unshift(splitPath.pop());
+                        while (splitPath.length > 0) {
+                            let localPath;
+                            if (splitPath[0] === "/") {
+                                splitPath.shift();
+                                localPath = "/" + splitPath.join("/");
+                                splitPath.unshift("/");
+                            } else {
+                                localPath = splitPath.join("/");
+                            }
+
+                            for (let mount of manifest.mounts) {
+                                const name = pathRest[0];
+                                if (mount.localPath === localPath && mount.mountName === name) {
+                                    const internalArchive = createBar(mount.archiveIdentifier);
+                                    return __loadBarForPathRecursively(internalArchive, splitPath.join("/"), pathRest.join("/"), callback);
+                                }
+                            }
+
+                            pathRest.unshift(splitPath.pop());
+                        }
+                    });
+                }
+            });
+        }
+    }
+}
+
+module.exports = RawDossier;
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","bar":"bar","bar-fs-adapter":"bar-fs-adapter","blockchain":false,"edfs-brick-storage":"edfs-brick-storage"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js":[function(require,module,exports){
+const HTTPBrickTransportStrategy = require("./brickTransportStrategies/HTTPBrickTransportStrategy");
+HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK_TRANSPORT_STRATEGY";
+
+module.exports = {
+    CSB: {
+        CONSTITUTION_FOLDER: 'constitution',
+        BLOCKCHAIN_FOLDER: 'blockchain',
+        APP_FOLDER: 'app',
+        DOMAIN_IDENTITY_FILE: 'domain_identity',
+        ASSETS_FOLDER: "assets",
+        TRANSACTIONS_FOLDER: "transactions",
+        APPS_FOLDER: "apps",
+        DATA_FOLDER: "data",
+        MANIFEST_FILE: "manifest"
+    }
+};
+
+},{"./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js":[function(require,module,exports){
+(function (Buffer){
+const pskcrypto = "pskcrypto";
+const crypto = require(pskcrypto);
+const storageLocation = "seedCage";
+const algorithm = "aes-256-cfb";
+
+/**
+ * local storage can't handle properly binary data
+ *  https://stackoverflow.com/questions/52419694/how-to-store-uint8array-in-the-browser-with-localstorage-using-javascript
+ * @param pin
+ * @param callback
+ * @returns {*}
+ */
+function getSeed(pin, callback) {
+    let encryptedSeed;
+    let seed;
+    try {
+        encryptedSeed = localStorage.getItem(storageLocation);
+        if (encryptedSeed === null || typeof encryptedSeed !== "string" || encryptedSeed.length === 0) {
+            return callback(new Error("SeedCage is empty or data was altered"));
+        }
+
+        const retrievedEncryptedArr = JSON.parse(encryptedSeed);
+        encryptedSeed = new Uint8Array(retrievedEncryptedArr);
+        const pskEncryption = crypto.createPskEncryption(algorithm);
+        const encKey = crypto.deriveKey(algorithm, pin);
+        seed = pskEncryption.decrypt(encryptedSeed, encKey).toString();
+    } catch (e) {
+        return callback(e);
+    }
+    callback(undefined, seed);
+}
+
+function putSeed(seed, pin, overwrite = false, callback) {
+    let encSeed;
+
+    if (typeof overwrite === "function") {
+        callback(Error("TODO: api signature updated!"));
+    }
+    try {
+        if (typeof seed === "string") {
+            seed = Buffer.from(seed);
+        }
+        if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+            seed = Buffer.from(seed);
+        }
+
+        const pskEncryption = crypto.createPskEncryption(algorithm);
+        const encKey = crypto.deriveKey(algorithm, pin);
+        encSeed = pskEncryption.encrypt(seed, encKey);
+        const encParameters = pskEncryption.getEncryptionParameters();
+        encSeed = Buffer.concat([encSeed, encParameters.iv]);
+        if (encParameters.aad) {
+            encSeed = Buffer.concat([encSeed, encParameters.aad]);
+        }
+
+        if (encParameters.tag) {
+            encSeed = Buffer.concat([encSeed, encParameters.tag]);
+        }
+
+        const encryptedArray =  Array.from(encSeed);
+        const encryptedSeed = JSON.stringify(encryptedArray);
+
+        localStorage.setItem(storageLocation, encryptedSeed);
+    } catch (e) {
+        return callback(e);
+    }
+    callback(undefined);
+}
+
+function check(callback) {
+    let item;
+    try {
+        item = localStorage.getItem(storageLocation);
+    } catch (e) {
+        return callback(e);
+    }
+    if (item) {
+        return callback();
+    }
+    callback(new Error("SeedCage does not exists"));
+}
+
+module.exports = {
+    check,
+    putSeed,
+    getSeed
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js":[function(require,module,exports){
+(function (Buffer){
+const pth = "path";
+const path = require(pth);
+const os = "os";
+const fileSystem = "fs";
+const fs = require(fileSystem);
+const pskcrypto = "pskcrypto";
+const crypto = require(pskcrypto);
+
+
+const storageLocation = process.env.SEED_CAGE_LOCATION || require(os).homedir();
+const storageFileName = ".seedCage";
+const seedCagePath = path.join(storageLocation, storageFileName);
+const algorithm = "aes-256-cfb";
+
+function getSeed(pin, callback) {
+    fs.readFile(seedCagePath, (err, encryptedSeed) => {
+        if (err) {
+            return callback(err);
+        }
+
+        let seed;
+        try {
+            const pskEncryption = crypto.createPskEncryption(algorithm);
+            const encKey = crypto.deriveKey(algorithm, pin);
+            seed = pskEncryption.decrypt(encryptedSeed, encKey).toString();
+        } catch (e) {
+            return callback(e);
+        }
+
+        callback(undefined, seed);
+    });
+}
+
+function putSeed(seed, pin, overwrite = false, callback) {
+    fs.mkdir(storageLocation, {recursive: true}, (err) => {
+        if (err) {
+            return callback(err);
+        }
+
+        fs.stat(seedCagePath, (err, stats) => {
+            if (!err && stats.size > 0) {
+                if (overwrite) {
+                    __encryptSeed();
+                } else {
+                    return callback(Error("Attempted to overwrite existing SEED."));
+                }
+            } else {
+                __encryptSeed();
+            }
+
+            function __encryptSeed() {
+                let encSeed;
+                try {
+                    if (typeof seed === "string") {
+                        seed = Buffer.from(seed);
+                    }
+
+                    if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+                        seed = Buffer.from(seed);
+                    }
+
+
+                    const pskEncryption = crypto.createPskEncryption(algorithm);
+                    const encKey = crypto.deriveKey(algorithm, pin);
+                    encSeed = pskEncryption.encrypt(seed, encKey);
+                    const encParameters = pskEncryption.getEncryptionParameters();
+                    encSeed = Buffer.concat([encSeed, encParameters.iv]);
+                    if (encParameters.aad) {
+                        encSeed = Buffer.concat([encSeed, encParameters.aad]);
+                    }
+
+                    if (encParameters.tag) {
+                        encSeed = Buffer.concat([encSeed, encParameters.tag]);
+                    }
+                } catch (e) {
+                    return callback(e);
+                }
+
+                console.log("To be removed later", seed.toString());
+                fs.writeFile(seedCagePath, encSeed, callback);
+            }
+        });
+    });
+}
+
+function check(callback) {
+    fs.access(seedCagePath, callback);
+}
+
+module.exports = {
+    check,
+    putSeed,
+    getSeed
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js":[function(require,module,exports){
+const or = require("overwrite-require");
+switch ($$.environmentType) {
+    case or.constants.THREAD_ENVIRONMENT_TYPE:
+    case or.constants.NODEJS_ENVIRONMENT_TYPE:
+        module.exports = require("./NodeSeedCage");
+        break;
+    case or.constants.BROWSER_ENVIRONMENT_TYPE:
+        module.exports = require("./BrowserSeedCage");
+        break;
+    case or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE:
+    case or.constants.ISOLATE_ENVIRONMENT_TYPE:
+    default:
+        throw new Error("No implementation of SeedCage for this env type.");
+}
+},{"./BrowserSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js","./NodeSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
+module.exports = {
+  BROWSER_ENVIRONMENT_TYPE: 'browser',
+  SERVICE_WORKER_ENVIRONMENT_TYPE: 'service-worker',
+  ISOLATE_ENVIRONMENT_TYPE: 'isolate',
+  THREAD_ENVIRONMENT_TYPE: 'thread',
+  NODEJS_ENVIRONMENT_TYPE: 'nodejs'
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\standardGlobalSymbols.js":[function(require,module,exports){
+(function (global){
+let logger = console;
+
+if (!global.process || process.env.NO_LOGS !== 'true') {
+    try {
+        const PSKLoggerModule = require('psklogger');
+        const PSKLogger = PSKLoggerModule.PSKLogger;
+
+        logger = PSKLogger.getLogger();
+
+        console.log('Logger init successful', process.pid);
+    } catch (e) {
+        if(e.message.indexOf("psklogger")!==-1){
+            console.log('Logger not available, using console');
+            logger = console;
+        }else{
+            console.log(e);
+        }
+    }
+} else {
+    console.log('Environment flag NO_LOGS is set, logging to console');
+}
+
+$$.registerGlobalSymbol = function (newSymbol, value) {
+    if (typeof $$[newSymbol] == "undefined") {
+        Object.defineProperty($$, newSymbol, {
+            value: value,
+            writable: false
+        });
+    } else {
+        logger.error("Refusing to overwrite $$." + newSymbol);
+    }
+};
+
+console.warn = (...args)=>{
+    console.log(...args);
+};
+
+/**
+ * @method
+ * @name $$#autoThrow
+ * @param {Error} err
+ * @throws {Error}
+ */
+
+$$.registerGlobalSymbol("autoThrow", function (err) {
+    if (!err) {
+        throw err;
+    }
+});
+
+/**
+ * @method
+ * @name $$#propagateError
+ * @param {Error} err
+ * @param {function} callback
+ */
+$$.registerGlobalSymbol("propagateError", function (err, callback) {
+    if (err) {
+        callback(err);
+        throw err; //stop execution
+    }
+});
+
+/**
+ * @method
+ * @name $$#logError
+ * @param {Error} err
+ */
+$$.registerGlobalSymbol("logError", function (err) {
+    if (err) {
+        console.log(err);
+        $$.err(err);
+    }
+});
+
+/**
+ * @method
+ * @name $$#fixMe
+ * @param {...*} args
+ */
+console.log("Fix the fixMe to not display on console but put in logs");
+$$.registerGlobalSymbol("fixMe", function (...args) {
+    //$$.log(...args);
+});
+
+/**
+ * @method - Throws an error
+ * @name $$#exception
+ * @param {string} message
+ * @param {*} type
+ */
+$$.registerGlobalSymbol("exception", function (message, type) {
+    throw new Error(message);
+});
+
+/**
+ * @method - Throws an error
+ * @name $$#throw
+ * @param {string} message
+ * @param {*} type
+ */
+$$.registerGlobalSymbol("throw", function (message, type) {
+    throw new Error(message);
+});
+
+
+/**
+ * @method - Warns that method is not implemented
+ * @name $$#incomplete
+ * @param {...*} args
+ */
+/* signal a  planned feature but not implemented yet (during development) but
+also it could remain in production and should be flagged asap*/
+$$.incomplete = function (...args) {
+    args.unshift("Incomplete feature touched:");
+    logger.warn(...args);
+};
+
+/**
+ * @method - Warns that method is not implemented
+ * @name $$#notImplemented
+ * @param {...*} args
+ */
+$$.notImplemented = $$.incomplete;
+
+
+/**
+ * @method Throws if value is false
+ * @name $$#assert
+ * @param {boolean} value - Value to assert against
+ * @param {string} explainWhy - Reason why assert failed (why value is false)
+ */
+/* used during development and when trying to discover elusive errors*/
+$$.registerGlobalSymbol("assert", function (value, explainWhy) {
+    if (!value) {
+        throw new Error("Assert false " + explainWhy);
+    }
+});
+
+/**
+ * @method
+ * @name $$#flags
+ * @param {string} flagName
+ * @param {*} value
+ */
+/* enable/disabale flags that control psk behaviour*/
+$$.registerGlobalSymbol("flags", function (flagName, value) {
+    $$.incomplete("flags handling not implemented");
+});
+
+/**
+ * @method - Warns that a method is obsolete
+ * @name $$#obsolete
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("obsolete", function (...args) {
+    args.unshift("Obsolete feature:");
+    logger.log(...args);
+    console.log(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "log"
+ * @name $$#log
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("log", function (...args) {
+    args.unshift("Log:");
+    logger.log(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "info"
+ * @name $$#info
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("info", function (...args) {
+    args.unshift("Info:");
+    logger.log(...args);
+    console.log(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "error"
+ * @name $$#err
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("err", function (...args) {
+    args.unshift("Error:");
+    logger.error(...args);
+    console.error(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "error"
+ * @name $$#err
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("error", function (...args) {
+    args.unshift("Error:");
+    logger.error(...args);
+    console.error(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "warning"
+ * @name $$#warn
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("warn", function (...args) {
+    args.unshift("Warn:");
+    logger.warn(...args);
+    console.log(...args);
+});
+
+/**
+ * @method - Uses the logger to log a message of level "syntexError"
+ * @name $$#syntexError
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("syntaxError", function (...args) {
+    args.unshift("Syntax error:");
+    logger.error(...args);
+    try{
+        throw new Error("Syntax error or misspelled symbol!");
+    }catch(err){
+        console.error(...args);
+        console.error(err.stack);
+    }
+
+});
+
+/**
+ * @method - Logs an invalid member name for a swarm
+ * @name $$#invalidMemberName
+ * @param {string} name
+ * @param {Object} swarm
+ */
+$$.invalidMemberName = function (name, swarm) {
+    let swarmName = "unknown";
+    if (swarm && swarm.meta) {
+        swarmName = swarm.meta.swarmTypeName;
+    }
+    const text = "Invalid member name " + name + "in swarm " + swarmName;
+    console.error(text);
+    logger.err(text);
+};
+
+/**
+ * @method - Logs an invalid swarm name
+ * @name $$#invalidSwarmName
+ * @param {string} name
+ * @param {Object} swarm
+ */
+$$.registerGlobalSymbol("invalidSwarmName", function (swarmName) {
+    const text = "Invalid swarm name " + swarmName;
+    console.error(text);
+    logger.err(text);
+});
+
+/**
+ * @method - Logs unknown exceptions
+ * @name $$#unknownException
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("unknownException", function (...args) {
+    args.unshift("unknownException:");
+    logger.err(...args);
+    console.error(...args);
+});
+
+/**
+ * @method - PrivateSky event, used by monitoring and statistics
+ * @name $$#event
+ * @param {string} event
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("event", function (event, ...args) {
+    if (logger.hasOwnProperty('event')) {
+        logger.event(event, ...args);
+    } else {
+        if(event === "status.domains.boot"){
+            console.log("Failing to console...", event, ...args);
+        }
+    }
+});
+
+/**
+ * @method -
+ * @name $$#redirectLog
+ * @param {string} event
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("redirectLog", function (logType, logObject) {
+    if(logger.hasOwnProperty('redirect')) {
+        logger.redirect(logType, logObject);
+    }
+});
+
+/**
+ * @method - log throttling event // it is just an event?
+ * @name $$#throttlingEvent
+ * @param {...*} args
+ */
+$$.registerGlobalSymbol("throttlingEvent", function (...args) {
+    logger.log(...args);
+});
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"psklogger":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js":[function(require,module,exports){
+/**********************  utility class **********************************/
+function RequestManager(pollingTimeOut) {
+    if (!pollingTimeOut) {
+        pollingTimeOut = 1000; //1 second by default
+    }
+
+    const self = this;
+
+    function Request(endPoint, initialSwarm, delayedStart) {
+        let onReturnCallbacks = [];
+        let onErrorCallbacks = [];
+        let onCallbacks = [];
+        const requestId = initialSwarm ? initialSwarm.meta.requestId : "weneedarequestid";
+        initialSwarm = null;
+
+        this.getRequestId = function () {
+            return requestId;
+        };
+
+        this.on = function (phaseName, callback) {
+            if (typeof phaseName != "string" && typeof callback != "function") {
+                throw new Error("The first parameter should be a string and the second parameter should be a function");
+            }
+
+            onCallbacks.push({
+                callback: callback,
+                phase: phaseName
+            });
+
+            if (typeof delayedStart === "undefined") {
+                self.poll(endPoint, this);
+            }
+
+            return this;
+        };
+
+        this.onReturn = function (callback) {
+            onReturnCallbacks.push(callback);
+            if (typeof delayedStart === "undefined") {
+                self.poll(endPoint, this);
+            }
+            return this;
+        };
+
+        this.onError = function (callback) {
+            if (onErrorCallbacks.indexOf(callback) !== -1) {
+                onErrorCallbacks.push(callback);
+            } else {
+                console.log("Error callback already registered!");
+            }
+        };
+
+        this.start = function () {
+            if (typeof delayedStart !== "undefined") {
+                self.poll(endPoint, this);
+            }
+        };
+
+        this.dispatch = function (err, result) {
+            if (result instanceof ArrayBuffer) {
+                result = SwarmPacker.unpack(result);
+            }
+
+            result = typeof result === "string" ? JSON.parse(result) : result;
+
+            result = OwM.prototype.convert(result);
+            const resultReqId = result.getMeta("requestId");
+            const phaseName = result.getMeta("phaseName");
+            let onReturn = false;
+
+            if (resultReqId === requestId) {
+                onReturnCallbacks.forEach(function (c) {
+                    c(null, result);
+                    onReturn = true;
+                });
+                if (onReturn) {
+                    onReturnCallbacks = [];
+                    onErrorCallbacks = [];
+                }
+
+                onCallbacks.forEach(function (i) {
+                    //console.log("XXXXXXXX:", phaseName , i);
+                    if (phaseName === i.phase || i.phase === '*') {
+                        i.callback(err, result);
+                    }
+                });
+            }
+
+            if (onReturnCallbacks.length === 0 && onCallbacks.length === 0) {
+                self.unpoll(endPoint, this);
+            }
+        };
+
+        this.dispatchError = function (err) {
+            for (let i = 0; i < onErrorCallbacks.length; i++) {
+                const errCb = onErrorCallbacks[i];
+                errCb(err);
+            }
+        };
+
+        this.off = function () {
+            self.unpoll(endPoint, this);
+        };
+    }
+
+    this.createRequest = function (remoteEndPoint, swarm, delayedStart) {
+        return new Request(remoteEndPoint, swarm, delayedStart);
+    };
+
+    /* *************************** polling zone ****************************/
+
+    const pollSet = {};
+
+    const activeConnections = {};
+
+    this.poll = function (remoteEndPoint, request) {
+        let requests = pollSet[remoteEndPoint];
+        if (!requests) {
+            requests = {};
+            pollSet[remoteEndPoint] = requests;
+        }
+        requests[request.getRequestId()] = request;
+        pollingHandler();
+    };
+
+    this.unpoll = function (remoteEndPoint, request) {
+        const requests = pollSet[remoteEndPoint];
+        if (requests) {
+            delete requests[request.getRequestId()];
+            if (Object.keys(requests).length === 0) {
+                delete pollSet[remoteEndPoint];
+            }
+        } else {
+            console.log("Unpolling wrong request:", remoteEndPoint, request);
+        }
+    };
+
+    function createPollThread(remoteEndPoint) {
+        function reArm() {
+            $$.remote.doHttpGet(remoteEndPoint, function (err, res) {
+                let requests = pollSet[remoteEndPoint];
+                if (err) {
+                    for (const req_id in requests) {
+                        if (!requests.hasOwnProperty(req_id)) {
+                            return;
+                        }
+
+                        let err_handler = requests[req_id].dispatchError;
+                        if (err_handler) {
+                            err_handler(err);
+                        }
+                    }
+                    activeConnections[remoteEndPoint] = false;
+                } else {
+
+                    for (const k in requests) {
+                        if (!requests.hasOwnProperty(k)) {
+                            return;
+                        }
+
+                        requests[k].dispatch(null, res);
+                    }
+
+                    if (Object.keys(requests).length !== 0) {
+                        reArm();
+                    } else {
+                        delete activeConnections[remoteEndPoint];
+                        console.log("Ending polling for ", remoteEndPoint);
+                    }
+                }
+            });
+        }
+
+        reArm();
+    }
+
+    function pollingHandler() {
+        let setTimer = false;
+        for (const remoteEndPoint in pollSet) {
+            if (!pollSet.hasOwnProperty(remoteEndPoint)) {
+                return;
+            }
+
+            if (!activeConnections[remoteEndPoint]) {
+                createPollThread(remoteEndPoint);
+                activeConnections[remoteEndPoint] = true;
+            }
+            setTimer = true;
+        }
+        if (setTimer) {
+            setTimeout(pollingHandler, pollingTimeOut);
+        }
+    }
+
+    setTimeout(pollingHandler, pollingTimeOut);
+}
+
+function urlEndWithSlash(url) {
+    if (url[url.length - 1] !== "/") {
+        url += "/";
+    }
+    return url;
+}
+
+/********************** main APIs on working with virtualMQ channels **********************************/
+function HttpChannelClient(remoteEndPoint, channelName, options) {
+
+    let clientType;
+    const opts = {
+        autoCreate: true,
+        publicSignature: "no_signature_provided"
+    };
+
+    Object.keys(options).forEach((optName) => {
+        opts[optName] = options[optName];
+    });
+
+    let channelCreated = false;
+    function readyToBeUsed(){
+        let res = false;
+
+        if(clientType === HttpChannelClient.prototype.PRODUCER_CLIENT_TYPE){
+            res = true;
+        }
+        if(clientType === HttpChannelClient.prototype.CONSUMER_CLIENT_TYPE){
+            if(!options.autoCreate){
+                res = true;
+            }else{
+                res = channelCreated;
+            }
+        }
+
+        return res;
+    }
+
+    function encryptChannelName(channelName) {
+        return $$.remote.base64Encode(channelName);
+    }
+
+    function CatchAll(swarmName, phaseName, callback) { //same interface as Request
+        const requestId = requestsCounter++;
+        this.getRequestId = function () {
+            return "swarmName" + "phaseName" + requestId;
+        };
+
+        this.dispatch = function (err, result) {
+            /*result = OwM.prototype.convert(result);
+            const currentPhaseName = result.getMeta("phaseName");
+            const currentSwarmName = result.getMeta("swarmTypeName");
+            if ((currentSwarmName === swarmName || swarmName === '*') && (currentPhaseName === phaseName || phaseName === '*')) {
+                return callback(err, result);
+            }*/
+            return callback(err, result);
+        };
+    }
+
+    this.setSenderMode = function () {
+        if (typeof clientType !== "undefined") {
+            throw new Error(`HttpChannelClient is set as ${clientType}`);
+        }
+        clientType = HttpChannelClient.prototype.PRODUCER_CLIENT_TYPE;
+
+        this.sendSwarm = function (swarmSerialization) {
+            $$.remote.doHttpPost(getRemoteToSendMessage(remoteEndPoint, channelName), swarmSerialization, (err, res)=>{
+                if(err){
+                    console.log("Sending swarm failed", err);
+                }else{
+                    console.log("Swarm sent");
+                }
+            });
+        };
+    };
+
+    this.setReceiverMode = function () {
+        if (typeof clientType !== "undefined") {
+            throw new Error(`HttpChannelClient is set as ${clientType}`);
+        }
+        clientType = HttpChannelClient.prototype.CONSUMER_CLIENT_TYPE;
+
+        function createChannel(callback){
+            if (!readyToBeUsed()) {
+                $$.remote.doHttpPut(getRemoteToCreateChannel(), opts.publicSignature, (err) => {
+                    if (err) {
+                        if (err.statusCode !== 409) {
+                            return callback(err);
+                        }
+                    }
+                    channelCreated = true;
+                    if(opts.enableForward){
+                        console.log("Enabling forward");
+                        $$.remote.doHttpPost(getUrlToEnableForward(), opts.publicSignature, (err, res)=>{
+                            if(err){
+                                console.log("Request to enable forward to zeromq failed", err);
+                            }
+                        });
+                    }
+                    return callback();
+                });
+            }
+        }
+
+        this.getReceiveAddress = function(){
+            return getRemoteToSendMessage();
+        };
+
+        this.on = function (swarmId, swarmName, phaseName, callback) {
+            const c = new CatchAll(swarmName, phaseName, callback);
+            allCatchAlls.push({
+                s: swarmName,
+                p: phaseName,
+                c: c
+            });
+
+           /* if (!readyToBeUsed()) {
+                createChannel((err)=>{
+                    $$.remote.requestManager.poll(getRemoteToReceiveMessage(), c);
+                });
+            } else {*/
+                $$.remote.requestManager.poll(getRemoteToReceiveMessage(), c);
+            /*}*/
+        };
+
+        this.off = function (swarmName, phaseName) {
+            allCatchAlls.forEach(function (ca) {
+                if ((ca.s === swarmName || swarmName === '*') && (phaseName === ca.p || phaseName === '*')) {
+                    $$.remote.requestManager.unpoll(getRemoteToReceiveMessage(remoteEndPoint, domainInfo.domain), ca.c);
+                }
+            });
+        };
+
+        createChannel((err) => {
+            if(err){
+                console.log(err);
+            }
+        });
+
+        createRequestManager();
+    };
+
+    const allCatchAlls = [];
+    let requestsCounter = 0;
+
+    this.uploadCSB = function (cryptoUid, binaryData, callback) {
+        $$.remote.doHttpPost(baseOfRemoteEndPoint + "/CSB/" + cryptoUid, binaryData, callback);
+    };
+
+    this.downloadCSB = function (cryptoUid, callback) {
+        $$.remote.doHttpGet(baseOfRemoteEndPoint + "/CSB/" + cryptoUid, callback);
+    };
+
+    function getRemoteToReceiveMessage() {
+        return [urlEndWithSlash(remoteEndPoint), urlEndWithSlash(HttpChannelClient.prototype.RECEIVE_API_NAME), urlEndWithSlash(encryptChannelName(channelName))].join("");
+    }
+
+    function getRemoteToSendMessage() {
+        return [urlEndWithSlash(remoteEndPoint), urlEndWithSlash(HttpChannelClient.prototype.SEND_API_NAME), urlEndWithSlash(encryptChannelName(channelName))].join("");
+    }
+
+    function getRemoteToCreateChannel() {
+        return [urlEndWithSlash(remoteEndPoint), urlEndWithSlash(HttpChannelClient.prototype.CREATE_CHANNEL_API_NAME), urlEndWithSlash(encryptChannelName(channelName))].join("");
+    }
+
+    function getUrlToEnableForward() {
+        return [urlEndWithSlash(remoteEndPoint), urlEndWithSlash(HttpChannelClient.prototype.FORWARD_CHANNEL_API_NAME), urlEndWithSlash(encryptChannelName(channelName))].join("");
+    }
+}
+
+/********************** constants **********************************/
+HttpChannelClient.prototype.RECEIVE_API_NAME = "receive-message";
+HttpChannelClient.prototype.SEND_API_NAME = "send-message";
+HttpChannelClient.prototype.CREATE_CHANNEL_API_NAME = "create-channel";
+HttpChannelClient.prototype.FORWARD_CHANNEL_API_NAME = "forward-zeromq";
+HttpChannelClient.prototype.PRODUCER_CLIENT_TYPE = "producer";
+HttpChannelClient.prototype.CONSUMER_CLIENT_TYPE = "consumer";
+
+/********************** initialisation stuff **********************************/
+if (typeof $$ === "undefined") {
+    $$ = {};
+}
+
+if (typeof $$.remote === "undefined") {
+    $$.remote = {};
+
+    function createRequestManager(timeOut) {
+        const newRequestManager = new RequestManager(timeOut);
+        Object.defineProperty($$.remote, "requestManager", {value: newRequestManager});
+    }
+
+    function registerHttpChannelClient(alias, remoteEndPoint, channelName, options) {
+        $$.remote[alias] = new HttpChannelClient(remoteEndPoint, channelName, options);
+    }
+
+    Object.defineProperty($$.remote, "createRequestManager", {value: createRequestManager});
+    Object.defineProperty($$.remote, "registerHttpChannelClient", {value: registerHttpChannelClient});
+
+    $$.remote.doHttpPost = function (url, data, callback) {
+        throw new Error("Overwrite this!");
+    };
+
+    $$.remote.doHttpPut = function (url, data, callback) {
+        throw new Error("Overwrite this!");
+    };
+
+    $$.remote.doHttpGet = function doHttpGet(url, callback) {
+        throw new Error("Overwrite this!");
+    };
+
+    $$.remote.base64Encode = function base64Encode(stringToEncode) {
+        throw new Error("Overwrite this!");
+    };
+
+    $$.remote.base64Decode = function base64Decode(encodedString) {
+        throw new Error("Overwrite this!");
+    };
+}
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-browser-client.js":[function(require,module,exports){
+(function (Buffer){
+function generateMethodForRequestWithData(httpMethod) {
+    return function (url, data, callback) {
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
+                const data = xhr.response;
+                callback(null, data);
+            } else {
+                if(xhr.status>=400){
+                    const error = new Error("An error occured. StatusCode: " + xhr.status);
+                    callback({error: error, statusCode: xhr.status});
+                } else {
+                    console.log(`Status code ${xhr.status} received, response is ignored.`);
+                }
+            }
+        };
+
+        xhr.onerror = function (e) {
+            callback(new Error("A network error occurred"));
+        };
+
+        xhr.open(httpMethod, url, true);
+        //xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        if(data && data.pipe && typeof data.pipe === "function"){
+            const buffers = [];
+            data.on("data", function(data) {
+                buffers.push(data);
+            });
+            data.on("end", function() {
+                const actualContents = Buffer.concat(buffers);
+                xhr.send(actualContents);
+            });
+        }
+        else {
+            if(ArrayBuffer.isView(data) || data instanceof ArrayBuffer) {
+                xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+
+                /**
+                 * Content-Length is an unsafe header and we cannot set it.
+                 * When browser is making a request that is intercepted by a service worker,
+                 * the Content-Length header is not set implicitly.
+                 */
+                xhr.setRequestHeader('X-Content-Length', data.byteLength);
+            }
+            xhr.send(data);
+        }
+    };
+}
+
+
+$$.remote.doHttpPost = generateMethodForRequestWithData('POST');
+
+$$.remote.doHttpPut = generateMethodForRequestWithData('PUT');
+
+
+$$.remote.doHttpGet = function doHttpGet(url, callback) {
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+        //check if headers were received and if any action should be performed before receiving data
+        if (xhr.readyState === 2) {
+            var contentType = xhr.getResponseHeader("Content-Type");
+            if (contentType === "application/octet-stream") {
+                xhr.responseType = 'arraybuffer';
+            }
+        }
+    };
+
+    xhr.onload = function () {
+
+        if (xhr.readyState === 4 && xhr.status == "200") {
+            var contentType = xhr.getResponseHeader("Content-Type");
+
+            if (contentType === "application/octet-stream") {
+                let responseBuffer = this.response;
+
+                let buffer = new Buffer(responseBuffer.byteLength);
+                let view = new Uint8Array(responseBuffer);
+                for (let i = 0; i < buffer.length; ++i) {
+                    buffer[i] = view[i];
+                }
+                callback(null, buffer);
+            }
+            else{
+                callback(null, xhr.response);
+            }
+
+        } else {
+            const error = new Error("An error occurred. StatusCode: " + xhr.status);
+
+            callback({error: error, statusCode: xhr.status});
+        }
+    };
+    xhr.onerror = function (e) {
+        callback(new Error("A network error occurred"));
+    };
+
+    xhr.open("GET", url);
+    xhr.send();
+};
+
+
+function CryptoProvider(){
+
+    this.generateSafeUid = function(){
+        let uid = "";
+        var array = new Uint32Array(10);
+        window.crypto.getRandomValues(array);
+
+
+        for (var i = 0; i < array.length; i++) {
+            uid += array[i].toString(16);
+        }
+
+        return uid;
+    }
+
+    this.signSwarm = function(swarm, agent){
+        swarm.meta.signature = agent;
+    }
+}
+
+
+
+$$.remote.cryptoProvider = new CryptoProvider();
+
+$$.remote.base64Encode = function base64Encode(stringToEncode){
+    return window.btoa(stringToEncode);
+};
+
+$$.remote.base64Decode = function base64Decode(encodedString){
+    return window.atob(encodedString);
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-node-client.js":[function(require,module,exports){
+(function (Buffer){
+require("./psk-abstract-client");
+
+const http = require("http");
+const https = require("https");
+const URL = require("url");
+const userAgent = 'PSK NodeAgent/0.0.1';
+const signatureHeaderName = process.env.vmq_signature_header_name || "x-signature";
+
+
+console.log("PSK node client loading");
+
+function getNetworkForOptions(options) {
+	if(options.protocol === 'http:') {
+		return http;
+	} else if(options.protocol === 'https:') {
+		return https;
+	} else {
+		throw new Error(`Can't handle protocol ${options.protocol}`);
+	}
+
+}
+
+function generateMethodForRequestWithData(httpMethod) {
+	return function (url, data, callback) {
+		const innerUrl = URL.parse(url);
+
+		const options = {
+			hostname: innerUrl.hostname,
+			path: innerUrl.pathname,
+			port: parseInt(innerUrl.port),
+			headers: {
+				'User-Agent': userAgent,
+				[signatureHeaderName]: 'replaceThisPlaceholderSignature'
+			},
+			method: httpMethod
+		};
+
+		const network = getNetworkForOptions(innerUrl);
+
+		if (ArrayBuffer.isView(data) || Buffer.isBuffer(data) || data instanceof ArrayBuffer) {
+			if (!Buffer.isBuffer(data)) {
+				data = Buffer.from(data);
+			}
+
+			options.headers['Content-Type'] = 'application/octet-stream';
+			options.headers['Content-Length'] = data.length;
+		}
+
+		const req = network.request(options, (res) => {
+			const {statusCode} = res;
+
+			let error;
+			if (statusCode >= 400) {
+				error = new Error('Request Failed.\n' +
+					`Status Code: ${statusCode}\n` +
+					`URL: ${options.hostname}:${options.port}${options.path}`);
+			}
+
+			if (error) {
+				callback({error: error, statusCode: statusCode});
+				// free up memory
+				res.resume();
+				return;
+			}
+
+			let rawData = '';
+			res.on('data', (chunk) => {
+				rawData += chunk;
+			});
+			res.on('end', () => {
+				try {
+					callback(null, rawData, res.headers);
+				} catch (err) {
+					return callback(err);
+				}finally {
+					//trying to prevent getting ECONNRESET error after getting our response
+					req.abort();
+				}
+			});
+		}).on("error", (error) => {
+			console.log(`[POST] ${url}`, error);
+			callback(error);
+		});
+
+		if (data && data.pipe && typeof data.pipe === "function") {
+			data.pipe(req);
+			return;
+		}
+
+		if (typeof data !== 'string' && !Buffer.isBuffer(data) && !ArrayBuffer.isView(data)) {
+			data = JSON.stringify(data);
+		}
+
+		req.write(data);
+		req.end();
+	};
+}
+
+$$.remote.doHttpPost = generateMethodForRequestWithData('POST');
+
+$$.remote.doHttpPut = generateMethodForRequestWithData('PUT');
+
+$$.remote.doHttpGet = function doHttpGet(url, callback){
+    const innerUrl = URL.parse(url);
+
+	const options = {
+		hostname: innerUrl.hostname,
+		path: innerUrl.pathname + (innerUrl.search || ''),
+		port: parseInt(innerUrl.port),
+		headers: {
+			'User-Agent': userAgent,
+            [signatureHeaderName]: 'someSignature'
+		},
+		method: 'GET'
+	};
+
+	const network = getNetworkForOptions(innerUrl);
+	const req = network.request(options, (res) => {
+		const { statusCode } = res;
+
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed.\n' +
+				`Status Code: ${statusCode}`);
+			error.code = statusCode;
+		}
+
+		if (error) {
+			callback({error:error, statusCode:statusCode});
+			// free up memory
+			res.resume();
+			return
+		}
+
+		let rawData;
+		const contentType = res.headers['content-type'];
+
+		if(contentType === "application/octet-stream"){
+			rawData = [];
+		}else{
+			rawData = '';
+		}
+
+		res.on('data', (chunk) => {
+			if(Array.isArray(rawData)){
+				rawData.push(...chunk);
+			}else{
+				rawData += chunk;
+			}
+		});
+		res.on('end', () => {
+			try {
+				if(Array.isArray(rawData)){
+					rawData = Buffer.from(rawData);
+				}
+				callback(null, rawData, res.headers);
+			} catch (err) {
+				console.log("Client error:", err);
+			}finally {
+				//trying to prevent getting ECONNRESET error after getting our response
+				req.abort();
+			}
+		});
+	});
+
+	req.on("error", (error) => {
+		if(error && error.code !== 'ECONNRESET'){
+        	console.log(`[GET] ${url}`, error);
+		}
+
+		callback(error);
+	});
+
+	req.end();
+};
+
+$$.remote.base64Encode = function base64Encode(stringToEncode){
+    return Buffer.from(stringToEncode).toString('base64');
+};
+
+$$.remote.base64Decode = function base64Decode(encodedString){
+    return Buffer.from(encodedString, 'base64').toString('ascii');
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"./psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","buffer":false,"http":false,"https":false,"url":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\Agent.js":[function(require,module,exports){
+function Agent(agentId, publicKey){
+    this.agentId = agentId;
+    this.publicKey = publicKey;
+}
+
+module.exports = Agent;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js":[function(require,module,exports){
+function EncryptedSecret(encryptedData, agentId){
+    this.encryptedData = encryptedData;
+    this.agentId = agentId;
+}
+
+module.exports = EncryptedSecret;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js":[function(require,module,exports){
+function PSKSignature(message, signature, type, agentId) {
+    this.message = message;
+    this.signature = signature;
+    this.type = type;
+    this.agentId = agentId;
+}
+
+module.exports = PSKSignature;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RawCSBSecurityContext.js":[function(require,module,exports){
+function RawCSBSecurityContext(parentSecurityContext) {
+    this.generateIdentity = parentSecurityContext.generateIdentity;
+    this.getCurrentAgentIdentity = parentSecurityContext.getCurrentAgentIdentity;
+    this.generateSeed = parentSecurityContext.generateRandom;
+    this.getSeed = parentSecurityContext.getSecret;
+    this.shareSeed = parentSecurityContext.shareSecret;
+    this.sign = parentSecurityContext.sign;
+    this.verify = parentSecurityContext.verify;
+}
+
+module.exports = RawCSBSecurityContext;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RootCSBSecurityContext.js":[function(require,module,exports){
+const SecurityContext = require("./SecurityContext");
+
+function RootCSBSecurityContext() {
+    const securityContext = new SecurityContext();
+
+    this.generateIdentity = securityContext.generateIdentity;
+    this.getCurrentAgentIdentity = securityContext.getCurrentAgentIdentity;
+    this.generateSeed = securityContext.generateRandom;
+    this.getSeed = securityContext.getSecret;
+    this.shareSeed = securityContext.shareSecret;
+    this.sign = securityContext.sign;
+    this.verify = securityContext.verify;
+}
+
+module.exports = RootCSBSecurityContext;
+},{"./SecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js":[function(require,module,exports){
+const crypto = require("pskcrypto");
+const swarmUtils = require("swarmutils");
+const PSKSignature = require("./PSKSignature");
+const EncryptedSecret = require("./EncryptedSecret");
+const Agent = require("./Agent");
+
+function SecurityContext() {
+
+    const knownAgents = []; // contains pairs (agentId, publicKey)
+    const privateKeys = {};
+    const signType = "sha256";
+
+    this.generateIdentity = (callback) => {
+        crypto.generateKeyPair((err, publicKey, privateKey) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const agent = new Agent($$.uidGenerator.safe_uuid(), publicKey);
+            knownAgents.push(agent);
+            privateKeys[agent.agentId] = privateKey;
+
+            return callback(undefined, agent.agentId);
+        });
+    };
+
+    this.getCurrentAgentIdentity = () => {
+        return knownAgents[0].agentId;
+    };
+
+    this.getSecret = (readList, callback) => {
+        const encSecret = readList.find(secret => secret.agentId === this.getCurrentAgentIdentity());
+        if (!encSecret) {
+            return callback(Error("The current agent cannot get the secret"));
+        }
+
+        callback(undefined, crypto.privateDecrypt(privateKeys[this.getCurrentAgentIdentity()], encSecret));
+    };
+
+    this.shareSecret = (secret, list, callback) => {
+        const readList = [];
+        list.forEach(agentId => {
+            const publicKey = getPublicKey(agentId);
+            readList.push(new EncryptedSecret(crypto.publicEncrypt(publicKey, secret), agentId));
+        });
+
+        callback(undefined, readList);
+    };
+
+    this.sign = (digest, writeList, all, callback) => {
+        if (typeof all === "function") {
+            callback = all;
+            all = false;
+        }
+
+        if (!listHasElement(writeList, this.getCurrentAgentIdentity())) {
+            return callback(Error("The current agent does not have signing privileges"));
+        }
+
+        if (!all) {
+            const agentId = this.getCurrentAgentIdentity();
+            const signature = crypto.sign(privateKeys[agentId], digest);
+            return callback(undefined, new PSKSignature(digest, signature, signType, agentId));
+        }
+
+        const pskSignatures = [];
+        const taskCounter = new swarmUtils.TaskCounter(() => {
+            callback(undefined, pskSignatures);
+        });
+
+        taskCounter.increment(knownAgents.length);
+        knownAgents.forEach(agent => {
+            if (listHasElement(writeList, agent.agentId)) {
+                const signature = crypto.sign(privateKeys[agent.agentId], digest);
+                pskSignatures.push(new PSKSignature(digest, signature, signType, agent.agentId));
+                taskCounter.decrement();
+            }else{
+                taskCounter.decrement();
+            }
+        })
+    };
+
+    this.verify = (pskSignature) => {
+        return crypto.verify(getPublicKey(pskSignature.agentId), pskSignature.signature, pskSignature.message);
+    };
+
+    this.generateRandom = (len = 32) => {
+        crypto.randomBytes(len);
+    };
+
+    //----------------------------- internal functions ------------------------------
+    function listHasElement(list, element) {
+        return !!list.find(el => element === el);
+    }
+
+    function getPublicKey(agentId) {
+        const agent = knownAgents.find(ag => ag.agentId === agentId);
+        if(!agent){
+            return undefined;
+        }
+
+        return agent.publicKey;
+    }
+
+}
+
+module.exports = SecurityContext;
+
+},{"./Agent":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\Agent.js","./EncryptedSecret":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js","./PSKSignature":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js","pskcrypto":"pskcrypto","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js":[function(require,module,exports){
+(function (Buffer){
+function PskCrypto() {
+    const crypto = require('crypto');
+    const utils = require("./utils/cryptoUtils");
+    const PskEncryption = require("./PskEncryption");
+    const or = require('overwrite-require');
+
+    this.createPskEncryption = (algorithm) => {
+        return new PskEncryption(algorithm);
+    };
+
+    this.sign = function (privateKey, digest) {
+        if (typeof digest === "string") {
+            digest = Buffer.from(digest, "hex");
+        }
+
+        return crypto.createSign("sha256").update(digest).sign(privateKey);
+    };
+
+    this.verify = function (publicKey, signature, digest) {
+        if (typeof digest === "string") {
+            digest = Buffer.from(digest, "hex");
+        }
+
+        if (typeof signature === "string") {
+            signature = Buffer.from(signature, "hex");
+        }
+        return crypto.createVerify("sha256").update(digest).verify(publicKey, signature);
+    };
+
+    this.generateKeyPair = (callback) => {
+        crypto.generateKeyPair('rsa', {
+            modulusLength: 4096,
+            publicKeyEncoding: {
+                type: 'spki',
+                format: 'pem'
+            },
+            privateKeyEncoding: {
+                type: 'pkcs8',
+                format: 'pem',
+            }
+        }, callback);
+    };
+
+    this.privateEncrypt = (privateKey, data) => {
+        if (typeof data === "string") {
+            data = Buffer.from(data);
+        }
+
+        return crypto.privateEncrypt(privateKey, data);
+    };
+
+    this.privateDecrypt = (privateKey, encryptedData) => {
+        if (typeof encryptedData === "string") {
+            encryptedData = Buffer.from(encryptedData);
+        }
+
+        return crypto.privateDecrypt(privateKey, encryptedData);
+    };
+
+    this.publicEncrypt = (publicKey, data) => {
+        if (typeof data === "string") {
+            data = Buffer.from(data);
+        }
+
+        return crypto.publicEncrypt(publicKey, data);
+    };
+
+    this.publicDecrypt = (publicKey, encryptedData) => {
+        if (typeof encryptedData === "string") {
+            encryptedData = Buffer.from(encryptedData);
+        }
+
+        return crypto.publicDecrypt(publicKey, encryptedData);
+    };
+
+    this.pskHash = function (data, encoding) {
+        if (Buffer.isBuffer(data)) {
+            return utils.createPskHash(data, encoding);
+        }
+        if (data instanceof Object) {
+            return utils.createPskHash(JSON.stringify(data), encoding);
+        }
+        return utils.createPskHash(data, encoding);
+    };
+
+    this.pskHashStream = function (readStream, callback) {
+        const pskHash = new utils.PskHash();
+
+        readStream.on('data', (chunk) => {
+            pskHash.update(chunk);
+        });
+
+
+        readStream.on('end', () => {
+            callback(null, pskHash.digest());
+        })
+    };
+
+    this.generateSafeUid = function (password, additionalData) {
+        password = password || Buffer.alloc(0);
+        if (!additionalData) {
+            additionalData = Buffer.alloc(0);
+        }
+
+        if (!Buffer.isBuffer(additionalData)) {
+            additionalData = Buffer.from(additionalData);
+        }
+
+        return utils.encode(this.pskHash(Buffer.concat([password, additionalData])));
+    };
+
+    this.deriveKey = function deriveKey(algorithm, password) {
+        const keylen = utils.getKeyLength(algorithm);
+        const salt = utils.generateSalt(password, 32);
+        return crypto.pbkdf2Sync(password, salt, 1000, keylen, 'sha256');
+    };
+
+
+    this.randomBytes = (len) => {
+        if ($$.environmentType === or.constants.BROWSER_ENVIRONMENT_TYPE) {
+            let randomArray = new Uint8Array(len);
+
+            return window.crypto.getRandomValues(randomArray);
+        } else {
+            return crypto.randomBytes(len);
+        }
+    };
+
+    this.xorBuffers = (...args) => {
+        if (args.length < 2) {
+            throw Error(`The function should receive at least two arguments. Received ${args.length}`);
+        }
+
+        if (args.length === 2) {
+            __xorTwoBuffers(args[0], args[1]);
+            return args[1];
+        }
+
+        for (let i = 0; i < args.length - 1; i++) {
+            __xorTwoBuffers(args[i], args[i + 1]);
+        }
+
+        function __xorTwoBuffers(a, b) {
+            if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+                throw Error("The argument type should be Buffer.");
+            }
+
+            const length = Math.min(a.length, b.length);
+            for (let i = 0; i < length; i++) {
+                b[i] ^= a[i];
+            }
+
+            return b;
+        }
+
+        return args[args.length - 1];
+    };
+
+    this.PskHash = utils.PskHash;
+}
+
+module.exports = new PskCrypto();
+
+
+
+}).call(this,require("buffer").Buffer)
+
+},{"./PskEncryption":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskEncryption.js","./utils/cryptoUtils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\cryptoUtils.js","buffer":false,"crypto":false,"overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskEncryption.js":[function(require,module,exports){
+(function (Buffer){
+const crypto = require("crypto");
+const utils = require("./utils/cryptoUtils");
+
+function PskEncryption(algorithm) {
+    if (!algorithm) {
+        throw Error("No encryption algorithm was provided");
+    }
+
+    let iv;
+    let aad;
+    let tag;
+    let data;
+    let key;
+
+    let keylen = utils.getKeyLength(algorithm);
+    let encryptionIsAuthenticated = utils.encryptionIsAuthenticated(algorithm);
+
+    this.encrypt = (plainData, encryptionKey, options) => {
+        iv = iv || crypto.randomBytes(16);
+        const cipher = crypto.createCipheriv(algorithm, encryptionKey, iv, options);
+        if (encryptionIsAuthenticated) {
+            aad = crypto.randomBytes(encryptionKey.length);
+            cipher.setAAD(aad);
+        }
+
+        const encData = Buffer.concat([cipher.update(plainData), cipher.final()]);
+        if (encryptionIsAuthenticated) {
+            tag = cipher.getAuthTag();
+        }
+
+        key = encryptionKey;
+        return encData;
+    };
+
+    this.decrypt = (encryptedData, decryptionKey, authTagLength = 0, options) => {
+        if (!iv) {
+            this.getDecryptionParameters(encryptedData, authTagLength);
+        }
+        const decipher = crypto.createDecipheriv(algorithm, decryptionKey, iv, options);
+        if (encryptionIsAuthenticated) {
+            decipher.setAAD(aad);
+            decipher.setAuthTag(tag);
+        }
+
+        return Buffer.concat([decipher.update(data), decipher.final()]);
+    };
+
+    this.getEncryptionParameters = () => {
+        if (!iv) {
+            return;
+        }
+
+        return {iv, aad, key, tag};
+    };
+
+    this.getDecryptionParameters = (encryptedData, authTagLength = 0) => {
+        let aadLen = 0;
+        if (encryptionIsAuthenticated) {
+            authTagLength = 16;
+            aadLen = keylen;
+        }
+
+        const tagOffset = encryptedData.length - authTagLength;
+        tag = encryptedData.slice(tagOffset, encryptedData.length);
+
+        const aadOffset = tagOffset - aadLen;
+        aad = encryptedData.slice(aadOffset, tagOffset);
+
+        iv = encryptedData.slice(aadOffset - 16, aadOffset);
+        data = encryptedData.slice(0, aadOffset - 16);
+
+        return {iv, aad, tag, data};
+    };
+
+    this.generateEncryptionKey = () => {
+        keylen = utils.getKeyLength(algorithm);
+        return crypto.randomBytes(keylen);
+    };
+}
+
+module.exports = PskEncryption;
+}).call(this,require("buffer").Buffer)
+
+},{"./utils/cryptoUtils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\cryptoUtils.js","buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\DuplexStream.js":[function(require,module,exports){
+const stream = require('stream');
+const util = require('util');
+
+const Duplex = stream.Duplex;
+
+function DuplexStream(options) {
+	if (!(this instanceof DuplexStream)) {
+		return new DuplexStream(options);
+	}
+	Duplex.call(this, options);
+}
+util.inherits(DuplexStream, Duplex);
+
+DuplexStream.prototype._write = function (chunk, enc, cb) {
+	this.push(chunk);
+	cb();
+};
+
+
+DuplexStream.prototype._read = function (n) {
+
+};
+
+module.exports = DuplexStream;
+},{"stream":false,"util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\cryptoUtils.js":[function(require,module,exports){
+(function (Buffer){
+const crypto = require('crypto');
+
+const keySizes = [128, 192, 256];
+const authenticationModes = ["ocb", "ccm", "gcm"];
+
+function encode(buffer) {
+	return buffer.toString('base64')
+		.replace(/\+/g, '')
+		.replace(/\//g, '')
+		.replace(/=+$/, '');
+}
+
+function createPskHash(data, encoding) {
+	const pskHash = new PskHash();
+	pskHash.update(data);
+	return pskHash.digest(encoding);
+}
+
+function PskHash() {
+	const sha512 = crypto.createHash('sha512');
+	const sha256 = crypto.createHash('sha256');
+
+	function update(data) {
+		sha512.update(data);
+	}
+
+	function digest(encoding) {
+		sha256.update(sha512.digest());
+		return sha256.digest(encoding);
+	}
+
+	return {
+		update,
+		digest
+	}
+}
+
+
+function generateSalt(inputData, saltLen) {
+	const hash = crypto.createHash('sha512');
+	hash.update(inputData);
+	const digest = Buffer.from(hash.digest('hex'), 'binary');
+
+	return digest.slice(0, saltLen);
+}
+
+function encryptionIsAuthenticated(algorithm) {
+	for (const mode of authenticationModes) {
+		if (algorithm.includes(mode)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function getKeyLength(algorithm) {
+	for (const len of keySizes) {
+		if (algorithm.includes(len.toString())) {
+			return len / 8;
+		}
+	}
+
+	throw new Error("Invalid encryption algorithm.");
+}
+
+module.exports = {
+	createPskHash,
+	encode,
+	generateSalt,
+	PskHash,
+	getKeyLength,
+	encryptionIsAuthenticated
+};
+
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\isStream.js":[function(require,module,exports){
+const stream = require('stream');
+
+
+function isStream (obj) {
+	return obj instanceof stream.Stream || obj instanceof stream.Duplex;
+}
+
+
+function isReadable (obj) {
+	return isStream(obj) && typeof obj._read === 'function' && typeof obj._readableState === 'object'
+}
+
+
+function isWritable (obj) {
+	return isStream(obj) && typeof obj._write === 'function' && typeof obj._writableState === 'object'
+}
+
+
+function isDuplex (obj) {
+	return isReadable(obj) && isWritable(obj)
+}
+
+
+module.exports            = isStream;
+module.exports.isReadable = isReadable;
+module.exports.isWritable = isWritable;
+module.exports.isDuplex   = isDuplex;
+},{"stream":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\signsensusDS\\ssutil.js":[function(require,module,exports){
+/*
+ SignSens helper functions
+ */
+const crypto = require('crypto');
+
+exports.wipeOutsidePayload = function wipeOutsidePayload(hashStringHexa, pos, size){
+    var result;
+    var sz = hashStringHexa.length;
+
+    var end = (pos + size) % sz;
+
+    if(pos < end){
+        result = '0'.repeat(pos) +  hashStringHexa.substring(pos, end) + '0'.repeat(sz - end);
+    }
+    else {
+        result = hashStringHexa.substring(0, end) + '0'.repeat(pos - end) + hashStringHexa.substring(pos, sz);
+    }
+    return result;
+}
+
+
+
+exports.extractPayload = function extractPayload(hashStringHexa, pos, size){
+    var result;
+
+    var sz = hashStringHexa.length;
+    var end = (pos + size) % sz;
+
+    if( pos < end){
+        result = hashStringHexa.substring(pos, pos + size);
+    } else{
+
+        if(0 != end){
+            result = hashStringHexa.substring(0, end)
+        }  else {
+            result = "";
+        }
+        result += hashStringHexa.substring(pos, sz);
+    }
+    return result;
+}
+
+
+
+exports.fillPayload = function fillPayload(payload, pos, size){
+    var sz = 64;
+    var result = "";
+
+    var end = (pos + size) % sz;
+
+    if( pos < end){
+        result = '0'.repeat(pos) + payload + '0'.repeat(sz - end);
+    } else{
+        result = payload.substring(0,end);
+        result += '0'.repeat(pos - end);
+        result += payload.substring(end);
+    }
+    return result;
+}
+
+
+
+exports.generatePosHashXTimes = function generatePosHashXTimes(buffer, pos, size, count){ //generate positional hash
+    var result  = buffer.toString("hex");
+
+    /*if(pos != -1 )
+        result[pos] = 0; */
+
+    for(var i = 0; i < count; i++){
+        var hash = crypto.createHash('sha256');
+        result = exports.wipeOutsidePayload(result, pos, size);
+        hash.update(result);
+        result = hash.digest('hex');
+    }
+    return exports.wipeOutsidePayload(result, pos, size);
+}
+
+exports.hashStringArray = function (counter, arr, payloadSize){
+
+    const hash = crypto.createHash('sha256');
+    var result = counter.toString(16);
+
+    for(var i = 0 ; i < 64; i++){
+        result += exports.extractPayload(arr[i],i, payloadSize);
+    }
+
+    hash.update(result);
+    var result = hash.digest('hex');
+    return result;
+}
+
+
+
+
+
+
+function dumpMember(obj){
+    var type = Array.isArray(obj) ? "array" : typeof obj;
+    if(obj === null){
+        return "null";
+    }
+    if(obj === undefined){
+        return "undefined";
+    }
+
+    switch(type){
+        case "number":
+        case "string":return obj.toString(); break;
+        case "object": return exports.dumpObjectForHashing(obj); break;
+        case "boolean": return  obj? "true": "false"; break;
+        case "array":
+            var result = "";
+            for(var i=0; i < obj.length; i++){
+                result += exports.dumpObjectForHashing(obj[i]);
+            }
+            return result;
+            break;
+        default:
+            throw new Error("Type " +  type + " cannot be cryptographically digested");
+    }
+
+}
+
+
+exports.dumpObjectForHashing = function(obj){
+    var result = "";
+
+    if(obj === null){
+        return "null";
+    }
+    if(obj === undefined){
+        return "undefined";
+    }
+
+    var basicTypes = {
+        "array"     : true,
+        "number"    : true,
+        "boolean"   : true,
+        "string"    : true,
+        "object"    : false
+    }
+
+    var type = Array.isArray(obj) ? "array" : typeof obj;
+    if( basicTypes[type]){
+        return dumpMember(obj);
+    }
+
+    var keys = Object.keys(obj);
+    keys.sort();
+
+
+    for(var i=0; i < keys.length; i++){
+        result += dumpMember(keys[i]);
+        result += dumpMember(obj[keys[i]]);
+    }
+
+    return result;
+}
+
+
+exports.hashValues  = function (values){
+    const hash = crypto.createHash('sha256');
+    var result = exports.dumpObjectForHashing(values);
+    hash.update(result);
+    return hash.digest('hex');
+};
+
+exports.getJSONFromSignature = function getJSONFromSignature(signature, size){
+    var result = {
+        proof:[]
+    };
+    var a = signature.split(":");
+    result.agent        = a[0];
+    result.counter      =  parseInt(a[1], "hex");
+    result.nextPublic   =  a[2];
+
+    var proof = a[3]
+
+
+    if(proof.length/size != 64) {
+        throw new Error("Invalid signature " + proof);
+    }
+
+    for(var i = 0; i < 64; i++){
+        result.proof.push(exports.fillPayload(proof.substring(i * size,(i+1) * size ), i, size))
+    }
+
+    return result;
+}
+
+exports.createSignature = function (agent,counter, nextPublic, arr, size){
+    var result = "";
+
+    for(var i = 0; i < arr.length; i++){
+        result += exports.extractPayload(arr[i], i , size);
+    }
+
+    return agent + ":" + counter + ":" + nextPublic + ":" + result;
+}
+},{"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\BootEngine.js":[function(require,module,exports){
+function BootEngine(getSeed, getEDFS, initializeSwarmEngine, runtimeBundles, constitutionBundles) {
+
+    if(typeof getSeed !== "function"){
+        throw new Error("getSeed missing or not a function");
+    }
+    getSeed = promisify(getSeed);
+
+    if(typeof getEDFS !== "function"){
+        throw new Error("getEDFS missing or not a function");
+    }
+    getEDFS = promisify(getEDFS);
+
+    if(typeof initializeSwarmEngine !== "function"){
+        throw new Error("initializeSwarmEngine missing or not a function");
+    }
+    initializeSwarmEngine = promisify(initializeSwarmEngine);
+
+    if(typeof runtimeBundles !== "undefined" && !Array.isArray(runtimeBundles)){
+        throw new Error("runtimeBundles is not array");
+    }
+
+    if(typeof constitutionBundles !== "undefined" && !Array.isArray(constitutionBundles)){
+        throw new Error("constitutionBundles is not array");
+    }
+
+    const EDFS = require('edfs');
+    let edfs;
+
+    const evalBundles = async (bundles, ignore) => {
+        const listFiles = promisify(this.bar.listFiles);
+        const readFile = promisify(this.bar.readFile);
+
+        let fileList = await listFiles(EDFS.constants.CSB.CONSTITUTION_FOLDER);
+        fileList = bundles.filter(bundle => fileList.includes(`${EDFS.constants.CSB.CONSTITUTION_FOLDER}/${bundle}`))
+            .map(bundle => `${EDFS.constants.CSB.CONSTITUTION_FOLDER}/${bundle}`);
+
+        if (fileList.length !== bundles.length) {
+            const message = `Some bundles missing. Expected to have ${JSON.stringify(bundles)} but got only ${JSON.stringify(fileList)}`;
+            if(!ignore){
+                throw new Error(message);
+            }else{
+                console.log(message);
+            }
+        }
+
+        for (let i = 0; i < fileList.length; i++) {
+            var fileContent = await readFile(fileList[i]);
+            eval(fileContent.toString());
+        }
+    };
+
+    this.boot = function (callback) {
+       const __boot = async () => {
+           const seed = await getSeed();
+           edfs = await getEDFS();
+           this.bar = edfs.loadBar(seed);
+           await evalBundles(runtimeBundles);
+           await initializeSwarmEngine();
+           if (typeof constitutionBundles !== "undefined") {
+               await evalBundles(constitutionBundles, true);
+           }
+        };
+
+        __boot()
+            .then(() => callback(undefined, this.bar))
+            .catch(callback);
+    };
+}
+
+function promisify(fn) {
+    return function (...args) {
+        return new Promise((resolve, reject) => {
+            fn(...args, (err, ...res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(...res);
+                }
+            });
+        });
+    }
+}
+
+module.exports = BootEngine;
+
+},{"edfs":"edfs"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js":[function(require,module,exports){
+function product(args) {
+    if(!args.length){
+        return [ [] ];
+    }
+    var prod = product(args.slice(1)), r = [];
+    args[0].forEach(function(x) {
+        prod.forEach(function(p) {
+            r.push([ x ].concat(p));
+        });
+    });
+    return r;
+}
+
+function objectProduct(obj) {
+    var keys = Object.keys(obj),
+        values = keys.map(function(x) { return obj[x]; });
+
+    return product(values).map(function(p) {
+        var e = {};
+        keys.forEach(function(k, n) { e[k] = p[n]; });
+        return e;
+    });
+}
+
+module.exports = objectProduct;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js":[function(require,module,exports){
+var meta = "meta";
+
+function OwM(serialized){
+
+    if(serialized){
+        return OwM.prototype.convert(serialized);
+    }
+
+    Object.defineProperty(this, meta, {
+        writable: false,
+        enumerable: true,
+        value: {}
+    });
+
+    Object.defineProperty(this, "setMeta", {
+        writable: false,
+        enumerable: false,
+        configurable:false,
+        value: function(prop, value){
+            if(typeof prop == "object" && typeof value == "undefined"){
+                for(var p in prop){
+                    this[meta][p] = prop[p];
+                }
+                return prop;
+            }
+            this[meta][prop] = value;
+            return value;
+        }
+    });
+
+    Object.defineProperty(this, "getMeta", {
+        writable: false,
+        value: function(prop){
+            return this[meta][prop];
+        }
+    });
+}
+
+function testOwMSerialization(obj){
+    let res = false;
+
+    if(obj){
+        res = typeof obj[meta] != "undefined" && !(obj instanceof OwM);
+    }
+
+    return res;
+}
+
+OwM.prototype.convert = function(serialized){
+    const owm = new OwM();
+
+    for(var metaProp in serialized.meta){
+        if(!testOwMSerialization(serialized[metaProp])) {
+            owm.setMeta(metaProp, serialized.meta[metaProp]);
+        }else{
+            owm.setMeta(metaProp, OwM.prototype.convert(serialized.meta[metaProp]));
+        }
+    }
+
+    for(var simpleProp in serialized){
+        if(simpleProp === meta) {
+            continue;
+        }
+
+        if(!testOwMSerialization(serialized[simpleProp])){
+            owm[simpleProp] = serialized[simpleProp];
+        }else{
+            owm[simpleProp] = OwM.prototype.convert(serialized[simpleProp]);
+        }
+    }
+
+    return owm;
+};
+
+OwM.prototype.getMetaFrom = function(obj, name){
+    var res;
+    if(!name){
+        res = obj[meta];
+    }else{
+        res = obj[meta][name];
+    }
+    return res;
+};
+
+OwM.prototype.setMetaFor = function(obj, name, value){
+    obj[meta][name] = value;
+    return obj[meta][name];
+};
+
+module.exports = OwM;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js":[function(require,module,exports){
+function QueueElement(content) {
+	this.content = content;
+	this.next = null;
+}
+
+function Queue() {
+	this.head = null;
+	this.tail = null;
+	this.length = 0;
+	this.push = function (value) {
+		const newElement = new QueueElement(value);
+		if (!this.head) {
+			this.head = newElement;
+			this.tail = newElement;
+		} else {
+			this.tail.next = newElement;
+			this.tail = newElement;
+		}
+		this.length++;
+	};
+
+	this.pop = function () {
+		if (!this.head) {
+			return null;
+		}
+		const headCopy = this.head;
+		this.head = this.head.next;
+		this.length--;
+
+		//fix???????
+		if(this.length === 0){
+            this.tail = null;
+		}
+
+		return headCopy.content;
+	};
+
+	this.front = function () {
+		return this.head ? this.head.content : undefined;
+	};
+
+	this.isEmpty = function () {
+		return this.head === null;
+	};
+
+	this[Symbol.iterator] = function* () {
+		let head = this.head;
+		while(head !== null) {
+			yield head.content;
+			head = head.next;
+		}
+	}.bind(this);
+}
+
+Queue.prototype.toString = function () {
+	let stringifiedQueue = '';
+	let iterator = this.head;
+	while (iterator) {
+		stringifiedQueue += `${JSON.stringify(iterator.content)} `;
+		iterator = iterator.next;
+	}
+	return stringifiedQueue;
+};
+
+Queue.prototype.inspect = Queue.prototype.toString;
+
+module.exports = Queue;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js":[function(require,module,exports){
+const HEADER_SIZE_RESEARVED = 4;
+
+function SwarmPacker(){
+}
+
+function copyStringtoArrayBuffer(str, buffer){
+    if(typeof str !== "string"){
+        throw new Error("Wrong param type received");
+    }
+    for(var i = 0; i < str.length; i++) {
+        buffer[i] = str.charCodeAt(i);
+    }
+    return buffer;
+}
+
+function copyFromBuffer(target, source){
+    for(let i=0; i<source.length; i++){
+        target[i] = source[i];
+    }
+    return target;
+}
+
+let serializers = {};
+
+SwarmPacker.registerSerializer = function(name, implementation){
+    if(serializers[name]){
+        throw new Error("Serializer name already exists");
+    }
+    serializers[name] = implementation;
+};
+
+function getSerializer(name){
+    return serializers[name];
+}
+
+SwarmPacker.getSerializer = getSerializer;
+
+Object.defineProperty(SwarmPacker.prototype, "JSON", {value: "json"});
+Object.defineProperty(SwarmPacker.prototype, "MSGPACK", {value: "msgpack"});
+
+SwarmPacker.registerSerializer(SwarmPacker.prototype.JSON, {
+    serialize: JSON.stringify,
+    deserialize: (serialization)=>{
+        if(typeof serialization !== "string"){
+            serialization = String.fromCharCode.apply(null, serialization);
+        }
+        return JSON.parse(serialization);
+    },
+    getType: ()=>{
+        return SwarmPacker.prototype.JSON;
+    }
+});
+
+function registerMsgPackSerializer(){
+    const mp = '@msgpack/msgpack';
+    let msgpack;
+
+    try{
+        msgpack = require(mp);
+        if (typeof msgpack === "undefined") {
+            throw new Error("msgpack is unavailable.")
+        }
+    }catch(err){
+        console.log("msgpack not available. If you need msgpack serialization include msgpack in one of your bundles");
+        //preventing msgPack serializer being register if msgPack dep is not found.
+        return;
+    }
+
+    SwarmPacker.registerSerializer(SwarmPacker.prototype.MSGPACK, {
+        serialize: msgpack.encode,
+        deserialize: msgpack.decode,
+        getType: ()=>{
+            return SwarmPacker.prototype.MSGPACK;
+        }
+    });
+}
+
+registerMsgPackSerializer();
+
+SwarmPacker.pack = function(swarm, serializer){
+
+    let jsonSerializer = getSerializer(SwarmPacker.prototype.JSON);
+    if(typeof serializer === "undefined"){
+        serializer = jsonSerializer;
+    }
+
+    let swarmSerialization = serializer.serialize(swarm);
+
+    let header = {
+        command: swarm.getMeta("command"),
+        swarmId : swarm.getMeta("swarmId"),
+        swarmTypeName: swarm.getMeta("swarmTypeName"),
+        swarmTarget: swarm.getMeta("target"),
+        serializationType: serializer.getType()
+    };
+
+    header = serializer.serialize(header);
+
+    if(header.length >= Math.pow(2, 32)){
+        throw new Error("Swarm serialization too big.");
+    }
+
+    //arraybuffer construction
+    let size = HEADER_SIZE_RESEARVED + header.length + swarmSerialization.length;
+    let pack = new ArrayBuffer(size);
+
+    let sizeHeaderView = new DataView(pack, 0);
+    sizeHeaderView.setUint32(0, header.length);
+
+    let headerView = new Uint8Array(pack, HEADER_SIZE_RESEARVED);
+    copyStringtoArrayBuffer(header, headerView);
+
+    let serializationView = new Uint8Array(pack, HEADER_SIZE_RESEARVED+header.length);
+    if(typeof swarmSerialization === "string"){
+        copyStringtoArrayBuffer(swarmSerialization, serializationView);
+    }else{
+        copyFromBuffer(serializationView, swarmSerialization);
+    }
+
+    return pack;
+};
+
+SwarmPacker.unpack = function(pack){
+    let jsonSerialiser = SwarmPacker.getSerializer(SwarmPacker.prototype.JSON);
+    let headerSerialization = getHeaderSerializationFromPack(pack);
+    let header = jsonSerialiser.deserialize(headerSerialization);
+
+    let serializer = SwarmPacker.getSerializer(header.serializationType);
+    let messageView = new Uint8Array(pack, HEADER_SIZE_RESEARVED+headerSerialization.length);
+
+    let swarm = serializer.deserialize(messageView);
+    return swarm;
+};
+
+function getHeaderSerializationFromPack(pack){
+    let headerSize = new DataView(pack).getUint32(0);
+
+    let headerView = new Uint8Array(pack, HEADER_SIZE_RESEARVED, headerSize);
+    return headerView;
+}
+
+SwarmPacker.getHeader = function(pack){
+    let jsonSerialiser = SwarmPacker.getSerializer(SwarmPacker.prototype.JSON);
+    let header = jsonSerialiser.deserialize(getHeaderSerializationFromPack(pack));
+
+    return header;
+};
+module.exports = SwarmPacker;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js":[function(require,module,exports){
+
+function TaskCounter(finalCallback) {
+	let results = [];
+	let errors = [];
+
+	let started = 0;
+
+	function decrement(err, res) {
+		if(err) {
+			errors.push(err);
+		}
+
+		if(arguments.length > 2) {
+			arguments[0] = undefined;
+			res = arguments;
+		}
+
+		if(typeof res !== "undefined") {
+			results.push(res);
+		}
+
+		if(--started <= 0) {
+            return callCallback();
+		}
+	}
+
+	function increment(amount = 1) {
+		started += amount;
+	}
+
+	function callCallback() {
+	    if(errors && errors.length === 0) {
+	        errors = undefined;
+        }
+
+	    if(results && results.length === 0) {
+	        results = undefined;
+        }
+
+        finalCallback(errors, results);
+    }
+
+	return {
+		increment,
+		decrement
+	};
+}
+
+module.exports = TaskCounter;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js":[function(require,module,exports){
+const OwM = require("./OwM");
+
+/*
+    Prepare the state of a swarm to be serialised
+*/
+
+exports.asJSON = function(valueObj, phaseName, args, callback){
+
+        let valueObject = valueObj.valueOf();
+        let res = new OwM();
+        res.publicVars          = valueObject.publicVars;
+        res.privateVars         = valueObject.privateVars;
+
+        res.setMeta("COMMAND_ARGS",        OwM.prototype.getMetaFrom(valueObject, "COMMAND_ARGS"));
+        res.setMeta("SecurityParadigm",        OwM.prototype.getMetaFrom(valueObject, "SecurityParadigm"));
+        res.setMeta("swarmTypeName", OwM.prototype.getMetaFrom(valueObject, "swarmTypeName"));
+        res.setMeta("swarmId",       OwM.prototype.getMetaFrom(valueObject, "swarmId"));
+        res.setMeta("target",        OwM.prototype.getMetaFrom(valueObject, "target"));
+        res.setMeta("homeSecurityContext",        OwM.prototype.getMetaFrom(valueObject, "homeSecurityContext"));
+        res.setMeta("requestId",        OwM.prototype.getMetaFrom(valueObject, "requestId"));
+
+
+        if(!phaseName){
+            res.setMeta("command", "stored");
+        } else {
+            res.setMeta("phaseName", phaseName);
+            res.setMeta("phaseId", $$.uidGenerator.safe_uuid());
+            res.setMeta("args", args);
+            res.setMeta("command", OwM.prototype.getMetaFrom(valueObject, "command") || "executeSwarmPhase");
+        }
+
+        res.setMeta("waitStack", valueObject.meta.waitStack); //TODO: think if is not better to be deep cloned and not referenced!!!
+
+        if(callback){
+            return callback(null, res);
+        }
+        //console.log("asJSON:", res, valueObject);
+        return res;
+};
+
+exports.jsonToNative = function(serialisedValues, result){
+
+    for(let v in serialisedValues.publicVars){
+        result.publicVars[v] = serialisedValues.publicVars[v];
+
+    };
+    for(let l in serialisedValues.privateVars){
+        result.privateVars[l] = serialisedValues.privateVars[l];
+    };
+
+    for(let i in OwM.prototype.getMetaFrom(serialisedValues)){
+        OwM.prototype.setMetaFor(result, i, OwM.prototype.getMetaFrom(serialisedValues, i));
+    };
+
+};
+},{"./OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js":[function(require,module,exports){
+const PING = "PING";
+const PONG = "PONG";
+
+module.exports.fork = function pingPongFork(modulePath, args, options){
+    const child_process = require("child_process");
+    const defaultStdio = ["inherit", "inherit", "inherit", "ipc"];
+
+    if(!options){
+        options = {stdio: defaultStdio};
+    }else{
+        if(typeof options.stdio === "undefined"){
+            options.stdio = defaultStdio;
+        }
+
+        let stdio = options.stdio;
+        if(stdio.length<3){
+            for(let i=stdio.length; i<4; i++){
+                stdio.push("inherit");
+            }
+            stdio.push("ipc");
+        }
+    }
+
+    let child = child_process.fork(modulePath, args, options);
+
+    child.on("message", (message)=>{
+        if(message === PING){
+            child.send(PONG);
+        }
+    });
+
+    return child;
+};
+
+module.exports.enableLifeLine = function(timeout){
+
+    if(typeof process.send === "undefined"){
+        console.log("\"process.send\" not found. LifeLine mechanism disabled!");
+        return;
+    }
+
+    let lastConfirmationTime;
+    const interval = timeout || 2000;
+
+    // this is needed because new Date().getTime() has reduced precision to mitigate timer based attacks
+    // for more information see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime
+    const roundingError = 101;
+
+    function sendPing(){
+        try {
+            process.send(PING);
+        } catch (e) {
+            console.log('Parent is not available, shutting down');
+            exit(1)
+        }
+    }
+
+    process.on("message", function (message){
+        if(message === PONG){
+            lastConfirmationTime = new Date().getTime();
+        }
+    });
+
+    function exit(code){
+        setTimeout(()=>{
+            process.exit(code);
+        }, 0);
+    }
+
+    const exceptionEvents = ["SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM", "SIGHUP"];
+    let killingSignal = false;
+    for(let i=0; i<exceptionEvents.length; i++){
+        process.on(exceptionEvents[i], (event, code)=>{
+            killingSignal = true;
+            clearInterval(timeoutInterval);
+            console.log(`Caught event type [${exceptionEvents[i]}]. Shutting down...`, code, event);
+            exit(code);
+        });
+    }
+
+    const timeoutInterval = setInterval(function(){
+        const currentTime = new Date().getTime();
+
+        if(typeof lastConfirmationTime === "undefined" || currentTime - lastConfirmationTime < interval + roundingError && !killingSignal){
+            sendPing();
+        }else{
+            console.log("Parent process did not answer. Shutting down...", process.argv, killingSignal);
+            exit(1);
+        }
+    }, interval);
+};
+},{"child_process":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js":[function(require,module,exports){
+var commands = {};
+var commands_help = {};
+
+//global function addCommand
+addCommand = function addCommand(verb, adverbe, funct, helpLine){
+    var cmdId;
+    if(!helpLine){
+        helpLine = " ";
+    } else {
+        helpLine = " " + helpLine;
+    }
+    if(adverbe){
+        cmdId = verb + " " +  adverbe;
+        helpLine = verb + " " +  adverbe + helpLine;
+    } else {
+        cmdId = verb;
+        helpLine = verb + helpLine;
+    }
+    commands[cmdId] = funct;
+        commands_help[cmdId] = helpLine;
+};
+
+function doHelp(){
+    console.log("List of commands:");
+    for(var l in commands_help){
+        console.log("\t", commands_help[l]);
+    }
+}
+
+addCommand("-h", null, doHelp, "\t\t\t\t\t\t |just print the help");
+addCommand("/?", null, doHelp, "\t\t\t\t\t\t |just print the help");
+addCommand("help", null, doHelp, "\t\t\t\t\t\t |just print the help");
+
+
+function runCommand(){
+  var argv = Object.assign([], process.argv);
+  var cmdId = null;
+  var cmd = null;
+  argv.shift();
+  argv.shift();
+
+  if(argv.length >=1){
+      cmdId = argv[0];
+      cmd = commands[cmdId];
+      argv.shift();
+  }
+
+
+  if(!cmd && argv.length >=1){
+      cmdId = cmdId + " " + argv[0];
+      cmd = commands[cmdId];
+      argv.shift();
+  }
+
+  if(!cmd){
+    if(cmdId){
+        console.log("Unknown command: ", cmdId);
+    }
+    cmd = doHelp;
+  }
+
+  cmd.apply(null,argv);
+
+}
+
+module.exports = {
+    runCommand
+};
+
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js":[function(require,module,exports){
+
+function encode(buffer) {
+    return buffer.toString('base64')
+        .replace(/\+/g, '')
+        .replace(/\//g, '')
+        .replace(/=+$/, '');
+};
+
+function stampWithTime(buf, salt, msalt){
+    if(!salt){
+        salt = 1;
+    }
+    if(!msalt){
+        msalt = 1;
+    }
+    var date = new Date;
+    var ct = Math.floor(date.getTime() / salt);
+    var counter = 0;
+    while(ct > 0 ){
+        //console.log("Counter", counter, ct);
+        buf[counter*msalt] = Math.floor(ct % 256);
+        ct = Math.floor(ct / 256);
+        counter++;
+    }
+}
+
+/*
+    The uid contains around 256 bits of randomness and are unique at the level of seconds. This UUID should by cryptographically safe (can not be guessed)
+
+    We generate a safe UID that is guaranteed unique (by usage of a PRNG to geneate 256 bits) and time stamping with the number of seconds at the moment when is generated
+    This method should be safe to use at the level of very large distributed systems.
+    The UUID is stamped with time (seconds): does it open a way to guess the UUID? It depends how safe is "crypto" PRNG, but it should be no problem...
+
+ */
+
+var generateUid = null;
+
+
+exports.init = function(externalGenerator){
+    generateUid = externalGenerator.generateUid;
+    return module.exports;
+};
+
+exports.safe_uuid = function() {
+    var buf = generateUid(32);
+    stampWithTime(buf, 1000, 3);
+    return encode(buf);
+};
+
+
+
+/*
+    Try to generate a small UID that is unique against chance in the same millisecond second and in a specific context (eg in the same choreography execution)
+    The id contains around 6*8 = 48  bits of randomness and are unique at the level of milliseconds
+    This method is safe on a single computer but should be used with care otherwise
+    This UUID is not cryptographically safe (can be guessed)
+ */
+exports.short_uuid = function(callback) {
+    require('crypto').randomBytes(12, function (err, buf) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        stampWithTime(buf,1,2);
+        callback(null, encode(buf));
+    });
+};
+},{"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js":[function(require,module,exports){
+(function (Buffer){
+const crypto = require('crypto');
+const Queue = require("./Queue");
+var PSKBuffer = typeof $$ !== "undefined" && $$.PSKBuffer ? $$.PSKBuffer : Buffer;
+
+function UidGenerator(minBuffers, buffersSize) {
+    var buffers = new Queue();
+    var lowLimit = .2;
+
+    function fillBuffers(size) {
+        //notifyObserver();
+        const sz = size || minBuffers;
+        if (buffers.length < Math.floor(minBuffers * lowLimit)) {
+            for (var i = buffers.length; i < sz; i++) {
+                generateOneBuffer(null);
+            }
+        }
+    }
+
+    fillBuffers();
+
+    function generateOneBuffer(b) {
+        if (!b) {
+            b = PSKBuffer.alloc(0);
+        }
+        const sz = buffersSize - b.length;
+        /*crypto.randomBytes(sz, function (err, res) {
+            buffers.push(Buffer.concat([res, b]));
+            notifyObserver();
+        });*/
+        buffers.push(PSKBuffer.concat([crypto.randomBytes(sz), b]));
+        notifyObserver();
+    }
+
+    function extractN(n) {
+        var sz = Math.floor(n / buffersSize);
+        var ret = [];
+
+        for (var i = 0; i < sz; i++) {
+            ret.push(buffers.pop());
+            setTimeout(generateOneBuffer, 1);
+        }
+
+
+        var remainder = n % buffersSize;
+        if (remainder > 0) {
+            var front = buffers.pop();
+            ret.push(front.slice(0, remainder));
+            //generateOneBuffer(front.slice(remainder));
+            setTimeout(function () {
+                generateOneBuffer(front.slice(remainder));
+            }, 1);
+        }
+
+        //setTimeout(fillBuffers, 1);
+
+        return Buffer.concat(ret);
+    }
+
+    var fillInProgress = false;
+
+    this.generateUid = function (n) {
+        var totalSize = buffers.length * buffersSize;
+        if (n <= totalSize) {
+            return extractN(n);
+        } else {
+            if (!fillInProgress) {
+                fillInProgress = true;
+                setTimeout(function () {
+                    fillBuffers(Math.floor(minBuffers * 2.5));
+                    fillInProgress = false;
+                }, 1);
+            }
+            return crypto.randomBytes(n);
+        }
+    };
+
+    var observer;
+    this.registerObserver = function (obs) {
+        if (observer) {
+            console.error(new Error("One observer allowed!"));
+        } else {
+            if (typeof obs == "function") {
+                observer = obs;
+                //notifyObserver();
+            }
+        }
+    };
+
+    function notifyObserver() {
+        if (observer) {
+            var valueToReport = buffers.length * buffersSize;
+            setTimeout(function () {
+                observer(null, {"size": valueToReport});
+            }, 10);
+        }
+    }
+}
+
+module.exports.createUidGenerator = function (minBuffers, bufferSize) {
+    return new UidGenerator(minBuffers, bufferSize);
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"./Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\AbstractPool.js":[function(require,module,exports){
+(function (setImmediate){
+const {assert} = require('./utils');
+const util = require('util');
+const {EventEmitter} = require('events');
+
+const PoolEvents = {
+    RELEASED_WORKER: 'releasedWorker'
+};
+
+/** @param {PoolConfig&PoolConfigStorage} options */
+function AbstractPool(options) {
+    EventEmitter.call(this);
+
+    let pool = [];
+    let currentPoolSize = 0;
+
+    /** @returns {Worker|null} */
+    this.getAvailableWorker = function () {
+        // find first free worker
+        const freeWorkerIndex = pool.findIndex(el => !el.isWorking);
+
+        let worker = null;
+
+        // if no free worker is available, try creating one
+        if (freeWorkerIndex === -1) {
+            _createNewWorker();
+            return null;
+        } else {
+            worker = pool[freeWorkerIndex];
+        }
+
+        if (worker === null) {
+            return null;
+        }
+
+        // if free worker exists, set its state to working
+        worker.isWorking = true;
+        return worker.workerInstance;
+    };
+
+    /** @param {Worker} worker */
+    this.returnWorker = function (worker) {
+        // find worker that matches one in the pool
+        const freeWorkerIndex = pool.findIndex(el => el.workerInstance === worker);
+
+        if (freeWorkerIndex === -1) {
+            console.error('Tried to return a worker that is not owned by the pool');
+            return;
+        }
+
+        // if worker is found, set its state to not working
+        pool[freeWorkerIndex].isWorking = false;
+        this.emit(PoolEvents.RELEASED_WORKER);
+    };
+
+    /** @param {Worker} worker */
+    this.removeWorker = function (worker) {
+        const localPoolSize = pool.length;
+
+        pool = pool.filter(poolWorker => poolWorker.workerInstance !== worker); // keep elements that are not equal to worker
+        currentPoolSize = pool.length;
+
+        assert(currentPoolSize === localPoolSize - 1, {ifFails: `Tried returning a worker that could not be found`});
+    };
+
+    this.createNewWorker = function () {
+        throw new Error('Not implemented! Overwrite this in subclass.');
+    };
+
+    const _createNewWorker = () => {
+        // using currentPoolSize instead of pool.length because the creation of workers can be asynchronous
+        // and the pool will increase only after the worker is creating, this can cause a situation where
+        // more workers are created than the maximumNumberOfWorkers
+        if (currentPoolSize >= options.maximumNumberOfWorkers) {
+            return;
+        }
+
+        currentPoolSize += 1;
+
+        this.createNewWorker((err, newWorker) => {
+            if (err) {
+                currentPoolSize -= 1;
+                console.error('Error creating a new worker', err);
+                return;
+            }
+
+            const workerObj = {
+                isWorking: false,
+                workerInstance: newWorker
+            };
+
+            pool.push(workerObj);
+
+            // createNewWorker can be synchronous (even though it uses a callback),
+            // in that case it will cause scheduling problems if not delayed
+            setImmediate(() => {
+                this.emit(PoolEvents.RELEASED_WORKER);
+            });
+        });
+    };
+
+}
+
+AbstractPool.prototype.events = PoolEvents;
+util.inherits(AbstractPool, EventEmitter);
+
+
+module.exports = AbstractPool;
+
+}).call(this,require("timers").setImmediate)
+
+},{"./utils":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\utils.js","events":false,"timers":false,"util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\Pool-Isolates.js":[function(require,module,exports){
+const AbstractPool = require('./AbstractPool');
+const util = require('util');
+/**
+ * @param {PoolConfig&PoolConfigStorage} options
+ * @param workerCreateHelper
+ * @mixes AbstractPool
+ */
+function PoolIsolates(options, workerCreateHelper) {
+    AbstractPool.call(this, options);
+
+    this.createNewWorker = function (callback) {
+        const workerOptions = options.workerOptions;
+
+        const getIsolatesWorker = options.bootScript;
+
+        getIsolatesWorker(workerOptions)
+            .then((newWorker) => {
+
+                if (typeof workerCreateHelper === "function") {
+                    workerCreateHelper(newWorker);
+                }
+
+                callback(undefined, newWorker)
+            })
+            .catch(err => {
+                callback(err);
+            });
+    };
+
+}
+
+util.inherits(PoolIsolates, AbstractPool);
+
+module.exports = PoolIsolates;
+
+},{"./AbstractPool":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\AbstractPool.js","util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\Pool-Threads.js":[function(require,module,exports){
+const AbstractPool = require('./AbstractPool');
+const util = require('util');
+
+/**
+ * @param {PoolConfig&PoolConfigStorage} options
+ * @param {function} workerCreateHelper
+ * @mixes AbstractPool
+ */
+function PoolThreads(options, workerCreateHelper) {
+    AbstractPool.call(this, options);
+
+    this.createNewWorker = function (callback) {
+        const worker_threads ='worker_threads';
+        const {Worker} = require(worker_threads);
+
+        const newWorker = new Worker(options.bootScript, options.workerOptions);
+
+        if (typeof workerCreateHelper === "function") {
+            workerCreateHelper(newWorker);
+        }
+
+        const callbackWrapper = (...args) => {
+            removeListeners();
+            callback(...args);
+        };
+
+        function onMessage(msg) {
+            if(msg !== 'ready') {
+                callbackWrapper(new Error('Build script did not respond accordingly, it might be incompatible with current version'));
+                return;
+            }
+
+            callbackWrapper(undefined, newWorker);
+        }
+
+        function removeListeners() {
+            newWorker.removeListener('message', onMessage);
+            newWorker.removeListener('error', callbackWrapper);
+            newWorker.removeListener('exit', callbackWrapper);
+        }
+
+        newWorker.on('message', onMessage);
+        newWorker.on('error', callbackWrapper);
+        newWorker.on('exit', callbackWrapper);
+    };
+
+}
+
+util.inherits(PoolThreads, AbstractPool);
+
+module.exports = PoolThreads;
+
+},{"./AbstractPool":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\AbstractPool.js","util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\PoolConfig.js":[function(require,module,exports){
+const os = require('os');
+const util = require('util');
+const WorkerStrategies = require('./WorkerStrategies');
+
+function PoolConfigStorage() {
+    this.bootScript = ``;
+    this.maximumNumberOfWorkers = os.cpus().length;
+    this.workerStrategy = WorkerStrategies.THREADS;
+    this.workerOptions = {
+        eval: false
+    };
+}
+
+/**
+ * This just provides validation for properties on config
+ * Substituting this class to PoolConfigStorage should behave exactly the same effect if the config is valid
+ * @constructor
+ */
+function PoolConfig() {
+    const storage = new PoolConfigStorage();
+
+    return {
+        get bootScript() {
+            return storage.bootScript;
+        },
+        set bootScript(value) {
+            storage.bootScript = value;
+        },
+
+        get maximumNumberOfWorkers() {
+            return storage.maximumNumberOfWorkers;
+        },
+        set maximumNumberOfWorkers(value) {
+            if (!Number.isFinite(value)) {
+                throw new TypeError(`Attribute maximumNumberOfWorkers should be a finite number, got ${typeof value}`);
+            }
+
+            if (value <= 0) {
+                throw new RangeError(`Attribute maximumNumberOfWorkers should have a value bigger than 0, got ${value}`);
+            }
+
+            storage.maximumNumberOfWorkers = value;
+        },
+
+        get workerStrategy() {
+            return storage.workerStrategy
+        },
+        set workerStrategy(value) {
+            if (!Object.values(WorkerStrategies).includes(value)) {
+                throw new TypeError(`Value ${value} not allowed for workerStrategy attribute`);
+            }
+
+            storage.workerStrategy = value;
+        },
+
+        get workerOptions() {
+            return storage.workerOptions;
+        },
+        set workerOptions(value) {
+            storage.workerOptions = value;
+        },
+
+        toJSON: function () {
+            return JSON.stringify(storage);
+        },
+        [Symbol.toStringTag]: function () {
+            return storage.toString()
+        },
+        [util.inspect.custom]: function () {
+            return util.inspect(storage, {colors: true});
+        }
+    }
+}
+
+/**
+ * This utility merges a new config to a default one. It is easier to use if you want to overwrite only a subset
+ * of properties of the config.
+ * @returns {PoolConfig&PoolConfigStorage}
+ */
+PoolConfig.createByOverwritingDefaults = function (config = {}, options = {allowNewKeys: true, allowUndefined: true}) {
+    const defaultConfig = new PoolConfig();
+
+    Object.keys(config).forEach(key => {
+
+        if (!options.allowNewKeys && !defaultConfig.hasOwnProperty(key)) {
+            throw new Error(`Tried overwriting property ${key} that does not exist on PoolConfig. ` +
+                `If this is intentional, set in options argument "allowNewKeys" to true'`);
+        }
+
+        if (!options.allowUndefined && typeof config[key] === 'undefined') {
+            throw new Error(`Tried setting value of ${key} to undefined. ` +
+                'If this is intentional, set in options argument "allowUndefined" to true');
+        }
+
+        defaultConfig[key] = config[key];
+    });
+
+    return defaultConfig;
+};
+
+module.exports = PoolConfig;
+},{"./WorkerStrategies":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\WorkerStrategies.js","os":false,"util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\QueueShim.js":[function(require,module,exports){
+function Queue() {
+    const backingStorage = [];
+
+    Object.defineProperty(this, 'length', {
+        get() {
+            return backingStorage.length
+        },
+        set(value) {
+            backingStorage.length = value;
+        }
+    });
+
+    Object.defineProperty(this, 'head', {
+        get: () => {
+            if (backingStorage.length > 0) {
+                return backingStorage[0];
+            }
+
+            return null;
+        }
+    });
+
+    Object.defineProperty(this, 'tail', {
+        get: () => {
+            const length = backingStorage.length;
+            if (length > 0) {
+                return backingStorage[length - 1];
+            }
+
+            return null;
+        }
+    });
+
+
+    this.push = (value) => {
+        backingStorage.push(value);
+    };
+
+    this.pop = () => {
+        return backingStorage.shift();
+    };
+
+    this.front = function () {
+        return this.head;
+    };
+
+    this.isEmpty = function () {
+        return backingStorage.length === 0;
+    };
+
+    this[Symbol.iterator] = backingStorage[Symbol.iterator];
+
+    this.toString = backingStorage.toString;
+    this[Symbol.for('nodejs.util.inspect.custom')] = function() {
+        return JSON.stringify(backingStorage);
+    }
+
+}
+
+module.exports = Queue;
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\WorkerPool.js":[function(require,module,exports){
+
+/** @param pool {AbstractPool} */
+function WorkerPool(pool) {
+    const {assert} = require('./utils');
+    let Queue;
+
+    try {
+        Queue = require('swarmutils').Queue;
+    } catch (e) {
+        Queue = require('./QueueShim.js');
+    }
+
+    const PoolEvents = pool.events;
+    const taskQueue = new Queue();
+
+    this.addTask = function (task, callback) {
+        const taskAccepted = this.runTaskImmediately(task, callback);
+
+        if (!taskAccepted) {
+            taskQueue.push({task, callback});
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
+     * Tries to run task if a worker is available, if it is not it will simply discard the task
+     * @returns {boolean} - True if the task was given to a worker, false if no worker was available for this task
+     */
+    this.runTaskImmediately = function (task, callback) {
+        const worker = pool.getAvailableWorker();
+
+        if (!worker) {
+            return false;
+        }
+
+        addWorkerListeners(worker, callback);
+
+        worker.postMessage(task);
+        return true;
+    };
+
+    pool.on(PoolEvents.RELEASED_WORKER, () => {
+        if (taskQueue.isEmpty()) {
+            return;
+        }
+
+        const taskSize = taskQueue.length;
+        const nextTask = taskQueue.front();
+
+        const taskWasAcceptedByAWorker = this.runTaskImmediately(nextTask.task, nextTask.callback);
+
+        if (taskWasAcceptedByAWorker) {
+            taskQueue.pop();
+            const newTaskSize = taskQueue.length;
+            assert(newTaskSize === taskSize - 1, {ifFails: `The task queue size did not decrease, expected to be ${taskSize - 1} but is ${newTaskSize}`})
+        } else {
+            const newTaskSize = taskQueue.length;
+            assert(newTaskSize === taskSize, {ifFails: `The task queue size modified when it shouldn't, expected to be equal but got pair (old: ${taskSize}, new: ${newTaskSize})`});
+            // events are propagates synchronously as mentioned in documentation (https://nodejs.org/api/events.html#events_asynchronous_vs_synchronous)
+            // one reason why this can happen is if the worker is not properly marked as "not working"
+            // another one is that the queue contains a worker that is free but can't accept tasks (it might have been terminated)
+            console.error(`This should never happen and it's most likely a bug`);
+        }
+    });
+
+    /**
+     * @param {Worker} worker
+     * @param {function} callbackForListeners
+     */
+    function addWorkerListeners(worker, callbackForListeners) {
+
+        function callbackWrapper(...args) {
+            removeListeners();
+            if(args[0] instanceof Error) {
+                pool.removeWorker(worker);
+            } else {
+                pool.returnWorker(worker);
+            }
+            callbackForListeners(...args);
+        }
+
+        function onMessage(...args) {
+            if (args[0] instanceof Error) {
+                callbackWrapper(...args);
+            } else {
+                callbackWrapper(undefined, ...args);
+            }
+        }
+
+        function onError(err) {
+            callbackWrapper(err);
+        }
+
+        function onExit(code) {
+            if (code !== 0) {
+                callbackWrapper(new Error(`Worker exited unexpectedly with code ${code}`));
+            }
+        }
+
+        worker.once('message', onMessage);
+        worker.once('error', onError);
+        worker.once('exit', onExit);
+
+        function removeListeners() {
+            worker.removeListener('message', onMessage);
+            worker.removeListener('error', onError);
+            worker.removeListener('exit', onExit);
+        }
+    }
+
+}
+
+module.exports = WorkerPool;
+
+},{"./QueueShim.js":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\QueueShim.js","./utils":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\utils.js","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\WorkerStrategies.js":[function(require,module,exports){
+const WorkerStrategies = {
+    THREADS: 'threads',
+    ISOLATES: 'isolates'
+};
+
+module.exports = Object.freeze(WorkerStrategies);
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\utils.js":[function(require,module,exports){
+function assert(condition, {ifFails}) {
+    if (condition === false) {
+        console.error(ifFails);
+    }
+}
+
+module.exports = {
+    assert
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var util = require('./util');
+var has = Object.prototype.hasOwnProperty;
+var hasNativeMap = typeof Map !== "undefined";
+
+/**
+ * A data structure which is a combination of an array and a set. Adding a new
+ * member is O(1), testing for membership is O(1), and finding the index of an
+ * element is O(1). Removing elements from the set is not supported. Only
+ * strings are supported for membership.
+ */
+function ArraySet() {
+  this._array = [];
+  this._set = hasNativeMap ? new Map() : Object.create(null);
+}
+
+/**
+ * Static method for creating ArraySet instances from an existing array.
+ */
+ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+  var set = new ArraySet();
+  for (var i = 0, len = aArray.length; i < len; i++) {
+    set.add(aArray[i], aAllowDuplicates);
+  }
+  return set;
+};
+
+/**
+ * Return how many unique items are in this ArraySet. If duplicates have been
+ * added, than those do not count towards the size.
+ *
+ * @returns Number
+ */
+ArraySet.prototype.size = function ArraySet_size() {
+  return hasNativeMap ? this._set.size : Object.getOwnPropertyNames(this._set).length;
+};
+
+/**
+ * Add the given string to this set.
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+  var sStr = hasNativeMap ? aStr : util.toSetString(aStr);
+  var isDuplicate = hasNativeMap ? this.has(aStr) : has.call(this._set, sStr);
+  var idx = this._array.length;
+  if (!isDuplicate || aAllowDuplicates) {
+    this._array.push(aStr);
+  }
+  if (!isDuplicate) {
+    if (hasNativeMap) {
+      this._set.set(aStr, idx);
+    } else {
+      this._set[sStr] = idx;
+    }
+  }
+};
+
+/**
+ * Is the given string a member of this set?
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.has = function ArraySet_has(aStr) {
+  if (hasNativeMap) {
+    return this._set.has(aStr);
+  } else {
+    var sStr = util.toSetString(aStr);
+    return has.call(this._set, sStr);
+  }
+};
+
+/**
+ * What is the index of the given string in the array?
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
+  if (hasNativeMap) {
+    var idx = this._set.get(aStr);
+    if (idx >= 0) {
+        return idx;
+    }
+  } else {
+    var sStr = util.toSetString(aStr);
+    if (has.call(this._set, sStr)) {
+      return this._set[sStr];
+    }
+  }
+
+  throw new Error('"' + aStr + '" is not in the set.');
+};
+
+/**
+ * What is the element at the given index?
+ *
+ * @param Number aIdx
+ */
+ArraySet.prototype.at = function ArraySet_at(aIdx) {
+  if (aIdx >= 0 && aIdx < this._array.length) {
+    return this._array[aIdx];
+  }
+  throw new Error('No element indexed by ' + aIdx);
+};
+
+/**
+ * Returns the array representation of this set (which has the proper indices
+ * indicated by indexOf). Note that this is a copy of the internal array used
+ * for storing the members so that no one can mess with internal state.
+ */
+ArraySet.prototype.toArray = function ArraySet_toArray() {
+  return this._array.slice();
+};
+
+exports.ArraySet = ArraySet;
+
+},{"./util":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\base64-vlq.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ *
+ * Based on the Base 64 VLQ implementation in Closure Compiler:
+ * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
+ *
+ * Copyright 2011 The Closure Compiler Authors. All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above
+ *    copyright notice, this list of conditions and the following
+ *    disclaimer in the documentation and/or other materials provided
+ *    with the distribution.
+ *  * Neither the name of Google Inc. nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+var base64 = require('./base64');
+
+// A single base 64 digit can contain 6 bits of data. For the base 64 variable
+// length quantities we use in the source map spec, the first bit is the sign,
+// the next four bits are the actual value, and the 6th bit is the
+// continuation bit. The continuation bit tells us whether there are more
+// digits in this value following this digit.
+//
+//   Continuation
+//   |    Sign
+//   |    |
+//   V    V
+//   101011
+
+var VLQ_BASE_SHIFT = 5;
+
+// binary: 100000
+var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+
+// binary: 011111
+var VLQ_BASE_MASK = VLQ_BASE - 1;
+
+// binary: 100000
+var VLQ_CONTINUATION_BIT = VLQ_BASE;
+
+/**
+ * Converts from a two-complement value to a value where the sign bit is
+ * placed in the least significant bit.  For example, as decimals:
+ *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+ *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+ */
+function toVLQSigned(aValue) {
+  return aValue < 0
+    ? ((-aValue) << 1) + 1
+    : (aValue << 1) + 0;
+}
+
+/**
+ * Converts to a two-complement value from a value where the sign bit is
+ * placed in the least significant bit.  For example, as decimals:
+ *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+ *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+ */
+function fromVLQSigned(aValue) {
+  var isNegative = (aValue & 1) === 1;
+  var shifted = aValue >> 1;
+  return isNegative
+    ? -shifted
+    : shifted;
+}
+
+/**
+ * Returns the base 64 VLQ encoded value.
+ */
+exports.encode = function base64VLQ_encode(aValue) {
+  var encoded = "";
+  var digit;
+
+  var vlq = toVLQSigned(aValue);
+
+  do {
+    digit = vlq & VLQ_BASE_MASK;
+    vlq >>>= VLQ_BASE_SHIFT;
+    if (vlq > 0) {
+      // There are still more digits in this value, so we must make sure the
+      // continuation bit is marked.
+      digit |= VLQ_CONTINUATION_BIT;
+    }
+    encoded += base64.encode(digit);
+  } while (vlq > 0);
+
+  return encoded;
+};
+
+/**
+ * Decodes the next base 64 VLQ value from the given string and returns the
+ * value and the rest of the string via the out parameter.
+ */
+exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+  var strLen = aStr.length;
+  var result = 0;
+  var shift = 0;
+  var continuation, digit;
+
+  do {
+    if (aIndex >= strLen) {
+      throw new Error("Expected more digits in base 64 VLQ value.");
+    }
+
+    digit = base64.decode(aStr.charCodeAt(aIndex++));
+    if (digit === -1) {
+      throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+    }
+
+    continuation = !!(digit & VLQ_CONTINUATION_BIT);
+    digit &= VLQ_BASE_MASK;
+    result = result + (digit << shift);
+    shift += VLQ_BASE_SHIFT;
+  } while (continuation);
+
+  aOutParam.value = fromVLQSigned(result);
+  aOutParam.rest = aIndex;
+};
+
+},{"./base64":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\base64.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\base64.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
+
+/**
+ * Encode an integer in the range of 0 to 63 to a single base 64 digit.
+ */
+exports.encode = function (number) {
+  if (0 <= number && number < intToCharMap.length) {
+    return intToCharMap[number];
+  }
+  throw new TypeError("Must be between 0 and 63: " + number);
+};
+
+/**
+ * Decode a single base 64 character code digit to an integer. Returns -1 on
+ * failure.
+ */
+exports.decode = function (charCode) {
+  var bigA = 65;     // 'A'
+  var bigZ = 90;     // 'Z'
+
+  var littleA = 97;  // 'a'
+  var littleZ = 122; // 'z'
+
+  var zero = 48;     // '0'
+  var nine = 57;     // '9'
+
+  var plus = 43;     // '+'
+  var slash = 47;    // '/'
+
+  var littleOffset = 26;
+  var numberOffset = 52;
+
+  // 0 - 25: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  if (bigA <= charCode && charCode <= bigZ) {
+    return (charCode - bigA);
+  }
+
+  // 26 - 51: abcdefghijklmnopqrstuvwxyz
+  if (littleA <= charCode && charCode <= littleZ) {
+    return (charCode - littleA + littleOffset);
+  }
+
+  // 52 - 61: 0123456789
+  if (zero <= charCode && charCode <= nine) {
+    return (charCode - zero + numberOffset);
+  }
+
+  // 62: +
+  if (charCode == plus) {
+    return 62;
+  }
+
+  // 63: /
+  if (charCode == slash) {
+    return 63;
+  }
+
+  // Invalid base64 digit.
+  return -1;
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\binary-search.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+exports.GREATEST_LOWER_BOUND = 1;
+exports.LEAST_UPPER_BOUND = 2;
+
+/**
+ * Recursive implementation of binary search.
+ *
+ * @param aLow Indices here and lower do not contain the needle.
+ * @param aHigh Indices here and higher do not contain the needle.
+ * @param aNeedle The element being searched for.
+ * @param aHaystack The non-empty array being searched.
+ * @param aCompare Function which takes two elements and returns -1, 0, or 1.
+ * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+ *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ */
+function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
+  // This function terminates when one of the following is true:
+  //
+  //   1. We find the exact element we are looking for.
+  //
+  //   2. We did not find the exact element, but we can return the index of
+  //      the next-closest element.
+  //
+  //   3. We did not find the exact element, and there is no next-closest
+  //      element than the one we are searching for, so we return -1.
+  var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+  var cmp = aCompare(aNeedle, aHaystack[mid], true);
+  if (cmp === 0) {
+    // Found the element we are looking for.
+    return mid;
+  }
+  else if (cmp > 0) {
+    // Our needle is greater than aHaystack[mid].
+    if (aHigh - mid > 1) {
+      // The element is in the upper half.
+      return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
+    }
+
+    // The exact needle element was not found in this haystack. Determine if
+    // we are in termination case (3) or (2) and return the appropriate thing.
+    if (aBias == exports.LEAST_UPPER_BOUND) {
+      return aHigh < aHaystack.length ? aHigh : -1;
+    } else {
+      return mid;
+    }
+  }
+  else {
+    // Our needle is less than aHaystack[mid].
+    if (mid - aLow > 1) {
+      // The element is in the lower half.
+      return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
+    }
+
+    // we are in termination case (3) or (2) and return the appropriate thing.
+    if (aBias == exports.LEAST_UPPER_BOUND) {
+      return mid;
+    } else {
+      return aLow < 0 ? -1 : aLow;
+    }
+  }
+}
+
+/**
+ * This is an implementation of binary search which will always try and return
+ * the index of the closest element if there is no exact hit. This is because
+ * mappings between original and generated line/col pairs are single points,
+ * and there is an implicit region between each of them, so a miss just means
+ * that you aren't on the very start of a region.
+ *
+ * @param aNeedle The element you are looking for.
+ * @param aHaystack The array that is being searched.
+ * @param aCompare A function which takes the needle and an element in the
+ *     array and returns -1, 0, or 1 depending on whether the needle is less
+ *     than, equal to, or greater than the element, respectively.
+ * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+ *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'binarySearch.GREATEST_LOWER_BOUND'.
+ */
+exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
+  if (aHaystack.length === 0) {
+    return -1;
+  }
+
+  var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack,
+                              aCompare, aBias || exports.GREATEST_LOWER_BOUND);
+  if (index < 0) {
+    return -1;
+  }
+
+  // We have found either the exact element, or the next-closest element than
+  // the one we are searching for. However, there may be more than one such
+  // element. Make sure we always return the smallest of these.
+  while (index - 1 >= 0) {
+    if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
+      break;
+    }
+    --index;
+  }
+
+  return index;
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\mapping-list.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2014 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var util = require('./util');
+
+/**
+ * Determine whether mappingB is after mappingA with respect to generated
+ * position.
+ */
+function generatedPositionAfter(mappingA, mappingB) {
+  // Optimized for most common case
+  var lineA = mappingA.generatedLine;
+  var lineB = mappingB.generatedLine;
+  var columnA = mappingA.generatedColumn;
+  var columnB = mappingB.generatedColumn;
+  return lineB > lineA || lineB == lineA && columnB >= columnA ||
+         util.compareByGeneratedPositionsInflated(mappingA, mappingB) <= 0;
+}
+
+/**
+ * A data structure to provide a sorted view of accumulated mappings in a
+ * performance conscious manner. It trades a neglibable overhead in general
+ * case for a large speedup in case of mappings being added in order.
+ */
+function MappingList() {
+  this._array = [];
+  this._sorted = true;
+  // Serves as infimum
+  this._last = {generatedLine: -1, generatedColumn: 0};
+}
+
+/**
+ * Iterate through internal items. This method takes the same arguments that
+ * `Array.prototype.forEach` takes.
+ *
+ * NOTE: The order of the mappings is NOT guaranteed.
+ */
+MappingList.prototype.unsortedForEach =
+  function MappingList_forEach(aCallback, aThisArg) {
+    this._array.forEach(aCallback, aThisArg);
+  };
+
+/**
+ * Add the given source mapping.
+ *
+ * @param Object aMapping
+ */
+MappingList.prototype.add = function MappingList_add(aMapping) {
+  if (generatedPositionAfter(this._last, aMapping)) {
+    this._last = aMapping;
+    this._array.push(aMapping);
+  } else {
+    this._sorted = false;
+    this._array.push(aMapping);
+  }
+};
+
+/**
+ * Returns the flat, sorted array of mappings. The mappings are sorted by
+ * generated position.
+ *
+ * WARNING: This method returns internal data without copying, for
+ * performance. The return value must NOT be mutated, and should be treated as
+ * an immutable borrow. If you want to take ownership, you must make your own
+ * copy.
+ */
+MappingList.prototype.toArray = function MappingList_toArray() {
+  if (!this._sorted) {
+    this._array.sort(util.compareByGeneratedPositionsInflated);
+    this._sorted = true;
+  }
+  return this._array;
+};
+
+exports.MappingList = MappingList;
+
+},{"./util":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\quick-sort.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+// It turns out that some (most?) JavaScript engines don't self-host
+// `Array.prototype.sort`. This makes sense because C++ will likely remain
+// faster than JS when doing raw CPU-intensive sorting. However, when using a
+// custom comparator function, calling back and forth between the VM's C++ and
+// JIT'd JS is rather slow *and* loses JIT type information, resulting in
+// worse generated code for the comparator function than would be optimal. In
+// fact, when sorting with a comparator, these costs outweigh the benefits of
+// sorting in C++. By using our own JS-implemented Quick Sort (below), we get
+// a ~3500ms mean speed-up in `bench/bench.html`.
+
+/**
+ * Swap the elements indexed by `x` and `y` in the array `ary`.
+ *
+ * @param {Array} ary
+ *        The array.
+ * @param {Number} x
+ *        The index of the first item.
+ * @param {Number} y
+ *        The index of the second item.
+ */
+function swap(ary, x, y) {
+  var temp = ary[x];
+  ary[x] = ary[y];
+  ary[y] = temp;
+}
+
+/**
+ * Returns a random integer within the range `low .. high` inclusive.
+ *
+ * @param {Number} low
+ *        The lower bound on the range.
+ * @param {Number} high
+ *        The upper bound on the range.
+ */
+function randomIntInRange(low, high) {
+  return Math.round(low + (Math.random() * (high - low)));
+}
+
+/**
+ * The Quick Sort algorithm.
+ *
+ * @param {Array} ary
+ *        An array to sort.
+ * @param {function} comparator
+ *        Function to use to compare two items.
+ * @param {Number} p
+ *        Start index of the array
+ * @param {Number} r
+ *        End index of the array
+ */
+function doQuickSort(ary, comparator, p, r) {
+  // If our lower bound is less than our upper bound, we (1) partition the
+  // array into two pieces and (2) recurse on each half. If it is not, this is
+  // the empty array and our base case.
+
+  if (p < r) {
+    // (1) Partitioning.
+    //
+    // The partitioning chooses a pivot between `p` and `r` and moves all
+    // elements that are less than or equal to the pivot to the before it, and
+    // all the elements that are greater than it after it. The effect is that
+    // once partition is done, the pivot is in the exact place it will be when
+    // the array is put in sorted order, and it will not need to be moved
+    // again. This runs in O(n) time.
+
+    // Always choose a random pivot so that an input array which is reverse
+    // sorted does not cause O(n^2) running time.
+    var pivotIndex = randomIntInRange(p, r);
+    var i = p - 1;
+
+    swap(ary, pivotIndex, r);
+    var pivot = ary[r];
+
+    // Immediately after `j` is incremented in this loop, the following hold
+    // true:
+    //
+    //   * Every element in `ary[p .. i]` is less than or equal to the pivot.
+    //
+    //   * Every element in `ary[i+1 .. j-1]` is greater than the pivot.
+    for (var j = p; j < r; j++) {
+      if (comparator(ary[j], pivot) <= 0) {
+        i += 1;
+        swap(ary, i, j);
+      }
+    }
+
+    swap(ary, i + 1, j);
+    var q = i + 1;
+
+    // (2) Recurse on each half.
+
+    doQuickSort(ary, comparator, p, q - 1);
+    doQuickSort(ary, comparator, q + 1, r);
+  }
+}
+
+/**
+ * Sort the given array in-place with the given comparator function.
+ *
+ * @param {Array} ary
+ *        An array to sort.
+ * @param {function} comparator
+ *        Function to use to compare two items.
+ */
+exports.quickSort = function (ary, comparator) {
+  doQuickSort(ary, comparator, 0, ary.length - 1);
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var util = require('./util');
+var binarySearch = require('./binary-search');
+var ArraySet = require('./array-set').ArraySet;
+var base64VLQ = require('./base64-vlq');
+var quickSort = require('./quick-sort').quickSort;
+
+function SourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ''));
+  }
+
+  return sourceMap.sections != null
+    ? new IndexedSourceMapConsumer(sourceMap)
+    : new BasicSourceMapConsumer(sourceMap);
+}
+
+SourceMapConsumer.fromSourceMap = function(aSourceMap) {
+  return BasicSourceMapConsumer.fromSourceMap(aSourceMap);
+}
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+SourceMapConsumer.prototype._version = 3;
+
+// `__generatedMappings` and `__originalMappings` are arrays that hold the
+// parsed mapping coordinates from the source map's "mappings" attribute. They
+// are lazily instantiated, accessed via the `_generatedMappings` and
+// `_originalMappings` getters respectively, and we only parse the mappings
+// and create these arrays once queried for a source location. We jump through
+// these hoops because there can be many thousands of mappings, and parsing
+// them is expensive, so we only want to do it if we must.
+//
+// Each object in the arrays is of the form:
+//
+//     {
+//       generatedLine: The line number in the generated code,
+//       generatedColumn: The column number in the generated code,
+//       source: The path to the original source file that generated this
+//               chunk of code,
+//       originalLine: The line number in the original source that
+//                     corresponds to this chunk of generated code,
+//       originalColumn: The column number in the original source that
+//                       corresponds to this chunk of generated code,
+//       name: The name of the original symbol which generated this chunk of
+//             code.
+//     }
+//
+// All properties except for `generatedLine` and `generatedColumn` can be
+// `null`.
+//
+// `_generatedMappings` is ordered by the generated positions.
+//
+// `_originalMappings` is ordered by the original positions.
+
+SourceMapConsumer.prototype.__generatedMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
+  get: function () {
+    if (!this.__generatedMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+
+    return this.__generatedMappings;
+  }
+});
+
+SourceMapConsumer.prototype.__originalMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
+  get: function () {
+    if (!this.__originalMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+
+    return this.__originalMappings;
+  }
+});
+
+SourceMapConsumer.prototype._charIsMappingSeparator =
+  function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
+    var c = aStr.charAt(index);
+    return c === ";" || c === ",";
+  };
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+SourceMapConsumer.prototype._parseMappings =
+  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    throw new Error("Subclasses must implement _parseMappings");
+  };
+
+SourceMapConsumer.GENERATED_ORDER = 1;
+SourceMapConsumer.ORIGINAL_ORDER = 2;
+
+SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
+SourceMapConsumer.LEAST_UPPER_BOUND = 2;
+
+/**
+ * Iterate over each mapping between an original source/line/column and a
+ * generated line/column in this source map.
+ *
+ * @param Function aCallback
+ *        The function that is called with each mapping.
+ * @param Object aContext
+ *        Optional. If specified, this object will be the value of `this` every
+ *        time that `aCallback` is called.
+ * @param aOrder
+ *        Either `SourceMapConsumer.GENERATED_ORDER` or
+ *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
+ *        iterate over the mappings sorted by the generated file's line/column
+ *        order or the original's source/line/column order, respectively. Defaults to
+ *        `SourceMapConsumer.GENERATED_ORDER`.
+ */
+SourceMapConsumer.prototype.eachMapping =
+  function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+    var context = aContext || null;
+    var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+
+    var mappings;
+    switch (order) {
+    case SourceMapConsumer.GENERATED_ORDER:
+      mappings = this._generatedMappings;
+      break;
+    case SourceMapConsumer.ORIGINAL_ORDER:
+      mappings = this._originalMappings;
+      break;
+    default:
+      throw new Error("Unknown order of iteration.");
+    }
+
+    var sourceRoot = this.sourceRoot;
+    mappings.map(function (mapping) {
+      var source = mapping.source === null ? null : this._sources.at(mapping.source);
+      if (source != null && sourceRoot != null) {
+        source = util.join(sourceRoot, source);
+      }
+      return {
+        source: source,
+        generatedLine: mapping.generatedLine,
+        generatedColumn: mapping.generatedColumn,
+        originalLine: mapping.originalLine,
+        originalColumn: mapping.originalColumn,
+        name: mapping.name === null ? null : this._names.at(mapping.name)
+      };
+    }, this).forEach(aCallback, context);
+  };
+
+/**
+ * Returns all generated line and column information for the original source,
+ * line, and column provided. If no column is provided, returns all mappings
+ * corresponding to a either the line we are searching for or the next
+ * closest line that has any mappings. Otherwise, returns all mappings
+ * corresponding to the given line and either the column we are searching for
+ * or the next closest column that has any offsets.
+ *
+ * The only argument is an object with the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.
+ *   - column: Optional. the column number in the original source.
+ *
+ * and an array of objects is returned, each with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.
+ *   - column: The column number in the generated source, or null.
+ */
+SourceMapConsumer.prototype.allGeneratedPositionsFor =
+  function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
+    var line = util.getArg(aArgs, 'line');
+
+    // When there is no exact match, BasicSourceMapConsumer.prototype._findMapping
+    // returns the index of the closest mapping less than the needle. By
+    // setting needle.originalColumn to 0, we thus find the last mapping for
+    // the given line, provided such a mapping exists.
+    var needle = {
+      source: util.getArg(aArgs, 'source'),
+      originalLine: line,
+      originalColumn: util.getArg(aArgs, 'column', 0)
+    };
+
+    if (this.sourceRoot != null) {
+      needle.source = util.relative(this.sourceRoot, needle.source);
+    }
+    if (!this._sources.has(needle.source)) {
+      return [];
+    }
+    needle.source = this._sources.indexOf(needle.source);
+
+    var mappings = [];
+
+    var index = this._findMapping(needle,
+                                  this._originalMappings,
+                                  "originalLine",
+                                  "originalColumn",
+                                  util.compareByOriginalPositions,
+                                  binarySearch.LEAST_UPPER_BOUND);
+    if (index >= 0) {
+      var mapping = this._originalMappings[index];
+
+      if (aArgs.column === undefined) {
+        var originalLine = mapping.originalLine;
+
+        // Iterate until either we run out of mappings, or we run into
+        // a mapping for a different line than the one we found. Since
+        // mappings are sorted, this is guaranteed to find all mappings for
+        // the line we found.
+        while (mapping && mapping.originalLine === originalLine) {
+          mappings.push({
+            line: util.getArg(mapping, 'generatedLine', null),
+            column: util.getArg(mapping, 'generatedColumn', null),
+            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+          });
+
+          mapping = this._originalMappings[++index];
+        }
+      } else {
+        var originalColumn = mapping.originalColumn;
+
+        // Iterate until either we run out of mappings, or we run into
+        // a mapping for a different line than the one we were searching for.
+        // Since mappings are sorted, this is guaranteed to find all mappings for
+        // the line we are searching for.
+        while (mapping &&
+               mapping.originalLine === line &&
+               mapping.originalColumn == originalColumn) {
+          mappings.push({
+            line: util.getArg(mapping, 'generatedLine', null),
+            column: util.getArg(mapping, 'generatedColumn', null),
+            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+          });
+
+          mapping = this._originalMappings[++index];
+        }
+      }
+    }
+
+    return mappings;
+  };
+
+exports.SourceMapConsumer = SourceMapConsumer;
+
+/**
+ * A BasicSourceMapConsumer instance represents a parsed source map which we can
+ * query for information about the original file positions by giving it a file
+ * position in the generated source.
+ *
+ * The only parameter is the raw source map (either as a JSON string, or
+ * already parsed to an object). According to the spec, source maps have the
+ * following attributes:
+ *
+ *   - version: Which version of the source map spec this map is following.
+ *   - sources: An array of URLs to the original source files.
+ *   - names: An array of identifiers which can be referrenced by individual mappings.
+ *   - sourceRoot: Optional. The URL root from which all sources are relative.
+ *   - sourcesContent: Optional. An array of contents of the original source files.
+ *   - mappings: A string of base64 VLQs which contain the actual mappings.
+ *   - file: Optional. The generated file this source map is associated with.
+ *
+ * Here is an example source map, taken from the source map spec[0]:
+ *
+ *     {
+ *       version : 3,
+ *       file: "out.js",
+ *       sourceRoot : "",
+ *       sources: ["foo.js", "bar.js"],
+ *       names: ["src", "maps", "are", "fun"],
+ *       mappings: "AA,AB;;ABCDE;"
+ *     }
+ *
+ * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
+ */
+function BasicSourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ''));
+  }
+
+  var version = util.getArg(sourceMap, 'version');
+  var sources = util.getArg(sourceMap, 'sources');
+  // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
+  // requires the array) to play nice here.
+  var names = util.getArg(sourceMap, 'names', []);
+  var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
+  var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
+  var mappings = util.getArg(sourceMap, 'mappings');
+  var file = util.getArg(sourceMap, 'file', null);
+
+  // Once again, Sass deviates from the spec and supplies the version as a
+  // string rather than a number, so we use loose equality checking here.
+  if (version != this._version) {
+    throw new Error('Unsupported version: ' + version);
+  }
+
+  sources = sources
+    .map(String)
+    // Some source maps produce relative source paths like "./foo.js" instead of
+    // "foo.js".  Normalize these first so that future comparisons will succeed.
+    // See bugzil.la/1090768.
+    .map(util.normalize)
+    // Always ensure that absolute sources are internally stored relative to
+    // the source root, if the source root is absolute. Not doing this would
+    // be particularly problematic when the source root is a prefix of the
+    // source (valid, but why??). See github issue #199 and bugzil.la/1188982.
+    .map(function (source) {
+      return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source)
+        ? util.relative(sourceRoot, source)
+        : source;
+    });
+
+  // Pass `true` below to allow duplicate names and sources. While source maps
+  // are intended to be compressed and deduplicated, the TypeScript compiler
+  // sometimes generates source maps with duplicates in them. See Github issue
+  // #72 and bugzil.la/889492.
+  this._names = ArraySet.fromArray(names.map(String), true);
+  this._sources = ArraySet.fromArray(sources, true);
+
+  this.sourceRoot = sourceRoot;
+  this.sourcesContent = sourcesContent;
+  this._mappings = mappings;
+  this.file = file;
+}
+
+BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
+
+/**
+ * Create a BasicSourceMapConsumer from a SourceMapGenerator.
+ *
+ * @param SourceMapGenerator aSourceMap
+ *        The source map that will be consumed.
+ * @returns BasicSourceMapConsumer
+ */
+BasicSourceMapConsumer.fromSourceMap =
+  function SourceMapConsumer_fromSourceMap(aSourceMap) {
+    var smc = Object.create(BasicSourceMapConsumer.prototype);
+
+    var names = smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
+    var sources = smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
+    smc.sourceRoot = aSourceMap._sourceRoot;
+    smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
+                                                            smc.sourceRoot);
+    smc.file = aSourceMap._file;
+
+    // Because we are modifying the entries (by converting string sources and
+    // names to indices into the sources and names ArraySets), we have to make
+    // a copy of the entry or else bad things happen. Shared mutable state
+    // strikes again! See github issue #191.
+
+    var generatedMappings = aSourceMap._mappings.toArray().slice();
+    var destGeneratedMappings = smc.__generatedMappings = [];
+    var destOriginalMappings = smc.__originalMappings = [];
+
+    for (var i = 0, length = generatedMappings.length; i < length; i++) {
+      var srcMapping = generatedMappings[i];
+      var destMapping = new Mapping;
+      destMapping.generatedLine = srcMapping.generatedLine;
+      destMapping.generatedColumn = srcMapping.generatedColumn;
+
+      if (srcMapping.source) {
+        destMapping.source = sources.indexOf(srcMapping.source);
+        destMapping.originalLine = srcMapping.originalLine;
+        destMapping.originalColumn = srcMapping.originalColumn;
+
+        if (srcMapping.name) {
+          destMapping.name = names.indexOf(srcMapping.name);
+        }
+
+        destOriginalMappings.push(destMapping);
+      }
+
+      destGeneratedMappings.push(destMapping);
+    }
+
+    quickSort(smc.__originalMappings, util.compareByOriginalPositions);
+
+    return smc;
+  };
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+BasicSourceMapConsumer.prototype._version = 3;
+
+/**
+ * The list of original sources.
+ */
+Object.defineProperty(BasicSourceMapConsumer.prototype, 'sources', {
+  get: function () {
+    return this._sources.toArray().map(function (s) {
+      return this.sourceRoot != null ? util.join(this.sourceRoot, s) : s;
+    }, this);
+  }
+});
+
+/**
+ * Provide the JIT with a nice shape / hidden class.
+ */
+function Mapping() {
+  this.generatedLine = 0;
+  this.generatedColumn = 0;
+  this.source = null;
+  this.originalLine = null;
+  this.originalColumn = null;
+  this.name = null;
+}
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+BasicSourceMapConsumer.prototype._parseMappings =
+  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    var generatedLine = 1;
+    var previousGeneratedColumn = 0;
+    var previousOriginalLine = 0;
+    var previousOriginalColumn = 0;
+    var previousSource = 0;
+    var previousName = 0;
+    var length = aStr.length;
+    var index = 0;
+    var cachedSegments = {};
+    var temp = {};
+    var originalMappings = [];
+    var generatedMappings = [];
+    var mapping, str, segment, end, value;
+
+    while (index < length) {
+      if (aStr.charAt(index) === ';') {
+        generatedLine++;
+        index++;
+        previousGeneratedColumn = 0;
+      }
+      else if (aStr.charAt(index) === ',') {
+        index++;
+      }
+      else {
+        mapping = new Mapping();
+        mapping.generatedLine = generatedLine;
+
+        // Because each offset is encoded relative to the previous one,
+        // many segments often have the same encoding. We can exploit this
+        // fact by caching the parsed variable length fields of each segment,
+        // allowing us to avoid a second parse if we encounter the same
+        // segment again.
+        for (end = index; end < length; end++) {
+          if (this._charIsMappingSeparator(aStr, end)) {
+            break;
+          }
+        }
+        str = aStr.slice(index, end);
+
+        segment = cachedSegments[str];
+        if (segment) {
+          index += str.length;
+        } else {
+          segment = [];
+          while (index < end) {
+            base64VLQ.decode(aStr, index, temp);
+            value = temp.value;
+            index = temp.rest;
+            segment.push(value);
+          }
+
+          if (segment.length === 2) {
+            throw new Error('Found a source, but no line and column');
+          }
+
+          if (segment.length === 3) {
+            throw new Error('Found a source and line, but no column');
+          }
+
+          cachedSegments[str] = segment;
+        }
+
+        // Generated column.
+        mapping.generatedColumn = previousGeneratedColumn + segment[0];
+        previousGeneratedColumn = mapping.generatedColumn;
+
+        if (segment.length > 1) {
+          // Original source.
+          mapping.source = previousSource + segment[1];
+          previousSource += segment[1];
+
+          // Original line.
+          mapping.originalLine = previousOriginalLine + segment[2];
+          previousOriginalLine = mapping.originalLine;
+          // Lines are stored 0-based
+          mapping.originalLine += 1;
+
+          // Original column.
+          mapping.originalColumn = previousOriginalColumn + segment[3];
+          previousOriginalColumn = mapping.originalColumn;
+
+          if (segment.length > 4) {
+            // Original name.
+            mapping.name = previousName + segment[4];
+            previousName += segment[4];
+          }
+        }
+
+        generatedMappings.push(mapping);
+        if (typeof mapping.originalLine === 'number') {
+          originalMappings.push(mapping);
+        }
+      }
+    }
+
+    quickSort(generatedMappings, util.compareByGeneratedPositionsDeflated);
+    this.__generatedMappings = generatedMappings;
+
+    quickSort(originalMappings, util.compareByOriginalPositions);
+    this.__originalMappings = originalMappings;
+  };
+
+/**
+ * Find the mapping that best matches the hypothetical "needle" mapping that
+ * we are searching for in the given "haystack" of mappings.
+ */
+BasicSourceMapConsumer.prototype._findMapping =
+  function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
+                                         aColumnName, aComparator, aBias) {
+    // To return the position we are searching for, we must first find the
+    // mapping for the given position and then return the opposite position it
+    // points to. Because the mappings are sorted, we can use binary search to
+    // find the best mapping.
+
+    if (aNeedle[aLineName] <= 0) {
+      throw new TypeError('Line must be greater than or equal to 1, got '
+                          + aNeedle[aLineName]);
+    }
+    if (aNeedle[aColumnName] < 0) {
+      throw new TypeError('Column must be greater than or equal to 0, got '
+                          + aNeedle[aColumnName]);
+    }
+
+    return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
+  };
+
+/**
+ * Compute the last column for each generated mapping. The last column is
+ * inclusive.
+ */
+BasicSourceMapConsumer.prototype.computeColumnSpans =
+  function SourceMapConsumer_computeColumnSpans() {
+    for (var index = 0; index < this._generatedMappings.length; ++index) {
+      var mapping = this._generatedMappings[index];
+
+      // Mappings do not contain a field for the last generated columnt. We
+      // can come up with an optimistic estimate, however, by assuming that
+      // mappings are contiguous (i.e. given two consecutive mappings, the
+      // first mapping ends where the second one starts).
+      if (index + 1 < this._generatedMappings.length) {
+        var nextMapping = this._generatedMappings[index + 1];
+
+        if (mapping.generatedLine === nextMapping.generatedLine) {
+          mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
+          continue;
+        }
+      }
+
+      // The last mapping for each line spans the entire line.
+      mapping.lastGeneratedColumn = Infinity;
+    }
+  };
+
+/**
+ * Returns the original source, line, and column information for the generated
+ * source's line and column positions provided. The only argument is an object
+ * with the following properties:
+ *
+ *   - line: The line number in the generated source.
+ *   - column: The column number in the generated source.
+ *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+ *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - source: The original source file, or null.
+ *   - line: The line number in the original source, or null.
+ *   - column: The column number in the original source, or null.
+ *   - name: The original identifier, or null.
+ */
+BasicSourceMapConsumer.prototype.originalPositionFor =
+  function SourceMapConsumer_originalPositionFor(aArgs) {
+    var needle = {
+      generatedLine: util.getArg(aArgs, 'line'),
+      generatedColumn: util.getArg(aArgs, 'column')
+    };
+
+    var index = this._findMapping(
+      needle,
+      this._generatedMappings,
+      "generatedLine",
+      "generatedColumn",
+      util.compareByGeneratedPositionsDeflated,
+      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+    );
+
+    if (index >= 0) {
+      var mapping = this._generatedMappings[index];
+
+      if (mapping.generatedLine === needle.generatedLine) {
+        var source = util.getArg(mapping, 'source', null);
+        if (source !== null) {
+          source = this._sources.at(source);
+          if (this.sourceRoot != null) {
+            source = util.join(this.sourceRoot, source);
+          }
+        }
+        var name = util.getArg(mapping, 'name', null);
+        if (name !== null) {
+          name = this._names.at(name);
+        }
+        return {
+          source: source,
+          line: util.getArg(mapping, 'originalLine', null),
+          column: util.getArg(mapping, 'originalColumn', null),
+          name: name
+        };
+      }
+    }
+
+    return {
+      source: null,
+      line: null,
+      column: null,
+      name: null
+    };
+  };
+
+/**
+ * Return true if we have the source content for every source in the source
+ * map, false otherwise.
+ */
+BasicSourceMapConsumer.prototype.hasContentsOfAllSources =
+  function BasicSourceMapConsumer_hasContentsOfAllSources() {
+    if (!this.sourcesContent) {
+      return false;
+    }
+    return this.sourcesContent.length >= this._sources.size() &&
+      !this.sourcesContent.some(function (sc) { return sc == null; });
+  };
+
+/**
+ * Returns the original source content. The only argument is the url of the
+ * original source file. Returns null if no original source content is
+ * available.
+ */
+BasicSourceMapConsumer.prototype.sourceContentFor =
+  function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+    if (!this.sourcesContent) {
+      return null;
+    }
+
+    if (this.sourceRoot != null) {
+      aSource = util.relative(this.sourceRoot, aSource);
+    }
+
+    if (this._sources.has(aSource)) {
+      return this.sourcesContent[this._sources.indexOf(aSource)];
+    }
+
+    var url;
+    if (this.sourceRoot != null
+        && (url = util.urlParse(this.sourceRoot))) {
+      // XXX: file:// URIs and absolute paths lead to unexpected behavior for
+      // many users. We can help them out when they expect file:// URIs to
+      // behave like it would if they were running a local HTTP server. See
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
+      var fileUriAbsPath = aSource.replace(/^file:\/\//, "");
+      if (url.scheme == "file"
+          && this._sources.has(fileUriAbsPath)) {
+        return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
+      }
+
+      if ((!url.path || url.path == "/")
+          && this._sources.has("/" + aSource)) {
+        return this.sourcesContent[this._sources.indexOf("/" + aSource)];
+      }
+    }
+
+    // This function is used recursively from
+    // IndexedSourceMapConsumer.prototype.sourceContentFor. In that case, we
+    // don't want to throw if we can't find the source - we just want to
+    // return null, so we provide a flag to exit gracefully.
+    if (nullOnMissing) {
+      return null;
+    }
+    else {
+      throw new Error('"' + aSource + '" is not in the SourceMap.');
+    }
+  };
+
+/**
+ * Returns the generated line and column information for the original source,
+ * line, and column positions provided. The only argument is an object with
+ * the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.
+ *   - column: The column number in the original source.
+ *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+ *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.
+ *   - column: The column number in the generated source, or null.
+ */
+BasicSourceMapConsumer.prototype.generatedPositionFor =
+  function SourceMapConsumer_generatedPositionFor(aArgs) {
+    var source = util.getArg(aArgs, 'source');
+    if (this.sourceRoot != null) {
+      source = util.relative(this.sourceRoot, source);
+    }
+    if (!this._sources.has(source)) {
+      return {
+        line: null,
+        column: null,
+        lastColumn: null
+      };
+    }
+    source = this._sources.indexOf(source);
+
+    var needle = {
+      source: source,
+      originalLine: util.getArg(aArgs, 'line'),
+      originalColumn: util.getArg(aArgs, 'column')
+    };
+
+    var index = this._findMapping(
+      needle,
+      this._originalMappings,
+      "originalLine",
+      "originalColumn",
+      util.compareByOriginalPositions,
+      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+    );
+
+    if (index >= 0) {
+      var mapping = this._originalMappings[index];
+
+      if (mapping.source === needle.source) {
+        return {
+          line: util.getArg(mapping, 'generatedLine', null),
+          column: util.getArg(mapping, 'generatedColumn', null),
+          lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+        };
+      }
+    }
+
+    return {
+      line: null,
+      column: null,
+      lastColumn: null
+    };
+  };
+
+exports.BasicSourceMapConsumer = BasicSourceMapConsumer;
+
+/**
+ * An IndexedSourceMapConsumer instance represents a parsed source map which
+ * we can query for information. It differs from BasicSourceMapConsumer in
+ * that it takes "indexed" source maps (i.e. ones with a "sections" field) as
+ * input.
+ *
+ * The only parameter is a raw source map (either as a JSON string, or already
+ * parsed to an object). According to the spec for indexed source maps, they
+ * have the following attributes:
+ *
+ *   - version: Which version of the source map spec this map is following.
+ *   - file: Optional. The generated file this source map is associated with.
+ *   - sections: A list of section definitions.
+ *
+ * Each value under the "sections" field has two fields:
+ *   - offset: The offset into the original specified at which this section
+ *       begins to apply, defined as an object with a "line" and "column"
+ *       field.
+ *   - map: A source map definition. This source map could also be indexed,
+ *       but doesn't have to be.
+ *
+ * Instead of the "map" field, it's also possible to have a "url" field
+ * specifying a URL to retrieve a source map from, but that's currently
+ * unsupported.
+ *
+ * Here's an example source map, taken from the source map spec[0], but
+ * modified to omit a section which uses the "url" field.
+ *
+ *  {
+ *    version : 3,
+ *    file: "app.js",
+ *    sections: [{
+ *      offset: {line:100, column:10},
+ *      map: {
+ *        version : 3,
+ *        file: "section.js",
+ *        sources: ["foo.js", "bar.js"],
+ *        names: ["src", "maps", "are", "fun"],
+ *        mappings: "AAAA,E;;ABCDE;"
+ *      }
+ *    }],
+ *  }
+ *
+ * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.535es3xeprgt
+ */
+function IndexedSourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ''));
+  }
+
+  var version = util.getArg(sourceMap, 'version');
+  var sections = util.getArg(sourceMap, 'sections');
+
+  if (version != this._version) {
+    throw new Error('Unsupported version: ' + version);
+  }
+
+  this._sources = new ArraySet();
+  this._names = new ArraySet();
+
+  var lastOffset = {
+    line: -1,
+    column: 0
+  };
+  this._sections = sections.map(function (s) {
+    if (s.url) {
+      // The url field will require support for asynchronicity.
+      // See https://github.com/mozilla/source-map/issues/16
+      throw new Error('Support for url field in sections not implemented.');
+    }
+    var offset = util.getArg(s, 'offset');
+    var offsetLine = util.getArg(offset, 'line');
+    var offsetColumn = util.getArg(offset, 'column');
+
+    if (offsetLine < lastOffset.line ||
+        (offsetLine === lastOffset.line && offsetColumn < lastOffset.column)) {
+      throw new Error('Section offsets must be ordered and non-overlapping.');
+    }
+    lastOffset = offset;
+
+    return {
+      generatedOffset: {
+        // The offset fields are 0-based, but we use 1-based indices when
+        // encoding/decoding from VLQ.
+        generatedLine: offsetLine + 1,
+        generatedColumn: offsetColumn + 1
+      },
+      consumer: new SourceMapConsumer(util.getArg(s, 'map'))
+    }
+  });
+}
+
+IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+IndexedSourceMapConsumer.prototype._version = 3;
+
+/**
+ * The list of original sources.
+ */
+Object.defineProperty(IndexedSourceMapConsumer.prototype, 'sources', {
+  get: function () {
+    var sources = [];
+    for (var i = 0; i < this._sections.length; i++) {
+      for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
+        sources.push(this._sections[i].consumer.sources[j]);
+      }
+    }
+    return sources;
+  }
+});
+
+/**
+ * Returns the original source, line, and column information for the generated
+ * source's line and column positions provided. The only argument is an object
+ * with the following properties:
+ *
+ *   - line: The line number in the generated source.
+ *   - column: The column number in the generated source.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - source: The original source file, or null.
+ *   - line: The line number in the original source, or null.
+ *   - column: The column number in the original source, or null.
+ *   - name: The original identifier, or null.
+ */
+IndexedSourceMapConsumer.prototype.originalPositionFor =
+  function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
+    var needle = {
+      generatedLine: util.getArg(aArgs, 'line'),
+      generatedColumn: util.getArg(aArgs, 'column')
+    };
+
+    // Find the section containing the generated position we're trying to map
+    // to an original position.
+    var sectionIndex = binarySearch.search(needle, this._sections,
+      function(needle, section) {
+        var cmp = needle.generatedLine - section.generatedOffset.generatedLine;
+        if (cmp) {
+          return cmp;
+        }
+
+        return (needle.generatedColumn -
+                section.generatedOffset.generatedColumn);
+      });
+    var section = this._sections[sectionIndex];
+
+    if (!section) {
+      return {
+        source: null,
+        line: null,
+        column: null,
+        name: null
+      };
+    }
+
+    return section.consumer.originalPositionFor({
+      line: needle.generatedLine -
+        (section.generatedOffset.generatedLine - 1),
+      column: needle.generatedColumn -
+        (section.generatedOffset.generatedLine === needle.generatedLine
+         ? section.generatedOffset.generatedColumn - 1
+         : 0),
+      bias: aArgs.bias
+    });
+  };
+
+/**
+ * Return true if we have the source content for every source in the source
+ * map, false otherwise.
+ */
+IndexedSourceMapConsumer.prototype.hasContentsOfAllSources =
+  function IndexedSourceMapConsumer_hasContentsOfAllSources() {
+    return this._sections.every(function (s) {
+      return s.consumer.hasContentsOfAllSources();
+    });
+  };
+
+/**
+ * Returns the original source content. The only argument is the url of the
+ * original source file. Returns null if no original source content is
+ * available.
+ */
+IndexedSourceMapConsumer.prototype.sourceContentFor =
+  function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+
+      var content = section.consumer.sourceContentFor(aSource, true);
+      if (content) {
+        return content;
+      }
+    }
+    if (nullOnMissing) {
+      return null;
+    }
+    else {
+      throw new Error('"' + aSource + '" is not in the SourceMap.');
+    }
+  };
+
+/**
+ * Returns the generated line and column information for the original source,
+ * line, and column positions provided. The only argument is an object with
+ * the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.
+ *   - column: The column number in the original source.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.
+ *   - column: The column number in the generated source, or null.
+ */
+IndexedSourceMapConsumer.prototype.generatedPositionFor =
+  function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+
+      // Only consider this section if the requested source is in the list of
+      // sources of the consumer.
+      if (section.consumer.sources.indexOf(util.getArg(aArgs, 'source')) === -1) {
+        continue;
+      }
+      var generatedPosition = section.consumer.generatedPositionFor(aArgs);
+      if (generatedPosition) {
+        var ret = {
+          line: generatedPosition.line +
+            (section.generatedOffset.generatedLine - 1),
+          column: generatedPosition.column +
+            (section.generatedOffset.generatedLine === generatedPosition.line
+             ? section.generatedOffset.generatedColumn - 1
+             : 0)
+        };
+        return ret;
+      }
+    }
+
+    return {
+      line: null,
+      column: null
+    };
+  };
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+IndexedSourceMapConsumer.prototype._parseMappings =
+  function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    this.__generatedMappings = [];
+    this.__originalMappings = [];
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+      var sectionMappings = section.consumer._generatedMappings;
+      for (var j = 0; j < sectionMappings.length; j++) {
+        var mapping = sectionMappings[j];
+
+        var source = section.consumer._sources.at(mapping.source);
+        if (section.consumer.sourceRoot !== null) {
+          source = util.join(section.consumer.sourceRoot, source);
+        }
+        this._sources.add(source);
+        source = this._sources.indexOf(source);
+
+        var name = section.consumer._names.at(mapping.name);
+        this._names.add(name);
+        name = this._names.indexOf(name);
+
+        // The mappings coming from the consumer for the section have
+        // generated positions relative to the start of the section, so we
+        // need to offset them to be relative to the start of the concatenated
+        // generated file.
+        var adjustedMapping = {
+          source: source,
+          generatedLine: mapping.generatedLine +
+            (section.generatedOffset.generatedLine - 1),
+          generatedColumn: mapping.generatedColumn +
+            (section.generatedOffset.generatedLine === mapping.generatedLine
+            ? section.generatedOffset.generatedColumn - 1
+            : 0),
+          originalLine: mapping.originalLine,
+          originalColumn: mapping.originalColumn,
+          name: name
+        };
+
+        this.__generatedMappings.push(adjustedMapping);
+        if (typeof adjustedMapping.originalLine === 'number') {
+          this.__originalMappings.push(adjustedMapping);
+        }
+      }
+    }
+
+    quickSort(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
+    quickSort(this.__originalMappings, util.compareByOriginalPositions);
+  };
+
+exports.IndexedSourceMapConsumer = IndexedSourceMapConsumer;
+
+},{"./array-set":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js","./base64-vlq":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\base64-vlq.js","./binary-search":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\binary-search.js","./quick-sort":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\quick-sort.js","./util":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var base64VLQ = require('./base64-vlq');
+var util = require('./util');
+var ArraySet = require('./array-set').ArraySet;
+var MappingList = require('./mapping-list').MappingList;
+
+/**
+ * An instance of the SourceMapGenerator represents a source map which is
+ * being built incrementally. You may pass an object with the following
+ * properties:
+ *
+ *   - file: The filename of the generated source.
+ *   - sourceRoot: A root for all relative URLs in this source map.
+ */
+function SourceMapGenerator(aArgs) {
+  if (!aArgs) {
+    aArgs = {};
+  }
+  this._file = util.getArg(aArgs, 'file', null);
+  this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
+  this._skipValidation = util.getArg(aArgs, 'skipValidation', false);
+  this._sources = new ArraySet();
+  this._names = new ArraySet();
+  this._mappings = new MappingList();
+  this._sourcesContents = null;
+}
+
+SourceMapGenerator.prototype._version = 3;
+
+/**
+ * Creates a new SourceMapGenerator based on a SourceMapConsumer
+ *
+ * @param aSourceMapConsumer The SourceMap.
+ */
+SourceMapGenerator.fromSourceMap =
+  function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
+    var sourceRoot = aSourceMapConsumer.sourceRoot;
+    var generator = new SourceMapGenerator({
+      file: aSourceMapConsumer.file,
+      sourceRoot: sourceRoot
+    });
+    aSourceMapConsumer.eachMapping(function (mapping) {
+      var newMapping = {
+        generated: {
+          line: mapping.generatedLine,
+          column: mapping.generatedColumn
+        }
+      };
+
+      if (mapping.source != null) {
+        newMapping.source = mapping.source;
+        if (sourceRoot != null) {
+          newMapping.source = util.relative(sourceRoot, newMapping.source);
+        }
+
+        newMapping.original = {
+          line: mapping.originalLine,
+          column: mapping.originalColumn
+        };
+
+        if (mapping.name != null) {
+          newMapping.name = mapping.name;
+        }
+      }
+
+      generator.addMapping(newMapping);
+    });
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        generator.setSourceContent(sourceFile, content);
+      }
+    });
+    return generator;
+  };
+
+/**
+ * Add a single mapping from original source line and column to the generated
+ * source's line and column for this source map being created. The mapping
+ * object should have the following properties:
+ *
+ *   - generated: An object with the generated line and column positions.
+ *   - original: An object with the original line and column positions.
+ *   - source: The original source file (relative to the sourceRoot).
+ *   - name: An optional original token name for this mapping.
+ */
+SourceMapGenerator.prototype.addMapping =
+  function SourceMapGenerator_addMapping(aArgs) {
+    var generated = util.getArg(aArgs, 'generated');
+    var original = util.getArg(aArgs, 'original', null);
+    var source = util.getArg(aArgs, 'source', null);
+    var name = util.getArg(aArgs, 'name', null);
+
+    if (!this._skipValidation) {
+      this._validateMapping(generated, original, source, name);
+    }
+
+    if (source != null) {
+      source = String(source);
+      if (!this._sources.has(source)) {
+        this._sources.add(source);
+      }
+    }
+
+    if (name != null) {
+      name = String(name);
+      if (!this._names.has(name)) {
+        this._names.add(name);
+      }
+    }
+
+    this._mappings.add({
+      generatedLine: generated.line,
+      generatedColumn: generated.column,
+      originalLine: original != null && original.line,
+      originalColumn: original != null && original.column,
+      source: source,
+      name: name
+    });
+  };
+
+/**
+ * Set the source content for a source file.
+ */
+SourceMapGenerator.prototype.setSourceContent =
+  function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
+    var source = aSourceFile;
+    if (this._sourceRoot != null) {
+      source = util.relative(this._sourceRoot, source);
+    }
+
+    if (aSourceContent != null) {
+      // Add the source content to the _sourcesContents map.
+      // Create a new _sourcesContents map if the property is null.
+      if (!this._sourcesContents) {
+        this._sourcesContents = Object.create(null);
+      }
+      this._sourcesContents[util.toSetString(source)] = aSourceContent;
+    } else if (this._sourcesContents) {
+      // Remove the source file from the _sourcesContents map.
+      // If the _sourcesContents map is empty, set the property to null.
+      delete this._sourcesContents[util.toSetString(source)];
+      if (Object.keys(this._sourcesContents).length === 0) {
+        this._sourcesContents = null;
+      }
+    }
+  };
+
+/**
+ * Applies the mappings of a sub-source-map for a specific source file to the
+ * source map being generated. Each mapping to the supplied source file is
+ * rewritten using the supplied source map. Note: The resolution for the
+ * resulting mappings is the minimium of this map and the supplied map.
+ *
+ * @param aSourceMapConsumer The source map to be applied.
+ * @param aSourceFile Optional. The filename of the source file.
+ *        If omitted, SourceMapConsumer's file property will be used.
+ * @param aSourceMapPath Optional. The dirname of the path to the source map
+ *        to be applied. If relative, it is relative to the SourceMapConsumer.
+ *        This parameter is needed when the two source maps aren't in the same
+ *        directory, and the source map to be applied contains relative source
+ *        paths. If so, those relative source paths need to be rewritten
+ *        relative to the SourceMapGenerator.
+ */
+SourceMapGenerator.prototype.applySourceMap =
+  function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
+    var sourceFile = aSourceFile;
+    // If aSourceFile is omitted, we will use the file property of the SourceMap
+    if (aSourceFile == null) {
+      if (aSourceMapConsumer.file == null) {
+        throw new Error(
+          'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
+          'or the source map\'s "file" property. Both were omitted.'
+        );
+      }
+      sourceFile = aSourceMapConsumer.file;
+    }
+    var sourceRoot = this._sourceRoot;
+    // Make "sourceFile" relative if an absolute Url is passed.
+    if (sourceRoot != null) {
+      sourceFile = util.relative(sourceRoot, sourceFile);
+    }
+    // Applying the SourceMap can add and remove items from the sources and
+    // the names array.
+    var newSources = new ArraySet();
+    var newNames = new ArraySet();
+
+    // Find mappings for the "sourceFile"
+    this._mappings.unsortedForEach(function (mapping) {
+      if (mapping.source === sourceFile && mapping.originalLine != null) {
+        // Check if it can be mapped by the source map, then update the mapping.
+        var original = aSourceMapConsumer.originalPositionFor({
+          line: mapping.originalLine,
+          column: mapping.originalColumn
+        });
+        if (original.source != null) {
+          // Copy mapping
+          mapping.source = original.source;
+          if (aSourceMapPath != null) {
+            mapping.source = util.join(aSourceMapPath, mapping.source)
+          }
+          if (sourceRoot != null) {
+            mapping.source = util.relative(sourceRoot, mapping.source);
+          }
+          mapping.originalLine = original.line;
+          mapping.originalColumn = original.column;
+          if (original.name != null) {
+            mapping.name = original.name;
+          }
+        }
+      }
+
+      var source = mapping.source;
+      if (source != null && !newSources.has(source)) {
+        newSources.add(source);
+      }
+
+      var name = mapping.name;
+      if (name != null && !newNames.has(name)) {
+        newNames.add(name);
+      }
+
+    }, this);
+    this._sources = newSources;
+    this._names = newNames;
+
+    // Copy sourcesContents of applied map.
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        if (aSourceMapPath != null) {
+          sourceFile = util.join(aSourceMapPath, sourceFile);
+        }
+        if (sourceRoot != null) {
+          sourceFile = util.relative(sourceRoot, sourceFile);
+        }
+        this.setSourceContent(sourceFile, content);
+      }
+    }, this);
+  };
+
+/**
+ * A mapping can have one of the three levels of data:
+ *
+ *   1. Just the generated position.
+ *   2. The Generated position, original position, and original source.
+ *   3. Generated and original position, original source, as well as a name
+ *      token.
+ *
+ * To maintain consistency, we validate that any new mapping being added falls
+ * in to one of these categories.
+ */
+SourceMapGenerator.prototype._validateMapping =
+  function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
+                                              aName) {
+    // When aOriginal is truthy but has empty values for .line and .column,
+    // it is most likely a programmer error. In this case we throw a very
+    // specific error message to try to guide them the right way.
+    // For example: https://github.com/Polymer/polymer-bundler/pull/519
+    if (aOriginal && typeof aOriginal.line !== 'number' && typeof aOriginal.column !== 'number') {
+        throw new Error(
+            'original.line and original.column are not numbers -- you probably meant to omit ' +
+            'the original mapping entirely and only map the generated position. If so, pass ' +
+            'null for the original mapping instead of an object with empty or null values.'
+        );
+    }
+
+    if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+        && aGenerated.line > 0 && aGenerated.column >= 0
+        && !aOriginal && !aSource && !aName) {
+      // Case 1.
+      return;
+    }
+    else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+             && aOriginal && 'line' in aOriginal && 'column' in aOriginal
+             && aGenerated.line > 0 && aGenerated.column >= 0
+             && aOriginal.line > 0 && aOriginal.column >= 0
+             && aSource) {
+      // Cases 2 and 3.
+      return;
+    }
+    else {
+      throw new Error('Invalid mapping: ' + JSON.stringify({
+        generated: aGenerated,
+        source: aSource,
+        original: aOriginal,
+        name: aName
+      }));
+    }
+  };
+
+/**
+ * Serialize the accumulated mappings in to the stream of base 64 VLQs
+ * specified by the source map format.
+ */
+SourceMapGenerator.prototype._serializeMappings =
+  function SourceMapGenerator_serializeMappings() {
+    var previousGeneratedColumn = 0;
+    var previousGeneratedLine = 1;
+    var previousOriginalColumn = 0;
+    var previousOriginalLine = 0;
+    var previousName = 0;
+    var previousSource = 0;
+    var result = '';
+    var next;
+    var mapping;
+    var nameIdx;
+    var sourceIdx;
+
+    var mappings = this._mappings.toArray();
+    for (var i = 0, len = mappings.length; i < len; i++) {
+      mapping = mappings[i];
+      next = ''
+
+      if (mapping.generatedLine !== previousGeneratedLine) {
+        previousGeneratedColumn = 0;
+        while (mapping.generatedLine !== previousGeneratedLine) {
+          next += ';';
+          previousGeneratedLine++;
+        }
+      }
+      else {
+        if (i > 0) {
+          if (!util.compareByGeneratedPositionsInflated(mapping, mappings[i - 1])) {
+            continue;
+          }
+          next += ',';
+        }
+      }
+
+      next += base64VLQ.encode(mapping.generatedColumn
+                                 - previousGeneratedColumn);
+      previousGeneratedColumn = mapping.generatedColumn;
+
+      if (mapping.source != null) {
+        sourceIdx = this._sources.indexOf(mapping.source);
+        next += base64VLQ.encode(sourceIdx - previousSource);
+        previousSource = sourceIdx;
+
+        // lines are stored 0-based in SourceMap spec version 3
+        next += base64VLQ.encode(mapping.originalLine - 1
+                                   - previousOriginalLine);
+        previousOriginalLine = mapping.originalLine - 1;
+
+        next += base64VLQ.encode(mapping.originalColumn
+                                   - previousOriginalColumn);
+        previousOriginalColumn = mapping.originalColumn;
+
+        if (mapping.name != null) {
+          nameIdx = this._names.indexOf(mapping.name);
+          next += base64VLQ.encode(nameIdx - previousName);
+          previousName = nameIdx;
+        }
+      }
+
+      result += next;
+    }
+
+    return result;
+  };
+
+SourceMapGenerator.prototype._generateSourcesContent =
+  function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
+    return aSources.map(function (source) {
+      if (!this._sourcesContents) {
+        return null;
+      }
+      if (aSourceRoot != null) {
+        source = util.relative(aSourceRoot, source);
+      }
+      var key = util.toSetString(source);
+      return Object.prototype.hasOwnProperty.call(this._sourcesContents, key)
+        ? this._sourcesContents[key]
+        : null;
+    }, this);
+  };
+
+/**
+ * Externalize the source map.
+ */
+SourceMapGenerator.prototype.toJSON =
+  function SourceMapGenerator_toJSON() {
+    var map = {
+      version: this._version,
+      sources: this._sources.toArray(),
+      names: this._names.toArray(),
+      mappings: this._serializeMappings()
+    };
+    if (this._file != null) {
+      map.file = this._file;
+    }
+    if (this._sourceRoot != null) {
+      map.sourceRoot = this._sourceRoot;
+    }
+    if (this._sourcesContents) {
+      map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
+    }
+
+    return map;
+  };
+
+/**
+ * Render the source map being generated to a string.
+ */
+SourceMapGenerator.prototype.toString =
+  function SourceMapGenerator_toString() {
+    return JSON.stringify(this.toJSON());
+  };
+
+exports.SourceMapGenerator = SourceMapGenerator;
+
+},{"./array-set":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js","./base64-vlq":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\base64-vlq.js","./mapping-list":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\mapping-list.js","./util":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var SourceMapGenerator = require('./source-map-generator').SourceMapGenerator;
+var util = require('./util');
+
+// Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
+// operating systems these days (capturing the result).
+var REGEX_NEWLINE = /(\r?\n)/;
+
+// Newline character code for charCodeAt() comparisons
+var NEWLINE_CODE = 10;
+
+// Private symbol for identifying `SourceNode`s when multiple versions of
+// the source-map library are loaded. This MUST NOT CHANGE across
+// versions!
+var isSourceNode = "$$$isSourceNode$$$";
+
+/**
+ * SourceNodes provide a way to abstract over interpolating/concatenating
+ * snippets of generated JavaScript source code while maintaining the line and
+ * column information associated with the original source code.
+ *
+ * @param aLine The original line number.
+ * @param aColumn The original column number.
+ * @param aSource The original source's filename.
+ * @param aChunks Optional. An array of strings which are snippets of
+ *        generated JS, or other SourceNodes.
+ * @param aName The original identifier.
+ */
+function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
+  this.children = [];
+  this.sourceContents = {};
+  this.line = aLine == null ? null : aLine;
+  this.column = aColumn == null ? null : aColumn;
+  this.source = aSource == null ? null : aSource;
+  this.name = aName == null ? null : aName;
+  this[isSourceNode] = true;
+  if (aChunks != null) this.add(aChunks);
+}
+
+/**
+ * Creates a SourceNode from generated code and a SourceMapConsumer.
+ *
+ * @param aGeneratedCode The generated code
+ * @param aSourceMapConsumer The SourceMap for the generated code
+ * @param aRelativePath Optional. The path that relative sources in the
+ *        SourceMapConsumer should be relative to.
+ */
+SourceNode.fromStringWithSourceMap =
+  function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer, aRelativePath) {
+    // The SourceNode we want to fill with the generated code
+    // and the SourceMap
+    var node = new SourceNode();
+
+    // All even indices of this array are one line of the generated code,
+    // while all odd indices are the newlines between two adjacent lines
+    // (since `REGEX_NEWLINE` captures its match).
+    // Processed fragments are accessed by calling `shiftNextLine`.
+    var remainingLines = aGeneratedCode.split(REGEX_NEWLINE);
+    var remainingLinesIndex = 0;
+    var shiftNextLine = function() {
+      var lineContents = getNextLine();
+      // The last line of a file might not have a newline.
+      var newLine = getNextLine() || "";
+      return lineContents + newLine;
+
+      function getNextLine() {
+        return remainingLinesIndex < remainingLines.length ?
+            remainingLines[remainingLinesIndex++] : undefined;
+      }
+    };
+
+    // We need to remember the position of "remainingLines"
+    var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+
+    // The generate SourceNodes we need a code range.
+    // To extract it current and last mapping is used.
+    // Here we store the last mapping.
+    var lastMapping = null;
+
+    aSourceMapConsumer.eachMapping(function (mapping) {
+      if (lastMapping !== null) {
+        // We add the code from "lastMapping" to "mapping":
+        // First check if there is a new line in between.
+        if (lastGeneratedLine < mapping.generatedLine) {
+          // Associate first line with "lastMapping"
+          addMappingWithCode(lastMapping, shiftNextLine());
+          lastGeneratedLine++;
+          lastGeneratedColumn = 0;
+          // The remaining code is added without mapping
+        } else {
+          // There is no new line in between.
+          // Associate the code between "lastGeneratedColumn" and
+          // "mapping.generatedColumn" with "lastMapping"
+          var nextLine = remainingLines[remainingLinesIndex];
+          var code = nextLine.substr(0, mapping.generatedColumn -
+                                        lastGeneratedColumn);
+          remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn -
+                                              lastGeneratedColumn);
+          lastGeneratedColumn = mapping.generatedColumn;
+          addMappingWithCode(lastMapping, code);
+          // No more remaining code, continue
+          lastMapping = mapping;
+          return;
+        }
+      }
+      // We add the generated code until the first mapping
+      // to the SourceNode without any mapping.
+      // Each line is added as separate string.
+      while (lastGeneratedLine < mapping.generatedLine) {
+        node.add(shiftNextLine());
+        lastGeneratedLine++;
+      }
+      if (lastGeneratedColumn < mapping.generatedColumn) {
+        var nextLine = remainingLines[remainingLinesIndex];
+        node.add(nextLine.substr(0, mapping.generatedColumn));
+        remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn);
+        lastGeneratedColumn = mapping.generatedColumn;
+      }
+      lastMapping = mapping;
+    }, this);
+    // We have processed all mappings.
+    if (remainingLinesIndex < remainingLines.length) {
+      if (lastMapping) {
+        // Associate the remaining code in the current line with "lastMapping"
+        addMappingWithCode(lastMapping, shiftNextLine());
+      }
+      // and add the remaining lines without any mapping
+      node.add(remainingLines.splice(remainingLinesIndex).join(""));
+    }
+
+    // Copy sourcesContent into SourceNode
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        if (aRelativePath != null) {
+          sourceFile = util.join(aRelativePath, sourceFile);
+        }
+        node.setSourceContent(sourceFile, content);
+      }
+    });
+
+    return node;
+
+    function addMappingWithCode(mapping, code) {
+      if (mapping === null || mapping.source === undefined) {
+        node.add(code);
+      } else {
+        var source = aRelativePath
+          ? util.join(aRelativePath, mapping.source)
+          : mapping.source;
+        node.add(new SourceNode(mapping.originalLine,
+                                mapping.originalColumn,
+                                source,
+                                code,
+                                mapping.name));
+      }
+    }
+  };
+
+/**
+ * Add a chunk of generated JS to this source node.
+ *
+ * @param aChunk A string snippet of generated JS code, another instance of
+ *        SourceNode, or an array where each member is one of those things.
+ */
+SourceNode.prototype.add = function SourceNode_add(aChunk) {
+  if (Array.isArray(aChunk)) {
+    aChunk.forEach(function (chunk) {
+      this.add(chunk);
+    }, this);
+  }
+  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+    if (aChunk) {
+      this.children.push(aChunk);
+    }
+  }
+  else {
+    throw new TypeError(
+      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+    );
+  }
+  return this;
+};
+
+/**
+ * Add a chunk of generated JS to the beginning of this source node.
+ *
+ * @param aChunk A string snippet of generated JS code, another instance of
+ *        SourceNode, or an array where each member is one of those things.
+ */
+SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
+  if (Array.isArray(aChunk)) {
+    for (var i = aChunk.length-1; i >= 0; i--) {
+      this.prepend(aChunk[i]);
+    }
+  }
+  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+    this.children.unshift(aChunk);
+  }
+  else {
+    throw new TypeError(
+      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+    );
+  }
+  return this;
+};
+
+/**
+ * Walk over the tree of JS snippets in this node and its children. The
+ * walking function is called once for each snippet of JS and is passed that
+ * snippet and the its original associated source's line/column location.
+ *
+ * @param aFn The traversal function.
+ */
+SourceNode.prototype.walk = function SourceNode_walk(aFn) {
+  var chunk;
+  for (var i = 0, len = this.children.length; i < len; i++) {
+    chunk = this.children[i];
+    if (chunk[isSourceNode]) {
+      chunk.walk(aFn);
+    }
+    else {
+      if (chunk !== '') {
+        aFn(chunk, { source: this.source,
+                     line: this.line,
+                     column: this.column,
+                     name: this.name });
+      }
+    }
+  }
+};
+
+/**
+ * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
+ * each of `this.children`.
+ *
+ * @param aSep The separator.
+ */
+SourceNode.prototype.join = function SourceNode_join(aSep) {
+  var newChildren;
+  var i;
+  var len = this.children.length;
+  if (len > 0) {
+    newChildren = [];
+    for (i = 0; i < len-1; i++) {
+      newChildren.push(this.children[i]);
+      newChildren.push(aSep);
+    }
+    newChildren.push(this.children[i]);
+    this.children = newChildren;
+  }
+  return this;
+};
+
+/**
+ * Call String.prototype.replace on the very right-most source snippet. Useful
+ * for trimming whitespace from the end of a source node, etc.
+ *
+ * @param aPattern The pattern to replace.
+ * @param aReplacement The thing to replace the pattern with.
+ */
+SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
+  var lastChild = this.children[this.children.length - 1];
+  if (lastChild[isSourceNode]) {
+    lastChild.replaceRight(aPattern, aReplacement);
+  }
+  else if (typeof lastChild === 'string') {
+    this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
+  }
+  else {
+    this.children.push(''.replace(aPattern, aReplacement));
+  }
+  return this;
+};
+
+/**
+ * Set the source content for a source file. This will be added to the SourceMapGenerator
+ * in the sourcesContent field.
+ *
+ * @param aSourceFile The filename of the source file
+ * @param aSourceContent The content of the source file
+ */
+SourceNode.prototype.setSourceContent =
+  function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
+    this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
+  };
+
+/**
+ * Walk over the tree of SourceNodes. The walking function is called for each
+ * source file content and is passed the filename and source content.
+ *
+ * @param aFn The traversal function.
+ */
+SourceNode.prototype.walkSourceContents =
+  function SourceNode_walkSourceContents(aFn) {
+    for (var i = 0, len = this.children.length; i < len; i++) {
+      if (this.children[i][isSourceNode]) {
+        this.children[i].walkSourceContents(aFn);
+      }
+    }
+
+    var sources = Object.keys(this.sourceContents);
+    for (var i = 0, len = sources.length; i < len; i++) {
+      aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
+    }
+  };
+
+/**
+ * Return the string representation of this source node. Walks over the tree
+ * and concatenates all the various snippets together to one string.
+ */
+SourceNode.prototype.toString = function SourceNode_toString() {
+  var str = "";
+  this.walk(function (chunk) {
+    str += chunk;
+  });
+  return str;
+};
+
+/**
+ * Returns the string representation of this source node along with a source
+ * map.
+ */
+SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
+  var generated = {
+    code: "",
+    line: 1,
+    column: 0
+  };
+  var map = new SourceMapGenerator(aArgs);
+  var sourceMappingActive = false;
+  var lastOriginalSource = null;
+  var lastOriginalLine = null;
+  var lastOriginalColumn = null;
+  var lastOriginalName = null;
+  this.walk(function (chunk, original) {
+    generated.code += chunk;
+    if (original.source !== null
+        && original.line !== null
+        && original.column !== null) {
+      if(lastOriginalSource !== original.source
+         || lastOriginalLine !== original.line
+         || lastOriginalColumn !== original.column
+         || lastOriginalName !== original.name) {
+        map.addMapping({
+          source: original.source,
+          original: {
+            line: original.line,
+            column: original.column
+          },
+          generated: {
+            line: generated.line,
+            column: generated.column
+          },
+          name: original.name
+        });
+      }
+      lastOriginalSource = original.source;
+      lastOriginalLine = original.line;
+      lastOriginalColumn = original.column;
+      lastOriginalName = original.name;
+      sourceMappingActive = true;
+    } else if (sourceMappingActive) {
+      map.addMapping({
+        generated: {
+          line: generated.line,
+          column: generated.column
+        }
+      });
+      lastOriginalSource = null;
+      sourceMappingActive = false;
+    }
+    for (var idx = 0, length = chunk.length; idx < length; idx++) {
+      if (chunk.charCodeAt(idx) === NEWLINE_CODE) {
+        generated.line++;
+        generated.column = 0;
+        // Mappings end at eol
+        if (idx + 1 === length) {
+          lastOriginalSource = null;
+          sourceMappingActive = false;
+        } else if (sourceMappingActive) {
+          map.addMapping({
+            source: original.source,
+            original: {
+              line: original.line,
+              column: original.column
+            },
+            generated: {
+              line: generated.line,
+              column: generated.column
+            },
+            name: original.name
+          });
+        }
+      } else {
+        generated.column++;
+      }
+    }
+  });
+  this.walkSourceContents(function (sourceFile, sourceContent) {
+    map.setSourceContent(sourceFile, sourceContent);
+  });
+
+  return { code: generated.code, map: map };
+};
+
+exports.SourceNode = SourceNode;
+
+},{"./source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./util":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js"}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\util.js":[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+/**
+ * This is a helper function for getting values from parameter/options
+ * objects.
+ *
+ * @param args The object we are extracting values from
+ * @param name The name of the property we are getting.
+ * @param defaultValue An optional value to return if the property is missing
+ * from the object. If this is not specified and the property is missing, an
+ * error will be thrown.
+ */
+function getArg(aArgs, aName, aDefaultValue) {
+  if (aName in aArgs) {
+    return aArgs[aName];
+  } else if (arguments.length === 3) {
+    return aDefaultValue;
+  } else {
+    throw new Error('"' + aName + '" is a required argument.');
+  }
+}
+exports.getArg = getArg;
+
+var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.]*)(?::(\d+))?(\S*)$/;
+var dataUrlRegexp = /^data:.+\,.+$/;
+
+function urlParse(aUrl) {
+  var match = aUrl.match(urlRegexp);
+  if (!match) {
+    return null;
+  }
+  return {
+    scheme: match[1],
+    auth: match[2],
+    host: match[3],
+    port: match[4],
+    path: match[5]
+  };
+}
+exports.urlParse = urlParse;
+
+function urlGenerate(aParsedUrl) {
+  var url = '';
+  if (aParsedUrl.scheme) {
+    url += aParsedUrl.scheme + ':';
+  }
+  url += '//';
+  if (aParsedUrl.auth) {
+    url += aParsedUrl.auth + '@';
+  }
+  if (aParsedUrl.host) {
+    url += aParsedUrl.host;
+  }
+  if (aParsedUrl.port) {
+    url += ":" + aParsedUrl.port
+  }
+  if (aParsedUrl.path) {
+    url += aParsedUrl.path;
+  }
+  return url;
+}
+exports.urlGenerate = urlGenerate;
+
+/**
+ * Normalizes a path, or the path portion of a URL:
+ *
+ * - Replaces consecutive slashes with one slash.
+ * - Removes unnecessary '.' parts.
+ * - Removes unnecessary '<dir>/..' parts.
+ *
+ * Based on code in the Node.js 'path' core module.
+ *
+ * @param aPath The path or url to normalize.
+ */
+function normalize(aPath) {
+  var path = aPath;
+  var url = urlParse(aPath);
+  if (url) {
+    if (!url.path) {
+      return aPath;
+    }
+    path = url.path;
+  }
+  var isAbsolute = exports.isAbsolute(path);
+
+  var parts = path.split(/\/+/);
+  for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+    part = parts[i];
+    if (part === '.') {
+      parts.splice(i, 1);
+    } else if (part === '..') {
+      up++;
+    } else if (up > 0) {
+      if (part === '') {
+        // The first part is blank if the path is absolute. Trying to go
+        // above the root is a no-op. Therefore we can remove all '..' parts
+        // directly after the root.
+        parts.splice(i + 1, up);
+        up = 0;
+      } else {
+        parts.splice(i, 2);
+        up--;
+      }
+    }
+  }
+  path = parts.join('/');
+
+  if (path === '') {
+    path = isAbsolute ? '/' : '.';
+  }
+
+  if (url) {
+    url.path = path;
+    return urlGenerate(url);
+  }
+  return path;
+}
+exports.normalize = normalize;
+
+/**
+ * Joins two paths/URLs.
+ *
+ * @param aRoot The root path or URL.
+ * @param aPath The path or URL to be joined with the root.
+ *
+ * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
+ *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
+ *   first.
+ * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
+ *   is updated with the result and aRoot is returned. Otherwise the result
+ *   is returned.
+ *   - If aPath is absolute, the result is aPath.
+ *   - Otherwise the two paths are joined with a slash.
+ * - Joining for example 'http://' and 'www.example.com' is also supported.
+ */
+function join(aRoot, aPath) {
+  if (aRoot === "") {
+    aRoot = ".";
+  }
+  if (aPath === "") {
+    aPath = ".";
+  }
+  var aPathUrl = urlParse(aPath);
+  var aRootUrl = urlParse(aRoot);
+  if (aRootUrl) {
+    aRoot = aRootUrl.path || '/';
+  }
+
+  // `join(foo, '//www.example.org')`
+  if (aPathUrl && !aPathUrl.scheme) {
+    if (aRootUrl) {
+      aPathUrl.scheme = aRootUrl.scheme;
+    }
+    return urlGenerate(aPathUrl);
+  }
+
+  if (aPathUrl || aPath.match(dataUrlRegexp)) {
+    return aPath;
+  }
+
+  // `join('http://', 'www.example.com')`
+  if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+    aRootUrl.host = aPath;
+    return urlGenerate(aRootUrl);
+  }
+
+  var joined = aPath.charAt(0) === '/'
+    ? aPath
+    : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
+
+  if (aRootUrl) {
+    aRootUrl.path = joined;
+    return urlGenerate(aRootUrl);
+  }
+  return joined;
+}
+exports.join = join;
+
+exports.isAbsolute = function (aPath) {
+  return aPath.charAt(0) === '/' || !!aPath.match(urlRegexp);
+};
+
+/**
+ * Make a path relative to a URL or another path.
+ *
+ * @param aRoot The root path or URL.
+ * @param aPath The path or URL to be made relative to aRoot.
+ */
+function relative(aRoot, aPath) {
+  if (aRoot === "") {
+    aRoot = ".";
+  }
+
+  aRoot = aRoot.replace(/\/$/, '');
+
+  // It is possible for the path to be above the root. In this case, simply
+  // checking whether the root is a prefix of the path won't work. Instead, we
+  // need to remove components from the root one by one, until either we find
+  // a prefix that fits, or we run out of components to remove.
+  var level = 0;
+  while (aPath.indexOf(aRoot + '/') !== 0) {
+    var index = aRoot.lastIndexOf("/");
+    if (index < 0) {
+      return aPath;
+    }
+
+    // If the only part of the root that is left is the scheme (i.e. http://,
+    // file:///, etc.), one or more slashes (/), or simply nothing at all, we
+    // have exhausted all components, so the path is not relative to the root.
+    aRoot = aRoot.slice(0, index);
+    if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
+      return aPath;
+    }
+
+    ++level;
+  }
+
+  // Make sure we add a "../" for each component we removed from the root.
+  return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
+}
+exports.relative = relative;
+
+var supportsNullProto = (function () {
+  var obj = Object.create(null);
+  return !('__proto__' in obj);
+}());
+
+function identity (s) {
+  return s;
+}
+
+/**
+ * Because behavior goes wacky when you set `__proto__` on objects, we
+ * have to prefix all the strings in our set with an arbitrary character.
+ *
+ * See https://github.com/mozilla/source-map/pull/31 and
+ * https://github.com/mozilla/source-map/issues/30
+ *
+ * @param String aStr
+ */
+function toSetString(aStr) {
+  if (isProtoString(aStr)) {
+    return '$' + aStr;
+  }
+
+  return aStr;
+}
+exports.toSetString = supportsNullProto ? identity : toSetString;
+
+function fromSetString(aStr) {
+  if (isProtoString(aStr)) {
+    return aStr.slice(1);
+  }
+
+  return aStr;
+}
+exports.fromSetString = supportsNullProto ? identity : fromSetString;
+
+function isProtoString(s) {
+  if (!s) {
+    return false;
+  }
+
+  var length = s.length;
+
+  if (length < 9 /* "__proto__".length */) {
+    return false;
+  }
+
+  if (s.charCodeAt(length - 1) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 2) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 3) !== 111 /* 'o' */ ||
+      s.charCodeAt(length - 4) !== 116 /* 't' */ ||
+      s.charCodeAt(length - 5) !== 111 /* 'o' */ ||
+      s.charCodeAt(length - 6) !== 114 /* 'r' */ ||
+      s.charCodeAt(length - 7) !== 112 /* 'p' */ ||
+      s.charCodeAt(length - 8) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 9) !== 95  /* '_' */) {
+    return false;
+  }
+
+  for (var i = length - 10; i >= 0; i--) {
+    if (s.charCodeAt(i) !== 36 /* '$' */) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Comparator between two mappings where the original positions are compared.
+ *
+ * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+ * mappings with the same original source/line/column, but different generated
+ * line and column the same. Useful when searching for a mapping with a
+ * stubbed out mapping.
+ */
+function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+  var cmp = mappingA.source - mappingB.source;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0 || onlyCompareOriginal) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return mappingA.name - mappingB.name;
+}
+exports.compareByOriginalPositions = compareByOriginalPositions;
+
+/**
+ * Comparator between two mappings with deflated source and name indices where
+ * the generated positions are compared.
+ *
+ * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+ * mappings with the same generated line and column, but different
+ * source/name/original line and column the same. Useful when searching for a
+ * mapping with a stubbed out mapping.
+ */
+function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
+  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0 || onlyCompareGenerated) {
+    return cmp;
+  }
+
+  cmp = mappingA.source - mappingB.source;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return mappingA.name - mappingB.name;
+}
+exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
+
+function strcmp(aStr1, aStr2) {
+  if (aStr1 === aStr2) {
+    return 0;
+  }
+
+  if (aStr1 > aStr2) {
+    return 1;
+  }
+
+  return -1;
+}
+
+/**
+ * Comparator between two mappings with inflated source and name strings where
+ * the generated positions are compared.
+ */
+function compareByGeneratedPositionsInflated(mappingA, mappingB) {
+  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = strcmp(mappingA.source, mappingB.source);
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return strcmp(mappingA.name, mappingB.name);
+}
+exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
+
+},{}],"adler32":[function(require,module,exports){
+
+"use strict";
+
+var algorithm = require('./lib/algorithm');
+var Hash = require('./lib/Hash');
+var register = require('./lib/register');
+
+exports.sum = algorithm.sum.bind(algorithm);
+exports.roll = algorithm.roll.bind(algorithm);
+exports.Hash = Hash;
+exports.register = register;
+
+},{"./lib/Hash":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js","./lib/algorithm":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js","./lib/register":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\register.js"}],"bar-fs-adapter":[function(require,module,exports){
+module.exports.createFsAdapter = () => {
+    const FsAdapter = require("./lib/FsAdapter");
+    return new FsAdapter();
+};
+},{"./lib/FsAdapter":"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\FsAdapter.js"}],"bar":[function(require,module,exports){
+
+const ArchiveConfigurator = require("./lib/ArchiveConfigurator");
+const createFolderBrickStorage = require("./lib/FolderBrickStorage").createFolderBrickStorage;
+const createFileBrickStorage = require("./lib/FileBrickStorage").createFileBrickStorage;
+
+ArchiveConfigurator.prototype.registerStorageProvider("FolderBrickStorage", createFolderBrickStorage);
+ArchiveConfigurator.prototype.registerStorageProvider("FileBrickStorage", createFileBrickStorage);
+
+module.exports.ArchiveConfigurator = ArchiveConfigurator;
+module.exports.createBrick = (config) => {
+    const Brick = require("./lib/Brick");
+    return new Brick(config);
+};
+
+module.exports.createArchive = (archiveConfigurator) => {
+    const Archive = require("./lib/Archive");
+    return new Archive(archiveConfigurator);
+};
+module.exports.createArchiveConfigurator = () => {
+    return new ArchiveConfigurator();
+};
+
+module.exports.createBarMap = (header) => {
+    const BarMap = require("./lib/FolderBarMap");
+    return new BarMap(header);
+};
+
+module.exports.Seed = require('./lib/Seed');
+module.exports.createFolderBrickStorage = createFolderBrickStorage;
+module.exports.createFileBrickStorage = createFileBrickStorage;
+
+},{"./lib/Archive":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Archive.js","./lib/ArchiveConfigurator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\ArchiveConfigurator.js","./lib/Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./lib/FileBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBrickStorage.js","./lib/FolderBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js","./lib/FolderBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBrickStorage.js","./lib/Seed":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js"}],"buffer-from":[function(require,module,exports){
+(function (Buffer){
+var toString = Object.prototype.toString
+
+var isModern = (
+  typeof Buffer.alloc === 'function' &&
+  typeof Buffer.allocUnsafe === 'function' &&
+  typeof Buffer.from === 'function'
+)
+
+function isArrayBuffer (input) {
+  return toString.call(input).slice(8, -1) === 'ArrayBuffer'
+}
+
+function fromArrayBuffer (obj, byteOffset, length) {
+  byteOffset >>>= 0
+
+  var maxLength = obj.byteLength - byteOffset
+
+  if (maxLength < 0) {
+    throw new RangeError("'offset' is out of bounds")
+  }
+
+  if (length === undefined) {
+    length = maxLength
+  } else {
+    length >>>= 0
+
+    if (length > maxLength) {
+      throw new RangeError("'length' is out of bounds")
+    }
+  }
+
+  return isModern
+    ? Buffer.from(obj.slice(byteOffset, byteOffset + length))
+    : new Buffer(new Uint8Array(obj.slice(byteOffset, byteOffset + length)))
+}
+
+function fromString (string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  return isModern
+    ? Buffer.from(string, encoding)
+    : new Buffer(string, encoding)
+}
+
+function bufferFrom (value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (isArrayBuffer(value)) {
+    return fromArrayBuffer(value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(value, encodingOrOffset)
+  }
+
+  return isModern
+    ? Buffer.from(value)
+    : new Buffer(value)
+}
+
+module.exports = bufferFrom
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"edfs-brick-storage":[function(require,module,exports){
+module.exports.create = (endpoint) => {
+    const EDFSBrickStorage = require("./EDFSBrickStorage");
+    return new EDFSBrickStorage(endpoint)
+};
+
+},{"./EDFSBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-brick-storage\\EDFSBrickStorage.js"}],"edfs-middleware":[function(require,module,exports){
+module.exports.getEDFSMiddleware = () => require("./lib/EDFSMiddleware");
+module.exports.createEDFSClient = (url) => {
+    const EDFSClient = require("./lib/EDFSClient");
+    return new EDFSClient(url);
+};
+
+
+},{"./lib/EDFSClient":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSClient.js","./lib/EDFSMiddleware":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSMiddleware.js"}],"edfs":[function(require,module,exports){
+require("./brickTransportStrategies/brickTransportStrategiesRegistry");
+const constants = require("./moduleConstants");
+
+function generateUniqueStrategyName(prefix) {
+    const randomPart = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    return prefix + "_" + randomPart;
+}
+
+const or = require("overwrite-require");
+const browserContexts = [or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
+if (browserContexts.indexOf($$.environmentType) !== -1) {
+    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/FetchBrickTransportStrategy"));
+}else{
+    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/HTTPBrickTransportStrategy"));
+}
+
+module.exports = {
+    attachToEndpoint(endpoint) {
+        const EDFS = require("./lib/EDFS");
+        return new EDFS(endpoint);
+    },
+    attachWithSeed(compactSeed) {
+        const SEED = require("bar").Seed;
+        const seed = new SEED(compactSeed);
+        return this.attachToEndpoint(seed.getEndpoint());
+    },
+    attachWithPin(pin, callback) {
+        require("./seedCage").getSeed(pin, (err, seed) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let edfs;
+            try {
+                edfs = this.attachWithSeed(seed);
+            } catch (e) {
+                return callback(e);
+            }
+
+            callback(undefined, edfs);
+        });
+    },
+    checkForSeedCage(callback) {
+        require("./seedCage").check(callback);
+    },
+    constants: constants
+};
+},{"./brickTransportStrategies/FetchBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js","./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js","./brickTransportStrategies/brickTransportStrategiesRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js","./lib/EDFS":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js","./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","./seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","bar":"bar","overwrite-require":"overwrite-require"}],"overwrite-require":[function(require,module,exports){
+(function (global){
+/*
+ require and $$.require are overwriting the node.js defaults in loading modules for increasing security, speed and making it work to the privatesky runtime build with browserify.
+ The privatesky code for domains should work in node and browsers.
+ */
+function enableForEnvironment(envType){
+
+    const moduleConstants = require("./moduleConstants");
+
+    /**
+     * Used to provide autocomplete for $$ variables
+     * @classdesc Interface for $$ object
+     *
+     * @name $$
+     * @class
+     *
+     */
+
+    switch (envType) {
+        case moduleConstants.BROWSER_ENVIRONMENT_TYPE :
+            global = window;
+            break;
+        case moduleConstants.SERVICE_WORKER_ENVIRONMENT_TYPE:
+            global = self;
+            break;
+    }
+
+    if (typeof(global.$$) == "undefined") {
+        /**
+         * Used to provide autocomplete for $$ variables
+         * @type {$$}
+         */
+        global.$$ = {};
+    }
+
+    if (typeof($$.__global) == "undefined") {
+        $$.__global = {};
+    }
+
+    Object.defineProperty($$, "environmentType", {
+        get: function(){
+            return envType;
+        },
+        set: function (value) {
+            throw Error("Environment type already set!");
+        }
+    });
+
+
+    if (typeof($$.__global.requireLibrariesNames) == "undefined") {
+        $$.__global.currentLibraryName = null;
+        $$.__global.requireLibrariesNames = {};
+    }
+
+
+    if (typeof($$.__runtimeModules) == "undefined") {
+        $$.__runtimeModules = {};
+    }
+
+
+    if (typeof(global.functionUndefined) == "undefined") {
+        global.functionUndefined = function () {
+            console.log("Called of an undefined function!!!!");
+            throw new Error("Called of an undefined function");
+        };
+        if (typeof(global.webshimsRequire) == "undefined") {
+            global.webshimsRequire = global.functionUndefined;
+        }
+
+        if (typeof(global.domainRequire) == "undefined") {
+            global.domainRequire = global.functionUndefined;
+        }
+
+        if (typeof(global.pskruntimeRequire) == "undefined") {
+            global.pskruntimeRequire = global.functionUndefined;
+        }
+    }
+
+    const pastRequests = {};
+
+    function preventRecursiveRequire(request) {
+        if (pastRequests[request]) {
+            const err = new Error("Preventing recursive require for " + request);
+            err.type = "PSKIgnorableError";
+            throw err;
+        }
+
+    }
+
+    function disableRequire(request) {
+        pastRequests[request] = true;
+    }
+
+    function enableRequire(request) {
+        pastRequests[request] = false;
+    }
+
+    function requireFromCache(request) {
+        const existingModule = $$.__runtimeModules[request];
+        return existingModule;
+    }
+
+    function wrapStep(callbackName) {
+        const callback = global[callbackName];
+
+        if (callback === undefined) {
+            return null;
+        }
+
+        if (callback === global.functionUndefined) {
+            return null;
+        }
+
+        return function (request) {
+            const result = callback(request);
+            $$.__runtimeModules[request] = result;
+            return result;
+        }
+    }
+
+
+    function tryRequireSequence(originalRequire, request) {
+        let arr;
+        if (originalRequire) {
+            arr = $$.__requireFunctionsChain.slice();
+            arr.push(originalRequire);
+        } else {
+            arr = $$.__requireFunctionsChain;
+        }
+
+        preventRecursiveRequire(request);
+        disableRequire(request);
+        let result;
+        const previousRequire = $$.__global.currentLibraryName;
+        let previousRequireChanged = false;
+
+        if (!previousRequire) {
+            // console.log("Loading library for require", request);
+            $$.__global.currentLibraryName = request;
+
+            if (typeof $$.__global.requireLibrariesNames[request] == "undefined") {
+                $$.__global.requireLibrariesNames[request] = {};
+                //$$.__global.requireLibrariesDescriptions[request]   = {};
+            }
+            previousRequireChanged = true;
+        }
+        for (let i = 0; i < arr.length; i++) {
+            const func = arr[i];
+            try {
+
+                if (func === global.functionUndefined) continue;
+                result = func(request);
+
+                if (result) {
+                    break;
+                }
+
+            } catch (err) {
+                if (err.type !== "PSKIgnorableError") {
+                    $$.err("Require encountered an error while loading ", request, "\nCause:\n", err.stack);
+                }
+            }
+        }
+
+        if (!result) {
+            $$.log("Failed to load module ", request, result);
+        }
+
+        enableRequire(request);
+        if (previousRequireChanged) {
+            //console.log("End loading library for require", request, $$.__global.requireLibrariesNames[request]);
+            $$.__global.currentLibraryName = null;
+        }
+        return result;
+    }
+
+    function makeBrowserRequire(){
+        console.log("Defining global require in browser");
+
+
+        global.require = function (request) {
+
+            ///*[requireFromCache, wrapStep(webshimsRequire), , wrapStep(pskruntimeRequire), wrapStep(domainRequire)*]
+            return tryRequireSequence(null, request);
+        }
+    }
+
+    function makeIsolateRequire(){
+        // require should be provided when code is loaded in browserify
+        const bundleRequire = require;
+
+        $$.requireBundle('sandboxBase');
+        // this should be set up by sandbox prior to
+        const sandboxRequire = global.require;
+        const cryptoModuleName = 'crypto';
+        global.crypto = require(cryptoModuleName);
+
+        function newLoader(request) {
+            // console.log("newLoader:", request);
+            //preventRecursiveRequire(request);
+            const self = this;
+
+            // console.log('trying to load ', request);
+
+            function tryBundleRequire(...args) {
+                //return $$.__originalRequire.apply(self,args);
+                //return Module._load.apply(self,args)
+                let res;
+                try {
+                    res = sandboxRequire.apply(self, args);
+                } catch (err) {
+                    if (err.code === "MODULE_NOT_FOUND") {
+                        const p = path.join(process.cwd(), request);
+                        res = sandboxRequire.apply(self, [p]);
+                        request = p;
+                    } else {
+                        throw err;
+                    }
+                }
+                return res;
+            }
+
+            let res;
+
+
+            res = tryRequireSequence(tryBundleRequire, request);
+
+
+            return res;
+        }
+
+        global.require = newLoader;
+    }
+
+    function makeNodeJSRequire(){
+        const pathModuleName = 'path';
+        const path = require(pathModuleName);
+        const cryptoModuleName = 'crypto';
+        const utilModuleName = 'util';
+        $$.__runtimeModules["crypto"] = require(cryptoModuleName);
+        $$.__runtimeModules["util"] = require(utilModuleName);
+
+        const moduleModuleName = 'module';
+        const Module = require(moduleModuleName);
+        $$.__runtimeModules["module"] = Module;
+
+        console.log("Redefining require for node");
+
+        $$.__originalRequire = Module._load;
+        const moduleOriginalRequire = Module.prototype.require;
+
+        function newLoader(request) {
+            // console.log("newLoader:", request);
+            //preventRecursiveRequire(request);
+            const self = this;
+
+            function originalRequire(...args) {
+                //return $$.__originalRequire.apply(self,args);
+                //return Module._load.apply(self,args)
+                let res;
+                try {
+                    res = moduleOriginalRequire.apply(self, args);
+                } catch (err) {
+                    if (err.code === "MODULE_NOT_FOUND") {
+                        let pathOrName = request;
+                        if(pathOrName.startsWith('/') || pathOrName.startsWith('./') || pathOrName.startsWith('../')){
+                            pathOrName = path.join(process.cwd(), request);
+                        }
+                        res = moduleOriginalRequire.call(self, pathOrName);
+                        request = pathOrName;
+                    } else {
+                        throw err;
+                    }
+                }
+                return res;
+            }
+
+            function currentFolderRequire(request) {
+                return
+            }
+
+            //[requireFromCache, wrapStep(pskruntimeRequire), wrapStep(domainRequire), originalRequire]
+            return tryRequireSequence(originalRequire, request);
+        }
+
+        Module.prototype.require = newLoader;
+        return newLoader;
+    }
+
+    require("./standardGlobalSymbols.js");
+
+    if (typeof($$.require) == "undefined") {
+
+        $$.__requireList = ["webshimsRequire"];
+        $$.__requireFunctionsChain = [];
+
+        $$.requireBundle = function (name) {
+            name += "Require";
+            $$.__requireList.push(name);
+            const arr = [requireFromCache];
+            $$.__requireList.forEach(function (item) {
+                const callback = wrapStep(item);
+                if (callback) {
+                    arr.push(callback);
+                }
+            });
+
+            $$.__requireFunctionsChain = arr;
+        };
+
+        $$.requireBundle("init");
+
+        switch ($$.environmentType) {
+            case moduleConstants.BROWSER_ENVIRONMENT_TYPE:
+                makeBrowserRequire();
+                $$.require = require;
+                break;
+            case moduleConstants.SERVICE_WORKER_ENVIRONMENT_TYPE:
+                makeBrowserRequire();
+                $$.require = require;
+                break;
+            case moduleConstants.ISOLATE_ENVIRONMENT_TYPE:
+                makeIsolateRequire();
+                $$.require = require;
+                break;
+            default:
+               $$.require = makeNodeJSRequire();
+        }
+
+    }
+};
+
+
+
+module.exports = {
+    enableForEnvironment,
+    constants: require("./moduleConstants")
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js","./standardGlobalSymbols.js":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\standardGlobalSymbols.js"}],"psk-http-client":[function(require,module,exports){
+//to look nice the requireModule on Node
+require("./lib/psk-abstract-client");
+const or = require('overwrite-require');
+if ($$.environmentType === or.constants.BROWSER_ENVIRONMENT_TYPE) {
+	require("./lib/psk-browser-client");
+} else {
+	require("./lib/psk-node-client");
+}
+},{"./lib/psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","./lib/psk-browser-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-browser-client.js","./lib/psk-node-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-node-client.js","overwrite-require":"overwrite-require"}],"psk-security-context":[function(require,module,exports){
+const RawCSBSecurityContext = require("./lib/RawCSBSecurityContext");
+const RootCSBSecurityContext = require("./lib/RootCSBSecurityContext");
+const SecurityContext = require("./lib/SecurityContext");
+const EncryptedSecret = require("./lib/EncryptedSecret");
+const PSKSignature = require("./lib/PSKSignature");
+
+module.exports.createSecurityContext = (securityContextType, ...args) => {
+    switch (securityContextType) {
+        case "RootCSBSecurityContext":
+            return new RootCSBSecurityContext(...args);
+        case "RawCSBSecurityContext":
+            return new RawCSBSecurityContext(...args);
+        default:
+            return new SecurityContext(...args);
+    }
+};
+
+module.exports.createEncryptedSecret = (serializedEncryptedSecret) => {
+    return new EncryptedSecret(serializedEncryptedSecret);
+};
+
+
+module.exports.createPSKSignature = (serializedPSKSignature) => {
+    return new PSKSignature(serializedPSKSignature);
+};
+
+},{"./lib/EncryptedSecret":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js","./lib/PSKSignature":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js","./lib/RawCSBSecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RawCSBSecurityContext.js","./lib/RootCSBSecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RootCSBSecurityContext.js","./lib/SecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js"}],"pskcrypto":[function(require,module,exports){
+const PskCrypto = require("./lib/PskCrypto");
+const ssutil = require("./signsensusDS/ssutil");
+
+module.exports = PskCrypto;
+
+module.exports.hashValues = ssutil.hashValues;
+
+module.exports.DuplexStream = require("./lib/utils/DuplexStream");
+
+module.exports.isStream = require("./lib/utils/isStream");
+},{"./lib/PskCrypto":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js","./lib/utils/DuplexStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\DuplexStream.js","./lib/utils/isStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\isStream.js","./signsensusDS/ssutil":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\signsensusDS\\ssutil.js"}],"source-map-support":[function(require,module,exports){
+var SourceMapConsumer = require('source-map').SourceMapConsumer;
+var path = require('path');
+
+var fs;
+try {
+  fs = require('fs');
+  if (!fs.existsSync || !fs.readFileSync) {
+    // fs doesn't have all methods we need
+    fs = null;
+  }
+} catch (err) {
+  /* nop */
+}
+
+var bufferFrom = require('buffer-from');
+
+// Only install once if called multiple times
+var errorFormatterInstalled = false;
+var uncaughtShimInstalled = false;
+
+// If true, the caches are reset before a stack trace formatting operation
+var emptyCacheBetweenOperations = false;
+
+// Supports {browser, node, auto}
+var environment = "auto";
+
+// Maps a file path to a string containing the file contents
+var fileContentsCache = {};
+
+// Maps a file path to a source map for that file
+var sourceMapCache = {};
+
+// Regex for detecting source maps
+var reSourceMap = /^data:application\/json[^,]+base64,/;
+
+// Priority list of retrieve handlers
+var retrieveFileHandlers = [];
+var retrieveMapHandlers = [];
+
+function isInBrowser() {
+  if (environment === "browser")
+    return true;
+  if (environment === "node")
+    return false;
+  return ((typeof window !== 'undefined') && (typeof XMLHttpRequest === 'function') && !(window.require && window.module && window.process && window.process.type === "renderer"));
+}
+
+function hasGlobalProcessEventEmitter() {
+  return ((typeof process === 'object') && (process !== null) && (typeof process.on === 'function'));
+}
+
+function handlerExec(list) {
+  return function(arg) {
+    for (var i = 0; i < list.length; i++) {
+      var ret = list[i](arg);
+      if (ret) {
+        return ret;
+      }
+    }
+    return null;
+  };
+}
+
+var retrieveFile = handlerExec(retrieveFileHandlers);
+
+retrieveFileHandlers.push(function(path) {
+  // Trim the path to make sure there is no extra whitespace.
+  path = path.trim();
+  if (/^file:/.test(path)) {
+    // existsSync/readFileSync can't handle file protocol, but once stripped, it works
+    path = path.replace(/file:\/\/\/(\w:)?/, function(protocol, drive) {
+      return drive ?
+        '' : // file:///C:/dir/file -> C:/dir/file
+        '/'; // file:///root-dir/file -> /root-dir/file
+    });
+  }
+  if (path in fileContentsCache) {
+    return fileContentsCache[path];
+  }
+
+  var contents = '';
+  try {
+    if (!fs) {
+      // Use SJAX if we are in the browser
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path, /** async */ false);
+      xhr.send(null);
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        contents = xhr.responseText;
+      }
+    } else if (fs.existsSync(path)) {
+      // Otherwise, use the filesystem
+      contents = fs.readFileSync(path, 'utf8');
+    }
+  } catch (er) {
+    /* ignore any errors */
+  }
+
+  return fileContentsCache[path] = contents;
+});
+
+// Support URLs relative to a directory, but be careful about a protocol prefix
+// in case we are in the browser (i.e. directories may start with "http://" or "file:///")
+function supportRelativeURL(file, url) {
+  if (!file) return url;
+  var dir = path.dirname(file);
+  var match = /^\w+:\/\/[^\/]*/.exec(dir);
+  var protocol = match ? match[0] : '';
+  var startPath = dir.slice(protocol.length);
+  if (protocol && /^\/\w\:/.test(startPath)) {
+    // handle file:///C:/ paths
+    protocol += '/';
+    return protocol + path.resolve(dir.slice(protocol.length), url).replace(/\\/g, '/');
+  }
+  return protocol + path.resolve(dir.slice(protocol.length), url);
+}
+
+function retrieveSourceMapURL(source) {
+  var fileData;
+
+  if (isInBrowser()) {
+     try {
+       var xhr = new XMLHttpRequest();
+       xhr.open('GET', source, false);
+       xhr.send(null);
+       fileData = xhr.readyState === 4 ? xhr.responseText : null;
+
+       // Support providing a sourceMappingURL via the SourceMap header
+       var sourceMapHeader = xhr.getResponseHeader("SourceMap") ||
+                             xhr.getResponseHeader("X-SourceMap");
+       if (sourceMapHeader) {
+         return sourceMapHeader;
+       }
+     } catch (e) {
+     }
+  }
+
+  // Get the URL of the source map
+  fileData = retrieveFile(source);
+  var re = /(?:\/\/[@#][\s]*sourceMappingURL=([^\s'"]+)[\s]*$)|(?:\/\*[@#][\s]*sourceMappingURL=([^\s*'"]+)[\s]*(?:\*\/)[\s]*$)/mg;
+  // Keep executing the search to find the *last* sourceMappingURL to avoid
+  // picking up sourceMappingURLs from comments, strings, etc.
+  var lastMatch, match;
+  while (match = re.exec(fileData)) lastMatch = match;
+  if (!lastMatch) return null;
+  return lastMatch[1];
+};
+
+// Can be overridden by the retrieveSourceMap option to install. Takes a
+// generated source filename; returns a {map, optional url} object, or null if
+// there is no source map.  The map field may be either a string or the parsed
+// JSON object (ie, it must be a valid argument to the SourceMapConsumer
+// constructor).
+var retrieveSourceMap = handlerExec(retrieveMapHandlers);
+retrieveMapHandlers.push(function(source) {
+  var sourceMappingURL = retrieveSourceMapURL(source);
+  if (!sourceMappingURL) return null;
+
+  // Read the contents of the source map
+  var sourceMapData;
+  if (reSourceMap.test(sourceMappingURL)) {
+    // Support source map URL as a data url
+    var rawData = sourceMappingURL.slice(sourceMappingURL.indexOf(',') + 1);
+    sourceMapData = bufferFrom(rawData, "base64").toString();
+    sourceMappingURL = source;
+  } else {
+    // Support source map URLs relative to the source URL
+    sourceMappingURL = supportRelativeURL(source, sourceMappingURL);
+    sourceMapData = retrieveFile(sourceMappingURL);
+  }
+
+  if (!sourceMapData) {
+    return null;
+  }
+
+  return {
+    url: sourceMappingURL,
+    map: sourceMapData
+  };
+});
+
+function mapSourcePosition(position) {
+  var sourceMap = sourceMapCache[position.source];
+  if (!sourceMap) {
+    // Call the (overrideable) retrieveSourceMap function to get the source map.
+    var urlAndMap = retrieveSourceMap(position.source);
+    if (urlAndMap) {
+      sourceMap = sourceMapCache[position.source] = {
+        url: urlAndMap.url,
+        map: new SourceMapConsumer(urlAndMap.map)
+      };
+
+      // Load all sources stored inline with the source map into the file cache
+      // to pretend like they are already loaded. They may not exist on disk.
+      if (sourceMap.map.sourcesContent) {
+        sourceMap.map.sources.forEach(function(source, i) {
+          var contents = sourceMap.map.sourcesContent[i];
+          if (contents) {
+            var url = supportRelativeURL(sourceMap.url, source);
+            fileContentsCache[url] = contents;
+          }
+        });
+      }
+    } else {
+      sourceMap = sourceMapCache[position.source] = {
+        url: null,
+        map: null
+      };
+    }
+  }
+
+  // Resolve the source URL relative to the URL of the source map
+  if (sourceMap && sourceMap.map && typeof sourceMap.map.originalPositionFor === 'function') {
+    var originalPosition = sourceMap.map.originalPositionFor(position);
+
+    // Only return the original position if a matching line was found. If no
+    // matching line is found then we return position instead, which will cause
+    // the stack trace to print the path and line for the compiled file. It is
+    // better to give a precise location in the compiled file than a vague
+    // location in the original file.
+    if (originalPosition.source !== null) {
+      originalPosition.source = supportRelativeURL(
+        sourceMap.url, originalPosition.source);
+      return originalPosition;
+    }
+  }
+
+  return position;
+}
+
+// Parses code generated by FormatEvalOrigin(), a function inside V8:
+// https://code.google.com/p/v8/source/browse/trunk/src/messages.js
+function mapEvalOrigin(origin) {
+  // Most eval() calls are in this format
+  var match = /^eval at ([^(]+) \((.+):(\d+):(\d+)\)$/.exec(origin);
+  if (match) {
+    var position = mapSourcePosition({
+      source: match[2],
+      line: +match[3],
+      column: match[4] - 1
+    });
+    return 'eval at ' + match[1] + ' (' + position.source + ':' +
+      position.line + ':' + (position.column + 1) + ')';
+  }
+
+  // Parse nested eval() calls using recursion
+  match = /^eval at ([^(]+) \((.+)\)$/.exec(origin);
+  if (match) {
+    return 'eval at ' + match[1] + ' (' + mapEvalOrigin(match[2]) + ')';
+  }
+
+  // Make sure we still return useful information if we didn't find anything
+  return origin;
+}
+
+// This is copied almost verbatim from the V8 source code at
+// https://code.google.com/p/v8/source/browse/trunk/src/messages.js. The
+// implementation of wrapCallSite() used to just forward to the actual source
+// code of CallSite.prototype.toString but unfortunately a new release of V8
+// did something to the prototype chain and broke the shim. The only fix I
+// could find was copy/paste.
+function CallSiteToString() {
+  var fileName;
+  var fileLocation = "";
+  if (this.isNative()) {
+    fileLocation = "native";
+  } else {
+    fileName = this.getScriptNameOrSourceURL();
+    if (!fileName && this.isEval()) {
+      fileLocation = this.getEvalOrigin();
+      fileLocation += ", ";  // Expecting source position to follow.
+    }
+
+    if (fileName) {
+      fileLocation += fileName;
+    } else {
+      // Source code does not originate from a file and is not native, but we
+      // can still get the source position inside the source string, e.g. in
+      // an eval string.
+      fileLocation += "<anonymous>";
+    }
+    var lineNumber = this.getLineNumber();
+    if (lineNumber != null) {
+      fileLocation += ":" + lineNumber;
+      var columnNumber = this.getColumnNumber();
+      if (columnNumber) {
+        fileLocation += ":" + columnNumber;
+      }
+    }
+  }
+
+  var line = "";
+  var functionName = this.getFunctionName();
+  var addSuffix = true;
+  var isConstructor = this.isConstructor();
+  var isMethodCall = !(this.isToplevel() || isConstructor);
+  if (isMethodCall) {
+    var typeName = this.getTypeName();
+    // Fixes shim to be backward compatable with Node v0 to v4
+    if (typeName === "[object Object]") {
+      typeName = "null";
+    }
+    var methodName = this.getMethodName();
+    if (functionName) {
+      if (typeName && functionName.indexOf(typeName) != 0) {
+        line += typeName + ".";
+      }
+      line += functionName;
+      if (methodName && functionName.indexOf("." + methodName) != functionName.length - methodName.length - 1) {
+        line += " [as " + methodName + "]";
+      }
+    } else {
+      line += typeName + "." + (methodName || "<anonymous>");
+    }
+  } else if (isConstructor) {
+    line += "new " + (functionName || "<anonymous>");
+  } else if (functionName) {
+    line += functionName;
+  } else {
+    line += fileLocation;
+    addSuffix = false;
+  }
+  if (addSuffix) {
+    line += " (" + fileLocation + ")";
+  }
+  return line;
+}
+
+function cloneCallSite(frame) {
+  var object = {};
+  Object.getOwnPropertyNames(Object.getPrototypeOf(frame)).forEach(function(name) {
+    object[name] = /^(?:is|get)/.test(name) ? function() { return frame[name].call(frame); } : frame[name];
+  });
+  object.toString = CallSiteToString;
+  return object;
+}
+
+function wrapCallSite(frame) {
+  if(frame.isNative()) {
+    return frame;
+  }
+
+  // Most call sites will return the source file from getFileName(), but code
+  // passed to eval() ending in "//# sourceURL=..." will return the source file
+  // from getScriptNameOrSourceURL() instead
+  var source = frame.getFileName() || frame.getScriptNameOrSourceURL();
+  if (source) {
+    var line = frame.getLineNumber();
+    var column = frame.getColumnNumber() - 1;
+
+    // Fix position in Node where some (internal) code is prepended.
+    // See https://github.com/evanw/node-source-map-support/issues/36
+    var headerLength = 62;
+    if (line === 1 && column > headerLength && !isInBrowser() && !frame.isEval()) {
+      column -= headerLength;
+    }
+
+    var position = mapSourcePosition({
+      source: source,
+      line: line,
+      column: column
+    });
+    frame = cloneCallSite(frame);
+    var originalFunctionName = frame.getFunctionName;
+    frame.getFunctionName = function() { return position.name || originalFunctionName(); };
+    frame.getFileName = function() { return position.source; };
+    frame.getLineNumber = function() { return position.line; };
+    frame.getColumnNumber = function() { return position.column + 1; };
+    frame.getScriptNameOrSourceURL = function() { return position.source; };
+    return frame;
+  }
+
+  // Code called using eval() needs special handling
+  var origin = frame.isEval() && frame.getEvalOrigin();
+  if (origin) {
+    origin = mapEvalOrigin(origin);
+    frame = cloneCallSite(frame);
+    frame.getEvalOrigin = function() { return origin; };
+    return frame;
+  }
+
+  // If we get here then we were unable to change the source position
+  return frame;
+}
+
+// This function is part of the V8 stack trace API, for more info see:
+// https://v8.dev/docs/stack-trace-api
+function prepareStackTrace(error, stack) {
+  if (emptyCacheBetweenOperations) {
+    fileContentsCache = {};
+    sourceMapCache = {};
+  }
+
+  var name = error.name || 'Error';
+  var message = error.message || '';
+  var errorString = name + ": " + message;
+
+  return errorString + stack.map(function(frame) {
+    return '\n    at ' + wrapCallSite(frame);
+  }).join('');
+}
+
+// Generate position and snippet of original source with pointer
+function getErrorSource(error) {
+  var match = /\n    at [^(]+ \((.*):(\d+):(\d+)\)/.exec(error.stack);
+  if (match) {
+    var source = match[1];
+    var line = +match[2];
+    var column = +match[3];
+
+    // Support the inline sourceContents inside the source map
+    var contents = fileContentsCache[source];
+
+    // Support files on disk
+    if (!contents && fs && fs.existsSync(source)) {
+      try {
+        contents = fs.readFileSync(source, 'utf8');
+      } catch (er) {
+        contents = '';
+      }
+    }
+
+    // Format the line from the original source code like node does
+    if (contents) {
+      var code = contents.split(/(?:\r\n|\r|\n)/)[line - 1];
+      if (code) {
+        return source + ':' + line + '\n' + code + '\n' +
+          new Array(column).join(' ') + '^';
+      }
+    }
+  }
+  return null;
+}
+
+function printErrorAndExit (error) {
+  var source = getErrorSource(error);
+
+  // Ensure error is printed synchronously and not truncated
+  if (process.stderr._handle && process.stderr._handle.setBlocking) {
+    process.stderr._handle.setBlocking(true);
+  }
+
+  if (source) {
+    console.error();
+    console.error(source);
+  }
+
+  console.error(error.stack);
+  process.exit(1);
+}
+
+function shimEmitUncaughtException () {
+  var origEmit = process.emit;
+
+  process.emit = function (type) {
+    if (type === 'uncaughtException') {
+      var hasStack = (arguments[1] && arguments[1].stack);
+      var hasListeners = (this.listeners(type).length > 0);
+
+      if (hasStack && !hasListeners) {
+        return printErrorAndExit(arguments[1]);
+      }
+    }
+
+    return origEmit.apply(this, arguments);
+  };
+}
+
+var originalRetrieveFileHandlers = retrieveFileHandlers.slice(0);
+var originalRetrieveMapHandlers = retrieveMapHandlers.slice(0);
+
+exports.wrapCallSite = wrapCallSite;
+exports.getErrorSource = getErrorSource;
+exports.mapSourcePosition = mapSourcePosition;
+exports.retrieveSourceMap = retrieveSourceMap;
+
+exports.install = function(options) {
+  options = options || {};
+
+  if (options.environment) {
+    environment = options.environment;
+    if (["node", "browser", "auto"].indexOf(environment) === -1) {
+      throw new Error("environment " + environment + " was unknown. Available options are {auto, browser, node}")
+    }
+  }
+
+  // Allow sources to be found by methods other than reading the files
+  // directly from disk.
+  if (options.retrieveFile) {
+    if (options.overrideRetrieveFile) {
+      retrieveFileHandlers.length = 0;
+    }
+
+    retrieveFileHandlers.unshift(options.retrieveFile);
+  }
+
+  // Allow source maps to be found by methods other than reading the files
+  // directly from disk.
+  if (options.retrieveSourceMap) {
+    if (options.overrideRetrieveSourceMap) {
+      retrieveMapHandlers.length = 0;
+    }
+
+    retrieveMapHandlers.unshift(options.retrieveSourceMap);
+  }
+
+  // Support runtime transpilers that include inline source maps
+  if (options.hookRequire && !isInBrowser()) {
+    var Module;
+    try {
+      Module = require('module');
+    } catch (err) {
+      // NOP: Loading in catch block to convert webpack error to warning.
+    }
+    var $compile = Module.prototype._compile;
+
+    if (!$compile.__sourceMapSupport) {
+      Module.prototype._compile = function(content, filename) {
+        fileContentsCache[filename] = content;
+        sourceMapCache[filename] = undefined;
+        return $compile.call(this, content, filename);
+      };
+
+      Module.prototype._compile.__sourceMapSupport = true;
+    }
+  }
+
+  // Configure options
+  if (!emptyCacheBetweenOperations) {
+    emptyCacheBetweenOperations = 'emptyCacheBetweenOperations' in options ?
+      options.emptyCacheBetweenOperations : false;
+  }
+
+  // Install the error reformatter
+  if (!errorFormatterInstalled) {
+    errorFormatterInstalled = true;
+    Error.prepareStackTrace = prepareStackTrace;
+  }
+
+  if (!uncaughtShimInstalled) {
+    var installHandler = 'handleUncaughtExceptions' in options ?
+      options.handleUncaughtExceptions : true;
+
+    // Provide the option to not install the uncaught exception handler. This is
+    // to support other uncaught exception handlers (in test frameworks, for
+    // example). If this handler is not installed and there are no other uncaught
+    // exception handlers, uncaught exceptions will be caught by node's built-in
+    // exception handler and the process will still be terminated. However, the
+    // generated JavaScript code will be shown above the stack trace instead of
+    // the original source code.
+    if (installHandler && hasGlobalProcessEventEmitter()) {
+      uncaughtShimInstalled = true;
+      shimEmitUncaughtException();
+    }
+  }
+};
+
+exports.resetRetrieveHandlers = function() {
+  retrieveFileHandlers.length = 0;
+  retrieveMapHandlers.length = 0;
+
+  retrieveFileHandlers = originalRetrieveFileHandlers.slice(0);
+  retrieveMapHandlers = originalRetrieveMapHandlers.slice(0);
+  
+  retrieveSourceMap = handlerExec(retrieveMapHandlers);
+  retrieveFile = handlerExec(retrieveFileHandlers);
+}
+
+},{"buffer-from":"buffer-from","fs":false,"module":false,"path":false,"source-map":"source-map"}],"source-map":[function(require,module,exports){
+/*
+ * Copyright 2009-2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE.txt or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGenerator;
+exports.SourceMapConsumer = require('./lib/source-map-consumer').SourceMapConsumer;
+exports.SourceNode = require('./lib/source-node').SourceNode;
+
+},{"./lib/source-map-consumer":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js","./lib/source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./lib/source-node":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js"}],"swarm-engine/bootScripts/launcherBootScript":[function(require,module,exports){
+//the first argument is a path to a configuration folder
+const path = require('path');
+
+process.on("uncaughtException", (err) => {
+    console.log('err', err);
+});
+
+let seed;
+if (process.argv.length >= 3) {
+    seed = process.argv[2];
+}
+console.log(`Launcher is using ${seed} as SEED`);
+
+function boot(){
+    const BootEngine = require("./BootEngine");
+
+    const bootter = new BootEngine(getSeed, getEDFS, initializeSwarmEngine, ["pskruntime.js", "virtualMQ.js", "edfsBar.js"], ["blockchain.js"]);
+    $$.log("Launcher booting process started");
+    bootter.boot(function(err, archive){
+        if(err){
+            console.log(err);
+            return;
+        }
+
+        self.edfs.bootCSB(self.seed, (err, csb) => {
+            if (err) {
+                throw err;
+            }
+
+            launch(csb);
+        })
+    })
+}
+
+let self = {seed};
+
+function getSeed(callback){
+    setTimeout(() => {
+        callback(undefined, self.seed);
+    }, 0);
+}
+
+
+function getEDFS(callback){
+    let EDFS = require("edfs");
+    self.edfs = EDFS.attachWithSeed(self.seed);
+    callback(undefined, self.edfs);
+}
+
+function initializeSwarmEngine(callback){
+    dossier = require("dossier");
+    /*const se = require("swarm-engine");
+    se.initialise();*/
+    callback();
+}
+
+let dossier;
+boot();
+
+
+/************************ HELPER METHODS ************************/
+
+function launch(csb) {
+    const beesHealer = require('swarmutils').beesHealer;
+
+    const domains = {};
+
+    dossier.load(csb.getSeed(), "launcherIdentity", function(err, dossierHandler){
+        if(err){
+            throw err;
+        }
+        dossierHandler.startTransaction("Domain", "getDomains").onReturn(function(err, domainsRefs){
+            if(err){
+                throw err;
+            }
+
+            domainsRefs.forEach(domainRef => {
+                launchDomain(domainRef.alias, domainRef);
+            });
+
+            if (domains.length === 0) {
+                console.log(`\n[::] No domains were deployed.\n`);
+            }
+        });
+    });
+
+    function launchDomain(name, configuration) {
+        if (!domains.hasOwnProperty(name)) {
+            console.log(`Launcher is starting booting process for domain <${name}>`);
+            const env = {config: configuration};
+            const child_env = JSON.parse(JSON.stringify(process.env));
+
+            child_env.PRIVATESKY_TMP = process.env.PRIVATESKY_TMP;
+            child_env.PSK_DOMAIN_SEED = env.config.constitution;
+
+            child_env.config = JSON.stringify({
+                workspace: env.config.workspace
+            });
+
+            Object.keys(process.env).forEach(envVar => {
+                if (envVar && envVar.startsWith && envVar.startsWith('PSK')) {
+                    child_env[envVar] = process.env[envVar];
+                }
+            });
+
+            const swarmutils = require('swarmutils');
+            const child = swarmutils.pingPongFork.fork(path.resolve(path.join(process.env.PSK_ROOT_INSTALATION_FOLDER, 'psknode/bundles/domainBoot.js')), [name], {
+                cwd: process.env.PSK_ROOT_INSTALATION_FOLDER,
+                env: child_env
+            });
+
+            child.on('exit', (code, signal) => {
+                setTimeout(() => {
+                    console.log(`DomainSandbox [${name}] got an error code ${code}. Restarting...`);
+                    delete domains[name];
+                    $$.event('status.domains.restart', {name: name});
+                    launchDomain(name, configuration);
+                }, 100);
+            });
+
+            domains[name] = child;
+        } else {
+            console.log('Trying to start a sandbox for a domain that already has a sandbox');
+        }
+    }
+}
+
+},{"./BootEngine":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\BootEngine.js","dossier":false,"edfs":"edfs","path":false,"swarmutils":"swarmutils"}],"swarmutils":[function(require,module,exports){
+(function (global){
+module.exports.OwM = require("./lib/OwM");
+module.exports.beesHealer = require("./lib/beesHealer");
+
+const uidGenerator = require("./lib/uidGenerator").createUidGenerator(200, 32);
+
+module.exports.safe_uuid = require("./lib/safe-uuid").init(uidGenerator);
+
+module.exports.Queue = require("./lib/Queue");
+module.exports.combos = require("./lib/Combos");
+
+module.exports.uidGenerator = uidGenerator;
+module.exports.generateUid = uidGenerator.generateUid;
+module.exports.TaskCounter = require("./lib/TaskCounter");
+module.exports.SwarmPacker = require("./lib/SwarmPacker");
+
+module.exports.createPskConsole = function () {
+  return require('./lib/pskconsole');
+};
+
+module.exports.pingPongFork = require('./lib/pingpongFork');
+
+
+if(typeof global.$$ == "undefined"){
+  global.$$ = {};
+}
+
+if(typeof global.$$.uidGenerator == "undefined"){
+    $$.uidGenerator = module.exports.safe_uuid;
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./lib/Combos":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js","./lib/OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js","./lib/Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","./lib/SwarmPacker":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js","./lib/TaskCounter":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js","./lib/beesHealer":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js","./lib/pingpongFork":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js","./lib/pskconsole":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js","./lib/safe-uuid":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js","./lib/uidGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js"}],"syndicate":[function(require,module,exports){
+const fs = require('fs');
+const path = require('path');
+const PoolConfig = require('./lib/PoolConfig');
+const WorkerPool = require('./lib/WorkerPool');
+const WorkerStrategies = require('./lib/WorkerStrategies');
+
+/**
+ * @throws if config is invalid, if config tries to set properties to undefined or add new properties (check PoolConfig to see solutions)
+ * @throws if providing a working dir that does not exist, the directory should be created externally
+ * @throws if trying to use a strategy that does not exist
+ */
+function createWorkerPool(poolConfig, workerCreateHelper) {
+    const newPoolConfig = PoolConfig.createByOverwritingDefaults(poolConfig);
+
+    if (newPoolConfig.workerOptions && newPoolConfig.workerOptions.cwd && !fs.existsSync(newPoolConfig.workerOptions.cwd)) {
+        throw new Error(`The provided working directory does not exists ${config.workingDir}`);
+    }
+
+    let concretePool = null;
+
+    if (newPoolConfig.workerStrategy === WorkerStrategies.THREADS) {
+        const PoolThreads = require('./lib/Pool-Threads');
+
+        concretePool = new PoolThreads(newPoolConfig, workerCreateHelper);
+    } else if (newPoolConfig.workerStrategy === WorkerStrategies.ISOLATES) {
+        const PoolIsolates = require('./lib/Pool-Isolates');
+
+        concretePool = new PoolIsolates(newPoolConfig, workerCreateHelper)
+    } else {
+        throw new TypeError(`Could not find a implementation for worker strategy "${newPoolConfig.workerStrategy}"`);
+    }
+
+    return new WorkerPool(concretePool);
+}
+
+
+module.exports = {
+    createWorkerPool,
+    PoolConfig,
+    WorkerStrategies
+};
+
+},{"./lib/Pool-Isolates":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\Pool-Isolates.js","./lib/Pool-Threads":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\Pool-Threads.js","./lib/PoolConfig":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\PoolConfig.js","./lib/WorkerPool":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\WorkerPool.js","./lib/WorkerStrategies":"D:\\Catalin\\Munca\\privatesky\\modules\\syndicate\\lib\\WorkerStrategies.js","fs":false,"path":false}],"zmq_adapter":[function(require,module,exports){
+(function (Buffer){
+const defaultForwardAddress = process.env.vmq_zeromq_forward_address || "tcp://127.0.0.1:5001";
+const defaultSubAddress = process.env.vmq_zeromq_sub_address || "tcp://127.0.0.1:5000";
+const defaultPubAddress = process.env.vmq_zeromq_pub_address || "tcp://127.0.0.1:5001";
+
+const zeroMQModuleName = "zeromq";
+let zmq = require(zeroMQModuleName);
+
+function registerKiller(children){
+    const events = ["SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM", "SIGHUP"];
+
+    events.forEach(function(event){
+        process.on(event, function(...args){
+            children.forEach(function(child){
+                console.log("Something bad happened.", event, ...args);
+                try{
+                    child.close();
+                }catch(err){
+                    //..
+                    console.log(err);
+                }
+            });
+        });
+    });
+}
+
+function ZeromqForwarder(bindAddress){
+
+    let socket = zmq.socket("pub");
+    let initialized = false;
+
+    function connect(){
+        socket.monitor();
+        socket.connect(bindAddress);
+
+        socket.on("connect",(fd)=>{
+            console.log(`[Forwarder] connected on ${bindAddress}`);
+            initialized = true;
+            sendBuffered();
+        });
+    }
+
+    connect();
+
+    registerKiller([socket]);
+
+    const Queue = require("swarmutils").Queue;
+    let buffered = new Queue();
+
+    let sendBuffered = ()=>{
+        while(buffered.length>0){
+            this.send(...buffered.pop());
+        }
+    };
+
+    this.send = function(channel, ...args){
+        if(initialized){
+            //console.log("[Forwarder] Putting message on socket", args);
+            socket.send([channel, ...args], undefined, (...args)=>{
+                //console.log("[Forwarder] message sent");
+            });
+        }else{
+            //console.log("[Forwarder] Saving it for later");
+            buffered.push([channel, ...args]);
+        }
+    }
+}
+
+function ZeromqProxyNode(subAddress, pubAddress, signatureChecker){
+
+    const publishersNode = zmq.createSocket('xsub');
+    const subscribersNode = zmq.createSocket('xpub');
+
+    // By default xpub only signals new subscriptions
+    // Settings it to verbose = 1 , will signal on every new subscribe
+    // uncomment next lines if messages are lost
+    subscribersNode.setsockopt(zmq.ZMQ_XPUB_VERBOSE, 1);
+
+    publishersNode.on('message', deliverMessage);
+
+    function deliverMessage(channel, message){
+        //console.log(`[Proxy] - Received message on channel ${channel.toString()}`);
+        let ch = channelTranslationDictionary[channel.toString()];
+        if(ch){
+            //console.log("[Proxy] - Sending message on channel", ch);
+            subscribersNode.send([Buffer.from(ch), message]);
+        }else{
+            //console.log(`[Proxy] - message dropped!`);
+        }
+        //subscribersNode.send([channel, message]);
+    }
+
+    let channelTranslationDictionary = {};
+
+    subscribersNode.on('message', manageSubscriptions);
+
+    function manageSubscriptions(subscription){
+        //console.log("[Proxy] - manage message", subscription.toString());
+
+        let message = subscription.toString();
+        let type = subscription[0];
+        message = message.substr(1);
+
+        //console.log(`[Proxy] - Trying to send ${type==1?"subscribe":"unsubscribe"} type of message`);
+
+        if(typeof signatureChecker === "undefined"){
+            //console.log("[Proxy] - No signature checker defined then transparent proxy...", subscription);
+            publishersNode.send(subscription);
+            return;
+        }
+
+        try{
+            //console.log("[Proxy] - let's deserialize and start analize");
+            let deserializedData = JSON.parse(message);
+            //TODO: check deserializedData.signature
+            //console.log("[Proxy] - Start checking message signature");
+            signatureChecker(deserializedData.channelName, deserializedData.signature, (err, res)=>{
+                if(err){
+                    //...
+                    //console.log("Err", err);
+                }else{
+                    let newSub = Buffer.alloc(deserializedData.channelName.length+1);
+                    let ch = Buffer.from(deserializedData.channelName);
+                    if(type===1){
+                        newSub.write("01", 0, 1, "hex");
+                    }else{
+                        newSub.write("00", 0, 1, "hex");
+                    }
+
+                    ch.copy(newSub, 1);
+                    //console.log("[Proxy] - sending subscription", /*"\n\t\t", subscription.toString('hex'), "\n\t\t", newSub.toString('hex'),*/ newSub);
+                    channelTranslationDictionary[deserializedData.channelName] = message;
+                    publishersNode.send(newSub);
+                    return;
+                }
+            });
+        }catch(err){
+            if(message.toString()!==""){
+                //console.log("Something went wrong. Subscription will not be made.", err);
+            }
+        }
+    }
+
+    try{
+        publishersNode.bindSync(pubAddress);
+        subscribersNode.bindSync(subAddress);
+        console.log(`\nStarting ZeroMQ proxy on [subs:${subAddress}] [pubs:${pubAddress}]\n`);
+    }catch(err){
+        console.log("Caught error on binding", err);
+        throw new Error("No zeromq!!!");
+    }
+
+    registerKiller([publishersNode, subscribersNode]);
+}
+
+function ZeromqConsumer(bindAddress, monitorFunction){
+
+    let socket = zmq.socket("sub");
+
+    if(typeof monitorFunction === "function"){
+        let events = ["connect", "connect_delay", "connect_retry", "listen", "bind_error", "accept", "accept_error", "close", "close_error", "disconnect"];
+        socket.monitor();
+        events.forEach((eventType)=>{
+            socket.on(eventType, (...args)=>{
+                monitorFunction(eventType, ...args);
+            });
+        });
+    }
+
+    function connect(callback){
+        socket.connect(bindAddress);
+        socket.on("connect", callback);
+    }
+
+    let subscriptions = {};
+    let connected = false;
+
+    this.subscribe = function(channelName, signature, callback){
+        let subscription = JSON.stringify({channelName, signature:signature});
+        if(!subscriptions[subscription]){
+            subscriptions[subscription] = [];
+        }
+
+        subscriptions[subscription].push(callback);
+
+        if(!connected){
+            connect(()=>{
+                connected = true;
+                for(var subscription in subscriptions){
+                    socket.subscribe(subscription);
+                }
+            });
+        }else{
+            socket.subscribe(subscription);
+        }
+    };
+
+    this.close = function(){
+        socket.close();
+    };
+
+    socket.on("message", (channel, receivedMessage)=>{
+       let callbacks = subscriptions[channel];
+       if(!callbacks || callbacks.length === 0){
+           return console.log(`No subscriptions found for channel ${channel}. Message dropped!`);
+       }
+       for(let i = 0; i<callbacks.length; i++){
+           let cb = callbacks[i];
+           cb(channel, receivedMessage);
+       }
+    });
+}
+
+let instance;
+module.exports.getForwarderInstance = function(address){
+    if(!instance){
+        address = address || defaultForwardAddress;
+        instance = new ZeromqForwarder(address);
+    }
+    return instance;
+};
+
+module.exports.createZeromqProxyNode = function(subAddress, pubAddress, signatureChecker){
+    subAddress = subAddress || defaultSubAddress;
+    pubAddress = pubAddress || defaultPubAddress;
+    return new ZeromqProxyNode(subAddress, pubAddress, signatureChecker);
+};
+
+module.exports.createZeromqConsumer = function(bindAddress, monitorFunction){
+    return new ZeromqConsumer(bindAddress, monitorFunction);
+};
+
+module.exports.registerKiller = registerKiller;
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false,"swarmutils":"swarmutils"}]},{},["D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\launcherBoot.js"])
+//# sourceMappingURL=launcherBoot.js.map

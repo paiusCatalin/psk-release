@@ -1,6 +1,11 @@
-bindableModelRequire=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\bindableModel_intermediar.js":[function(require,module,exports){
+csbBootRequire=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\csbBoot.js":[function(require,module,exports){
+const or = require('overwrite-require');
+or.enableForEnvironment(or.constants.NODEJS_ENVIRONMENT_TYPE);
+
+require("./csbBoot_intermediar");
+},{"./csbBoot_intermediar":"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\csbBoot_intermediar.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\csbBoot_intermediar.js":[function(require,module,exports){
 (function (global){
-global.bindableModelLoadModules = function(){ 
+global.csbBootLoadModules = function(){ 
 
 	if(typeof $$.__runtimeModules["source-map-support"] === "undefined"){
 		$$.__runtimeModules["source-map-support"] = require("source-map-support");
@@ -18,30 +23,744 @@ global.bindableModelLoadModules = function(){
 		$$.__runtimeModules["overwrite-require"] = require("overwrite-require");
 	}
 
-	if(typeof $$.__runtimeModules["swarmutils"] === "undefined"){
-		$$.__runtimeModules["swarmutils"] = require("swarmutils");
+	if(typeof $$.__runtimeModules["edfs"] === "undefined"){
+		$$.__runtimeModules["edfs"] = require("edfs");
 	}
 
-	if(typeof $$.__runtimeModules["soundpubsub"] === "undefined"){
-		$$.__runtimeModules["soundpubsub"] = require("soundpubsub");
-	}
-
-	if(typeof $$.__runtimeModules["psk-bindable-model"] === "undefined"){
-		$$.__runtimeModules["psk-bindable-model"] = require("psk-bindable-model");
+	if(typeof $$.__runtimeModules["dossier"] === "undefined"){
+		$$.__runtimeModules["dossier"] = require("dossier");
 	}
 }
 if (false) {
-	bindableModelLoadModules();
+	csbBootLoadModules();
 }; 
-global.bindableModelRequire = require;
+global.csbBootRequire = require;
 if (typeof $$ !== "undefined") {            
-    $$.requireBundle("bindableModel");
+    $$.requireBundle("csbBoot");
     };
     require('source-map-support').install({});
     
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"buffer-from":"buffer-from","overwrite-require":"overwrite-require","psk-bindable-model":"psk-bindable-model","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
+},{"buffer-from":"buffer-from","dossier":"dossier","edfs":"edfs","overwrite-require":"overwrite-require","source-map":"source-map","source-map-support":"source-map-support"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js":[function(require,module,exports){
+(function (Buffer){
+
+function FetchBrickTransportStrategy(initialConfig) {
+    const url = initialConfig;
+    this.send = (name, data, callback) => {
+
+        fetch(url + "/EDFS/", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+            body: data
+        }).then(function(response) {
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.json();
+        }).then(function(data) {
+            callback(null, data)
+        }).catch(error=>{
+            callback(error);
+        });
+
+    };
+
+    this.get = (name, callback) => {
+        fetch(url + "/EDFS/"+name,{
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+        }).then(response=>{
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.arrayBuffer();
+        }).then(arrayBuffer=>{
+                let buffer = new Buffer(arrayBuffer.byteLength);
+                let view = new Uint8Array(arrayBuffer);
+                for (let i = 0; i < buffer.length; ++i) {
+                    buffer[i] = view[i];
+                }
+
+            callback(null, buffer);
+        }).catch(error=>{
+            callback(error);
+        });
+    };
+
+    this.getHashForAlias = (alias, callback) => {
+        fetch(url + "/EDFS/getVersions/" + alias, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+        }).then(response => {
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.json().then(data => {
+                callback(null, data);
+            }).catch(error => {
+                callback(error);
+            })
+        });
+    };
+
+    this.getLocator = () => {
+        return url;
+    };
+}
+//TODO:why we use this?
+FetchBrickTransportStrategy.prototype.FETCH_BRICK_TRANSPORT_STRATEGY = "FETCH_BRICK_TRANSPORT_STRATEGY";
+
+
+module.exports = FetchBrickTransportStrategy;
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js":[function(require,module,exports){
+
+function HTTPBrickTransportStrategy(endpoint) {
+    require("psk-http-client");
+
+    this.send = (name, data, callback) => {
+        $$.remote.doHttpPost(endpoint + "/EDFS/" + name, data, callback);
+    };
+
+    this.get = (name, callback) => {
+        $$.remote.doHttpGet(endpoint + "/EDFS/" + name, callback);
+    };
+
+    this.getHashForAlias = (alias, callback) => {
+        $$.remote.doHttpGet(endpoint + "/EDFS/getVersions/" + alias, (err, hashesList) => {
+            if(err) {
+                return callback(err)
+            }
+
+            callback(undefined, JSON.parse(hashesList.toString()))
+        });
+    };
+
+    this.attachHashToAlias = (alias, name, callback) => {
+        $$.remote.doHttpPost(endpoint + "/EDFS/attachHashToAlias/" + name, alias, callback);
+    };
+
+    this.getLocator = () => {
+        return endpoint;
+    };
+}
+
+HTTPBrickTransportStrategy.prototype.canHandleEndpoint = (endpoint) => {
+    return endpoint.indexOf("http:") === 0 || endpoint.indexOf("https:") === 0;
+};
+
+module.exports = HTTPBrickTransportStrategy;
+},{"psk-http-client":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js":[function(require,module,exports){
+function BrickTransportStrategiesRegistry() {
+    const strategies = {};
+
+    this.remove = (transportStrategyName) => {
+        strategies[transportStrategyName] = undefined;
+    };
+
+    this.add = (transportStrategyName, strategy) => {
+        if (typeof strategy.prototype.canHandleEndpoint === "function") {
+            strategies[transportStrategyName] = strategy;
+        } else {
+            throw Error("Missing function from strategy prototype");
+        }
+    };
+
+    this.get = (endpoint) => {
+        if (typeof endpoint !== "string" || endpoint.length === 0) {
+            throw Error("Invalid endpoint");
+        }
+
+        const strategyName = getStrategyNameFromEndpoint(endpoint);
+        if (!strategyName) {
+            throw Error(`No strategy available to handle endpoint ${endpoint}`);
+        }
+
+        return new strategies[strategyName](endpoint);
+    };
+
+    this.has = (transportStrategyName) => {
+        return strategies.hasOwnProperty(transportStrategyName);
+    };
+
+    function getStrategyNameFromEndpoint(endpoint) {
+        for(let key in strategies){
+            if (strategies[key] && strategies[key].prototype.canHandleEndpoint(endpoint)) {
+                return key;
+            }
+        }
+    }
+}
+
+if (!$$.brickTransportStrategiesRegistry) {
+    $$.brickTransportStrategiesRegistry = new BrickTransportStrategiesRegistry();
+}
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js":[function(require,module,exports){
+function EDFS(endpoint) {
+    const RawDossier = require("./RawDossier");
+    const barModule = require("bar");
+    const fsAdapter = require("bar-fs-adapter");
+    const constants = require('../moduleConstants');
+    const self = this;
+
+    this.createCSB = () => {
+        return new RawDossier(endpoint);
+    };
+
+    this.createBar = () => {
+        return barModule.createArchive(createArchiveConfig());
+    };
+
+    this.bootCSB = (seed, callback) => {
+        const rawDossier = new RawDossier(endpoint, seed);
+        rawDossier.start(err => callback(err, rawDossier));
+    };
+
+    this.loadBar = (seed) => {
+        return barModule.createArchive(createArchiveConfig(seed));
+    };
+
+    this.clone = (seed, callback) => {
+        const edfsBrickStorage = require("edfs-brick-storage").create(endpoint);
+        const bar = this.loadBar(seed);
+        bar.clone(edfsBrickStorage, true, callback);
+    };
+
+    this.createWallet = (templateSeed, pin, overwrite = false, callback) => {
+        const wallet = this.createCSB();
+        wallet.mount("/", constants.CSB.CONSTITUTION_FOLDER, templateSeed, (err => {
+            if (err) {
+                return callback(err);
+            }
+
+            const seed = wallet.getSeed();
+            if (typeof pin !== "undefined") {
+                require("../seedCage").putSeed(seed, pin, overwrite, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(undefined, seed.toString());
+                });
+            } else {
+                callback(undefined, seed.toString());
+            }
+        }));
+    };
+
+    this.loadWallet = function (walletSeed, pin, overwrite, callback) {
+        if (typeof overwrite === "function") {
+            callback = overwrite;
+            overwrite = pin;
+            pin = walletSeed;
+            walletSeed = undefined;
+        }
+        if (typeof walletSeed === "undefined") {
+            require("../seedCage").getSeed(pin, (err, seed) => {
+                if (err) {
+                    return callback(err);
+                }
+                this.bootCSB(seed, (err, wallet) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(undefined, wallet);
+                });
+
+            });
+        } else {
+           
+            this.bootCSB(walletSeed, (err, wallet) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof pin !== "undefined" && pin !== null) {
+                    require("../seedCage").putSeed(walletSeed, pin, overwrite, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        callback(undefined, wallet);
+                    });
+                } else {
+                    return callback(undefined, wallet);
+                }
+            });
+        }
+    };
+
+    this.createBarWithConstitution = function (folderConstitution, callback) {
+        const bar = this.createBar();
+        bar.addFolder(folderConstitution, constants.CSB.CONSTITUTION_FOLDER, (err, mapDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, bar);
+        });
+    };
+
+//------------------------------------------------ internal methods -------------------------------------------------
+    function createArchiveConfig(seed) {
+        const ArchiveConfigurator = barModule.ArchiveConfigurator;
+        ArchiveConfigurator.prototype.registerFsAdapter("FsAdapter", fsAdapter.createFsAdapter);
+        ArchiveConfigurator.prototype.registerStorageProvider("EDFSBrickStorage", require("edfs-brick-storage").create);
+        const archiveConfigurator = new ArchiveConfigurator();
+        archiveConfigurator.setFsAdapter("FsAdapter");
+        archiveConfigurator.setStorageProvider("EDFSBrickStorage", endpoint);
+        archiveConfigurator.setBufferSize(65535);
+        archiveConfigurator.setEncryptionAlgorithm("aes-256-gcm");
+
+        if (seed) {
+            archiveConfigurator.setSeed(seed);
+        } else {
+            archiveConfigurator.setSeedEndpoint(endpoint);
+        }
+
+        return archiveConfigurator;
+    }
+}
+
+module.exports = EDFS;
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","../seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","./RawDossier":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js","bar":false,"bar-fs-adapter":false,"edfs-brick-storage":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js":[function(require,module,exports){
+/*
+
+Sinica: to be renamed CSBHandler. RootCSB should be deleted
+*/
+
+function RawDossier(endpoint, seed) {
+    const barModule = require("bar");
+    const constants = require("../moduleConstants").CSB;
+    let bar = createBar(seed);
+    this.getSeed = () => {
+        return bar.getSeed();
+    };
+
+    this.start = (callback) => {
+        createBlockchain(bar).start(callback);
+    };
+
+    this.addFolder = (fsFolderPath, barPath, callback) => {
+        bar.addFolder(fsFolderPath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.addFile = (fsFilePath, barPath, callback) => {
+        bar.addFile(fsFilePath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.readFile = (fileBarPath, callback) => {
+        this.loadBarForPath(fileBarPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.rawDossier.readFile(dossierContext.relativePath, callback);
+        });
+    };
+
+    this.extractFolder = bar.extractFolder;
+
+    this.extractFile = bar.extractFile;
+
+    this.writeFile = (barPath, data, callback) => {
+        bar.writeFile(barPath, data, (err, barMapDigest) => callback(err, barMapDigest));
+    };
+
+    this.listFiles = bar.listFiles;
+
+    this.mount = (path, name, archiveIdentifier, callback) => {
+        bar.readFile(constants.MANIFEST_FILE, (err, data) => {
+            let manifest;
+            if (err) {
+                manifest = {};
+                manifest.mounts = [];
+            }
+
+            if (data) {
+                manifest = JSON.parse(data.toString());
+                const pathNames = manifest.mounts.filter(el => el.localPath === path);
+                const index = pathNames.findIndex(el => el === name);
+                if (index >= 0) {
+                    return callback(Error(`A mount point at path ${path} with the name ${name} already exists.`));
+                }
+            }
+
+            const mount = {};
+            mount.localPath = path;
+            mount.mountName = name;
+            mount.archiveIdentifier = archiveIdentifier;
+
+            manifest.mounts.push(mount);
+
+            bar.writeFile(constants.MANIFEST_FILE, JSON.stringify(manifest), callback);
+        });
+    };
+
+    this.unmount = (path, name, callback) => {
+        bar.readFile(constants.MANIFEST_FILE, (err, data) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (data.length === 0) {
+                return callback(Error("Nothing to unmount"));
+            }
+
+            const manifest = JSON.parse(data.toString());
+            const index = manifest.mounts.findIndex(el => el.localPath === path);
+            if (index >= 0) {
+                manifest.mounts.splice(index, 1);
+            } else {
+                return callback(Error(`No mount point exists at path ${path}`));
+            }
+
+            bar.writeFile(constants.MANIFEST_FILE, JSON.stringify(manifest), callback);
+        });
+    };
+
+    //------------------------------------------------- internal functions ---------------------------------------------
+    function createBlockchain(bar) {
+        const blockchainModule = require("blockchain");
+        const worldStateCache = blockchainModule.createWorldStateCache("bar", bar);
+        const historyStorage = blockchainModule.createHistoryStorage("bar", bar);
+        const consensusAlgorithm = blockchainModule.createConsensusAlgorithm("direct");
+        const signatureProvider = blockchainModule.createSignatureProvider("permissive");
+        return blockchainModule.createBlockchain(worldStateCache, historyStorage, consensusAlgorithm, signatureProvider, true);
+    }
+
+    function createBar(localSeed) {
+        const createEDFSBrickStorage = require("edfs-brick-storage").create;
+        const createFsAdapter = require("bar-fs-adapter").createFsAdapter;
+
+        const ArchiveConfigurator = barModule.ArchiveConfigurator;
+        ArchiveConfigurator.prototype.registerStorageProvider("EDFSBrickStorage", createEDFSBrickStorage);
+        ArchiveConfigurator.prototype.registerFsAdapter("FsAdapter", createFsAdapter);
+
+        const archiveConfigurator = new ArchiveConfigurator();
+        archiveConfigurator.setFsAdapter("FsAdapter");
+
+        archiveConfigurator.setEncryptionAlgorithm("aes-256-gcm");
+        archiveConfigurator.setBufferSize(65535);
+        if (!localSeed) {
+            archiveConfigurator.setStorageProvider("EDFSBrickStorage", endpoint);
+            archiveConfigurator.setSeedEndpoint(endpoint);
+        } else {
+            archiveConfigurator.setSeed(localSeed);
+        }
+
+        return barModule.createArchive(archiveConfigurator);
+    }
+
+    this.loadBarForPath = (path, callback) => {
+        return __loadBarForPathRecursively(bar, "", path, callback);
+
+        function __loadBarForPathRecursively(archive, prefixPath, relativePath, callback) {
+            archive.listFiles((err, files) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (files.length === 0) {
+                    return callback();
+                }
+
+                let pathRest = [];
+
+                let barPath = files.find(file => {
+                    let pth;
+                    if (relativePath[0] === "/") {
+                        if (prefixPath === "/") {
+                            pth = relativePath;
+                        } else {
+                            pth = prefixPath + relativePath
+                        }
+                    } else {
+                        if (prefixPath === "/") {
+                            pth = prefixPath + relativePath;
+                        } else {
+                            pth = prefixPath + "/" + relativePath;
+                        }
+                    }
+                    return file === pth;
+                });
+                if (barPath) {
+                    return callback(undefined, {rawDossier: archive, prefixPath, relativePath});
+                } else {
+                    let splitPath = relativePath.split("/");
+                    if (splitPath[0] === "") {
+                        splitPath[0] = "/";
+                    }
+                    archive.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        const manifest = JSON.parse(manifestContent.toString());
+                        pathRest.unshift(splitPath.pop());
+                        while (splitPath.length > 0) {
+                            let localPath;
+                            if (splitPath[0] === "/") {
+                                splitPath.shift();
+                                localPath = "/" + splitPath.join("/");
+                                splitPath.unshift("/");
+                            } else {
+                                localPath = splitPath.join("/");
+                            }
+
+                            for (let mount of manifest.mounts) {
+                                const name = pathRest[0];
+                                if (mount.localPath === localPath && mount.mountName === name) {
+                                    const internalArchive = createBar(mount.archiveIdentifier);
+                                    return __loadBarForPathRecursively(internalArchive, splitPath.join("/"), pathRest.join("/"), callback);
+                                }
+                            }
+
+                            pathRest.unshift(splitPath.pop());
+                        }
+                    });
+                }
+            });
+        }
+    }
+}
+
+module.exports = RawDossier;
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","bar":false,"bar-fs-adapter":false,"blockchain":false,"edfs-brick-storage":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js":[function(require,module,exports){
+const HTTPBrickTransportStrategy = require("./brickTransportStrategies/HTTPBrickTransportStrategy");
+HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK_TRANSPORT_STRATEGY";
+
+module.exports = {
+    CSB: {
+        CONSTITUTION_FOLDER: 'constitution',
+        BLOCKCHAIN_FOLDER: 'blockchain',
+        APP_FOLDER: 'app',
+        DOMAIN_IDENTITY_FILE: 'domain_identity',
+        ASSETS_FOLDER: "assets",
+        TRANSACTIONS_FOLDER: "transactions",
+        APPS_FOLDER: "apps",
+        DATA_FOLDER: "data",
+        MANIFEST_FILE: "manifest"
+    }
+};
+
+},{"./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js":[function(require,module,exports){
+(function (Buffer){
+const pskcrypto = "pskcrypto";
+const crypto = require(pskcrypto);
+const storageLocation = "seedCage";
+const algorithm = "aes-256-cfb";
+
+/**
+ * local storage can't handle properly binary data
+ *  https://stackoverflow.com/questions/52419694/how-to-store-uint8array-in-the-browser-with-localstorage-using-javascript
+ * @param pin
+ * @param callback
+ * @returns {*}
+ */
+function getSeed(pin, callback) {
+    let encryptedSeed;
+    let seed;
+    try {
+        encryptedSeed = localStorage.getItem(storageLocation);
+        if (encryptedSeed === null || typeof encryptedSeed !== "string" || encryptedSeed.length === 0) {
+            return callback(new Error("SeedCage is empty or data was altered"));
+        }
+
+        const retrievedEncryptedArr = JSON.parse(encryptedSeed);
+        encryptedSeed = new Uint8Array(retrievedEncryptedArr);
+        const pskEncryption = crypto.createPskEncryption(algorithm);
+        const encKey = crypto.deriveKey(algorithm, pin);
+        seed = pskEncryption.decrypt(encryptedSeed, encKey).toString();
+    } catch (e) {
+        return callback(e);
+    }
+    callback(undefined, seed);
+}
+
+function putSeed(seed, pin, overwrite = false, callback) {
+    let encSeed;
+
+    if (typeof overwrite === "function") {
+        callback(Error("TODO: api signature updated!"));
+    }
+    try {
+        if (typeof seed === "string") {
+            seed = Buffer.from(seed);
+        }
+        if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+            seed = Buffer.from(seed);
+        }
+
+        const pskEncryption = crypto.createPskEncryption(algorithm);
+        const encKey = crypto.deriveKey(algorithm, pin);
+        encSeed = pskEncryption.encrypt(seed, encKey);
+        const encParameters = pskEncryption.getEncryptionParameters();
+        encSeed = Buffer.concat([encSeed, encParameters.iv]);
+        if (encParameters.aad) {
+            encSeed = Buffer.concat([encSeed, encParameters.aad]);
+        }
+
+        if (encParameters.tag) {
+            encSeed = Buffer.concat([encSeed, encParameters.tag]);
+        }
+
+        const encryptedArray =  Array.from(encSeed);
+        const encryptedSeed = JSON.stringify(encryptedArray);
+
+        localStorage.setItem(storageLocation, encryptedSeed);
+    } catch (e) {
+        return callback(e);
+    }
+    callback(undefined);
+}
+
+function check(callback) {
+    let item;
+    try {
+        item = localStorage.getItem(storageLocation);
+    } catch (e) {
+        return callback(e);
+    }
+    if (item) {
+        return callback();
+    }
+    callback(new Error("SeedCage does not exists"));
+}
+
+module.exports = {
+    check,
+    putSeed,
+    getSeed
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js":[function(require,module,exports){
+(function (Buffer){
+const pth = "path";
+const path = require(pth);
+const os = "os";
+const fileSystem = "fs";
+const fs = require(fileSystem);
+const pskcrypto = "pskcrypto";
+const crypto = require(pskcrypto);
+
+
+const storageLocation = process.env.SEED_CAGE_LOCATION || require(os).homedir();
+const storageFileName = ".seedCage";
+const seedCagePath = path.join(storageLocation, storageFileName);
+const algorithm = "aes-256-cfb";
+
+function getSeed(pin, callback) {
+    fs.readFile(seedCagePath, (err, encryptedSeed) => {
+        if (err) {
+            return callback(err);
+        }
+
+        let seed;
+        try {
+            const pskEncryption = crypto.createPskEncryption(algorithm);
+            const encKey = crypto.deriveKey(algorithm, pin);
+            seed = pskEncryption.decrypt(encryptedSeed, encKey).toString();
+        } catch (e) {
+            return callback(e);
+        }
+
+        callback(undefined, seed);
+    });
+}
+
+function putSeed(seed, pin, overwrite = false, callback) {
+    fs.mkdir(storageLocation, {recursive: true}, (err) => {
+        if (err) {
+            return callback(err);
+        }
+
+        fs.stat(seedCagePath, (err, stats) => {
+            if (!err && stats.size > 0) {
+                if (overwrite) {
+                    __encryptSeed();
+                } else {
+                    return callback(Error("Attempted to overwrite existing SEED."));
+                }
+            } else {
+                __encryptSeed();
+            }
+
+            function __encryptSeed() {
+                let encSeed;
+                try {
+                    if (typeof seed === "string") {
+                        seed = Buffer.from(seed);
+                    }
+
+                    if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+                        seed = Buffer.from(seed);
+                    }
+
+
+                    const pskEncryption = crypto.createPskEncryption(algorithm);
+                    const encKey = crypto.deriveKey(algorithm, pin);
+                    encSeed = pskEncryption.encrypt(seed, encKey);
+                    const encParameters = pskEncryption.getEncryptionParameters();
+                    encSeed = Buffer.concat([encSeed, encParameters.iv]);
+                    if (encParameters.aad) {
+                        encSeed = Buffer.concat([encSeed, encParameters.aad]);
+                    }
+
+                    if (encParameters.tag) {
+                        encSeed = Buffer.concat([encSeed, encParameters.tag]);
+                    }
+                } catch (e) {
+                    return callback(e);
+                }
+
+                console.log("To be removed later", seed.toString());
+                fs.writeFile(seedCagePath, encSeed, callback);
+            }
+        });
+    });
+}
+
+function check(callback) {
+    fs.access(seedCagePath, callback);
+}
+
+module.exports = {
+    check,
+    putSeed,
+    getSeed
+};
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js":[function(require,module,exports){
+const or = require("overwrite-require");
+switch ($$.environmentType) {
+    case or.constants.THREAD_ENVIRONMENT_TYPE:
+    case or.constants.NODEJS_ENVIRONMENT_TYPE:
+        module.exports = require("./NodeSeedCage");
+        break;
+    case or.constants.BROWSER_ENVIRONMENT_TYPE:
+        module.exports = require("./BrowserSeedCage");
+        break;
+    case or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE:
+    case or.constants.ISOLATE_ENVIRONMENT_TYPE:
+    default:
+        throw new Error("No implementation of SeedCage for this env type.");
+}
+},{"./BrowserSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js","./NodeSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
 module.exports = {
   BROWSER_ENVIRONMENT_TYPE: 'browser',
   SERVICE_WORKER_ENVIRONMENT_TYPE: 'service-worker',
@@ -362,1452 +1081,7 @@ $$.registerGlobalSymbol("throttlingEvent", function (...args) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"psklogger":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-bindable-model\\lib\\PskBindableModel.js":[function(require,module,exports){
-const SoundPubSub = require("soundpubsub").soundPubSub;
-const CHAIN_CHANGED = 'chainChanged';
-const WILDCARD = "*";
-const CHAIN_SEPARATOR = ".";
-const MODEL_PREFIX = "Model";
-const compactor = function (message, channel) {
-    if (message.type === CHAIN_CHANGED) {
-        return channel;
-    }
-};
-SoundPubSub.registerCompactor(CHAIN_CHANGED, compactor);
-
-let modelCounter = 0;
-
-class PskBindableModel {
-
-    static setModel(_model) {
-        let root = undefined;
-        let targetPrefix = MODEL_PREFIX + CHAIN_SEPARATOR + modelCounter + CHAIN_SEPARATOR;
-        let observedChains = new Set();
-        const expressions = {};
-
-        modelCounter++;
-
-        function extendChain(parentChain, currentChain) {
-            return parentChain ? parentChain + CHAIN_SEPARATOR + currentChain : currentChain
-        }
-
-        function createChannelName(chain) {
-            return targetPrefix + chain;
-        }
-
-        function makeSetter(parentChain) {
-            return function (obj, prop, value) {
-                let chain = extendChain(parentChain, prop);
-                if (typeof value === "object") {
-                    obj[prop] = proxify(value, chain);
-                } else {
-                    obj[prop] = value;
-                }
-                root.notify(chain);
-                return true;
-            }
-        }
-
-        function pushHandler(target, parentChain) {
-            return function () {
-                try {
-                    let arrayLength = Array.prototype.push.apply(target, arguments);
-                    let index = arrayLength - 1;
-                    root.notify(extendChain(parentChain, index));
-                    return arrayLength;
-                } catch (e) {
-                    console.log("An error occurred in Proxy");
-                    throw e;
-                }
-            }
-        }
-
-        function arrayFnHandler(fn, target, parentChain) {
-            return function () {
-                try {
-                    let returnedValue = Array.prototype[fn].apply(target, arguments);
-                    root.notify(parentChain);
-                    return returnedValue;
-                } catch (e) {
-                    console.log("An error occurred in Proxy");
-                    throw e;
-                }
-            }
-        }
-
-        function makeArrayGetter(parentChain) {
-            return function (target, prop) {
-                const val = target[prop];
-                if (typeof val === 'function') {
-                    switch (prop) {
-                        case "push":
-                            return pushHandler(target, parentChain);
-                        default:
-                            return arrayFnHandler(prop, target, parentChain);
-                    }
-                }
-                return val;
-            }
-        }
-
-        function proxify(obj, parentChain) {
-
-            if (typeof obj !== "object") {
-                return obj;
-            }
-
-            let isRoot = !parentChain;
-            let notify, onChange, getChainValue, setChainValue;
-            if (isRoot) {
-                notify = function (changedChain) {
-
-                    function getRelatedChains(changedChain) {
-                        let chainsRelatedSet = new Set();
-                        chainsRelatedSet.add(WILDCARD);
-                        let chainSequence = changedChain.split(CHAIN_SEPARATOR).map(el => el.trim());
-
-                        let chainPrefix = "";
-                        for (let i = 0; i < chainSequence.length; i++) {
-                            if (i !== 0) {
-                                chainPrefix += CHAIN_SEPARATOR + chainSequence[i];
-                            } else {
-                                chainPrefix = chainSequence[i];
-                            }
-                            chainsRelatedSet.add(chainPrefix);
-                        }
-
-                        observedChains.forEach((chain) => {
-                            if (chain.startsWith(changedChain)) {
-                                chainsRelatedSet.add(chain);
-                            }
-                        });
-
-                        return chainsRelatedSet;
-                    }
-
-                    let changedChains = getRelatedChains(changedChain);
-
-                    changedChains.forEach(changedChain => {
-                        SoundPubSub.publish(createChannelName(changedChain), {
-                            type: CHAIN_CHANGED,
-                            chain: changedChain
-                        });
-                    })
-                };
-
-                getChainValue = function (chain) {
-                    let chainSequence = chain.split(CHAIN_SEPARATOR).map(el => el.trim());
-                    let reducer = (accumulator, currentValue) => {
-                        if (accumulator !== null && typeof accumulator !== 'undefined') {
-                            return accumulator[currentValue];
-                        }
-                        return undefined;
-                    };
-                    return chainSequence.reduce(reducer, root);
-                };
-
-                setChainValue = function (chain, value) {
-                    let chainSequence = chain.split(CHAIN_SEPARATOR).map(el => el.trim());
-
-                    let reducer = (accumulator, currentValue, index, array) => {
-                        if (accumulator !== null && typeof accumulator !== 'undefined') {
-                            if (index === array.length - 1) {
-                                accumulator[currentValue] = value;
-                                return true;
-                            }
-                            accumulator = accumulator[currentValue];
-                            return accumulator;
-                        }
-                        return undefined;
-                    };
-                    return chainSequence.reduce(reducer, root);
-                };
-
-                onChange = function (chain, callback) {
-                    observedChains.add(chain);
-                    SoundPubSub.subscribe(createChannelName(chain), callback);
-                }
-            }
-            let setter = makeSetter(parentChain);
-
-            let handler = {
-                apply:function(target, prop, argumentsList){
-                    throw new Error("A function call was not expected inside proxy!");
-                },
-                constructor:function(target, args){
-                    throw new Error("A constructor call was not expected inside proxy!");
-                },
-                isExtensible:function(target) {
-                    return Reflect.isExtensible(target);
-                },
-                preventExtensions:function(target) {
-                    return Reflect.preventExtensions(target);
-                },
-                get: function (obj, prop) {
-                    if (isRoot) {
-                        switch (prop) {
-                            case "onChange":
-                                return onChange;
-                            case "notify":
-                                return notify;
-                            case "getChainValue":
-                                return getChainValue;
-                            case "setChainValue":
-                                return setChainValue;
-                        }
-                    }
-
-                    return obj[prop];
-                },
-                set: makeSetter(parentChain),
-
-                deleteProperty: function (oTarget, sKey) {
-                    delete oTarget[sKey];
-                },
-
-                ownKeys: function (oTarget) {
-                    return   Reflect.ownKeys(oTarget);
-                },
-                has: function (oTarget, sKey) {
-                    return sKey in oTarget
-                },
-                defineProperty: function (oTarget, sKey, oDesc) {
-                    let oDescClone = Object.assign({}, oDesc);
-                    oDescClone.set = function (obj, prop, value) {
-                        if (oDesc.hasOwnProperty("set")) {
-                            oDesc.set(obj, prop, value);
-                        }
-                        setter(obj, prop, value);
-                    };
-                    return Object.defineProperty(oTarget, sKey, oDescClone);
-                },
-                getOwnPropertyDescriptor: function (oTarget, sKey) {
-                    return Object.getOwnPropertyDescriptor(oTarget, sKey)
-                },
-                getPrototypeOf:function(target){
-                    return Reflect.getPrototypeOf(target)
-                },
-                setPrototypeOf:function(target, newProto) {
-                    Reflect.setPrototypeOf(target, newProto);
-                }
-            };
-
-            if (Array.isArray(obj)) {
-                handler.get = makeArrayGetter(parentChain);
-            }
-
-            //proxify inner objects
-            Object.keys(obj).forEach(prop => {
-                obj[prop] = proxify(obj[prop], extendChain(parentChain, prop))
-            });
-
-            return new Proxy(obj, handler);
-        }
-
-        root = proxify(_model);
-
-        ////////////////////////////
-        // Model expressions support
-        ////////////////////////////
-        /**
-         * @param {string} expressionName
-         * @param {callback} callback
-         * @throws {Error}
-         */
-        root.addExpression = function (expressionName, callback) {
-            if (typeof expressionName !== 'string' || !expressionName.length) {
-                throw new Error("Expression name must be a valid string");
-            }
-
-            if (typeof callback !== 'function') {
-                throw new Error("Expression must have a callback");
-            }
-
-            expressions[expressionName] = function () {
-                return callback.call(root);
-            };
-        }
-
-        /**
-         * @param {string} expressionName
-         * @return {mixed}
-         * @throws {Error}
-         */
-        root.evaluateExpression = function (expressionName) {
-            if (typeof expressions[expressionName] !== 'function') {
-                throw new Error(`Expression "${expressionName}" is not defined`);
-            }
-
-            return expressions[expressionName]();
-        }
-
-        /**
-         * @param {string} expressionName
-         * @return {boolean}
-         */
-        root.hasExpression = function (expressionName) {
-            return typeof expressions[expressionName] === 'function';
-        }
-
-        return root;
-    }
-}
-
-module.exports = PskBindableModel;
-
-},{"soundpubsub":"soundpubsub"}],"D:\\Catalin\\Munca\\privatesky\\modules\\soundpubsub\\lib\\soundPubSub.js":[function(require,module,exports){
-/*
-Initial License: (c) Axiologic Research & Alboaie Sînică.
-Contributors: Axiologic Research , PrivateSky project
-Code License: LGPL or MIT.
-*/
-
-
-/**
- *   Usually an event could cause execution of other callback events . We say that is a level 1 event if is causeed by a level 0 event and so on
- *
- *      SoundPubSub provides intuitive results regarding to asynchronous calls of callbacks and computed values/expressions:
- *   we prevent immediate execution of event callbacks to ensure the intuitive final result is guaranteed as level 0 execution
- *   we guarantee that any callback function is "re-entrant"
- *   we are also trying to reduce the number of callback execution by looking in queues at new messages published by
- *   trying to compact those messages (removing duplicate messages, modifying messages, or adding in the history of another event ,etc)
- *
- *      Example of what can be wrong without non-sound asynchronous calls:
- *
- *  Step 0: Initial state:
- *   a = 0;
- *   b = 0;
- *
- *  Step 1: Initial operations:
- *   a = 1;
- *   b = -1;
- *
- *  // an observer reacts to changes in a and b and compute CORRECT like this:
- *   if( a + b == 0) {
- *       CORRECT = false;
- *       notify(...); // act or send a notification somewhere..
- *   } else {
- *      CORRECT = false;
- *   }
- *
- *    Notice that: CORRECT will be true in the end , but meantime, after a notification was sent and CORRECT was wrongly, temporarily false!
- *    soundPubSub guarantee that this does not happen because the syncronous call will before any observer (bot asignation on a and b)
- *
- *   More:
- *   you can use blockCallBacks and releaseCallBacks in a function that change a lot a collection or bindable objects and all
- *   the notifications will be sent compacted and properly
- */
-
-// TODO: optimisation!? use a more efficient queue instead of arrays with push and shift!?
-// TODO: see how big those queues can be in real applications
-// for a few hundreds items, queues made from array should be enough
-//*   Potential TODOs:
-//    *     prevent any form of problem by calling callbacks in the expected order !?
-//*     preventing infinite loops execution cause by events!?
-//*
-//*
-// TODO: detect infinite loops (or very deep propagation) It is possible!?
-
-const Queue = require('swarmutils').Queue;
-
-function SoundPubSub(){
-
-	/**
-	 * publish
-	 *      Publish a message {Object} to a list of subscribers on a specific topic
-	 *
-	 * @params {String|Number} target,  {Object} message
-	 * @return number of channel subscribers that will be notified
-	 */
-	this.publish = function(target, message){
-		if(!invalidChannelName(target) && !invalidMessageType(message) && (typeof channelSubscribers[target] != 'undefined')){
-			compactAndStore(target, message);
-			setTimeout(dispatchNext, 0);
-			return channelSubscribers[target].length;
-		} else{
-			return null;
-		}
-	};
-
-	/**
-	 * subscribe
-	 *      Subscribe / add a {Function} callBack on a {String|Number}target channel subscribers list in order to receive
-	 *      messages published if the conditions defined by {Function}waitForMore and {Function}filter are passed.
-	 *
-	 * @params {String|Number}target, {Function}callBack, {Function}waitForMore, {Function}filter
-	 *
-	 *          target      - channel name to subscribe
-	 *          callback    - function to be called when a message was published on the channel
-	 *          waitForMore - a intermediary function that will be called after a successfuly message delivery in order
-	 *                          to decide if a new messages is expected...
-	 *          filter      - a function that receives the message before invocation of callback function in order to allow
-	 *                          relevant message before entering in normal callback flow
-	 * @return
-	 */
-	this.subscribe = function(target, callBack, waitForMore, filter){
-		if(!invalidChannelName(target) && !invalidFunction(callBack)){
-			var subscriber = {"callBack":callBack, "waitForMore":waitForMore, "filter":filter};
-			var arr = channelSubscribers[target];
-			if(typeof arr == 'undefined'){
-				arr = [];
-				channelSubscribers[target] = arr;
-			}
-			arr.push(subscriber);
-		}
-	};
-
-	/**
-	 * unsubscribe
-	 *      Unsubscribe/remove {Function} callBack from the list of subscribers of the {String|Number} target channel
-	 *
-	 * @params {String|Number} target, {Function} callBack, {Function} filter
-	 *
-	 *          target      - channel name to unsubscribe
-	 *          callback    - reference of the original function that was used as subscribe
-	 *          filter      - reference of the original filter function
-	 * @return
-	 */
-	this.unsubscribe = function(target, callBack, filter){
-		if(!invalidFunction(callBack)){
-			var gotit = false;
-			if(channelSubscribers[target]){
-				for(var i = 0; i < channelSubscribers[target].length;i++){
-					var subscriber =  channelSubscribers[target][i];
-					if(subscriber.callBack === callBack && ( typeof filter === 'undefined' || subscriber.filter === filter )){
-						gotit = true;
-						subscriber.forDelete = true;
-						subscriber.callBack = undefined;
-						subscriber.filter = undefined;
-					}
-				}
-			}
-			if(!gotit){
-				wprint("Unable to unsubscribe a callback that was not subscribed!");
-			}
-		}
-	};
-
-	/**
-	 * blockCallBacks
-	 *
-	 * @params
-	 * @return
-	 */
-	this.blockCallBacks = function(){
-		level++;
-	};
-
-	/**
-	 * releaseCallBacks
-	 *
-	 * @params
-	 * @return
-	 */
-	this.releaseCallBacks = function(){
-		level--;
-		//hack/optimisation to not fill the stack in extreme cases (many events caused by loops in collections,etc)
-		while(level === 0 && dispatchNext(true)){
-			//nothing
-		}
-
-		while(level === 0 && callAfterAllEvents()){
-            //nothing
-		}
-	};
-
-	/**
-	 * afterAllEvents
-	 *
-	 * @params {Function} callback
-	 *
-	 *          callback - function that needs to be invoked once all events are delivered
-	 * @return
-	 */
-	this.afterAllEvents = function(callBack){
-		if(!invalidFunction(callBack)){
-			afterEventsCalls.push(callBack);
-		}
-		this.blockCallBacks();
-		this.releaseCallBacks();
-	};
-
-	/**
-	 * hasChannel
-	 *
-	 * @params {String|Number} channel
-	 *
-	 *          channel - name of the channel that need to be tested if present
-	 * @return
-	 */
-	this.hasChannel = function(channel){
-		return !invalidChannelName(channel) && (typeof channelSubscribers[channel] != 'undefined') ? true : false;
-	};
-
-	/**
-	 * addChannel
-	 *
-	 * @params {String} channel
-	 *
-	 *          channel - name of a channel that needs to be created and added to soundpubsub repository
-	 * @return
-	 */
-	this.addChannel = function(channel){
-		if(!invalidChannelName(channel) && !this.hasChannel(channel)){
-			channelSubscribers[channel] = [];
-		}
-	};
-
-	/* ---------------------------------------- protected stuff ---------------------------------------- */
-	var self = this;
-	// map channelName (object local id) -> array with subscribers
-	var channelSubscribers = {};
-
-	// map channelName (object local id) -> queue with waiting messages
-	var channelsStorage = {};
-
-	// object
-	var typeCompactor = {};
-
-	// channel names
-	var executionQueue = new Queue();
-	var level = 0;
-
-
-
-	/**
-	 * registerCompactor
-	 *
-	 *       An compactor takes a newEvent and and oldEvent and return the one that survives (oldEvent if
-	 *  it can compact the new one or the newEvent if can't be compacted)
-	 *
-	 * @params {String} type, {Function} callBack
-	 *
-	 *          type        - channel name to unsubscribe
-	 *          callBack    - handler function for that specific event type
-	 * @return
-	 */
-	this.registerCompactor = function(type, callBack) {
-		if(!invalidFunction(callBack)){
-			typeCompactor[type] = callBack;
-		}
-	};
-
-	/**
-	 * dispatchNext
-	 *
-	 * @param fromReleaseCallBacks: hack to prevent too many recursive calls on releaseCallBacks
-	 * @return {Boolean}
-	 */
-	function dispatchNext(fromReleaseCallBacks){
-		if(level > 0) {
-			return false;
-		}
-		const channelName = executionQueue.front();
-		if(typeof channelName != 'undefined'){
-			self.blockCallBacks();
-			try{
-				let message;
-				if(!channelsStorage[channelName].isEmpty()) {
-					message = channelsStorage[channelName].front();
-				}
-				if(typeof message == 'undefined'){
-					if(!channelsStorage[channelName].isEmpty()){
-						wprint("Can't use as message in a pub/sub channel this object: " + message);
-					}
-					executionQueue.pop();
-				} else {
-					if(typeof message.__transmisionIndex == 'undefined'){
-						message.__transmisionIndex = 0;
-						for(var i = channelSubscribers[channelName].length-1; i >= 0 ; i--){
-							var subscriber =  channelSubscribers[channelName][i];
-							if(subscriber.forDelete === true){
-								channelSubscribers[channelName].splice(i,1);
-							}
-						}
-					} else{
-						message.__transmisionIndex++;
-					}
-					//TODO: for immutable objects it will not work also, fix for shape models
-					if(typeof message.__transmisionIndex == 'undefined'){
-						wprint("Can't use as message in a pub/sub channel this object: " + message);
-					}
-					subscriber = channelSubscribers[channelName][message.__transmisionIndex];
-					if(typeof subscriber == 'undefined'){
-						delete message.__transmisionIndex;
-						channelsStorage[channelName].pop();
-					} else{
-						if(subscriber.filter === null || typeof subscriber.filter === "undefined" || (!invalidFunction(subscriber.filter) && subscriber.filter(message))){
-							if(!subscriber.forDelete){
-								subscriber.callBack(message);
-								if(subscriber.waitForMore && !invalidFunction(subscriber.waitForMore) && !subscriber.waitForMore(message)){
-									subscriber.forDelete = true;
-								}
-							}
-						}
-					}
-				}
-			} catch(err){
-				wprint("Event callback failed: "+ subscriber.callBack +"error: " + err.stack);
-			}
-			//
-			if(fromReleaseCallBacks){
-				level--;
-			} else{
-				self.releaseCallBacks();
-			}
-			return true;
-		} else{
-			return false;
-		}
-	}
-
-	function compactAndStore(target, message){
-		var gotCompacted = false;
-		var arr = channelsStorage[target];
-		if(typeof arr == 'undefined'){
-			arr = new Queue();
-			channelsStorage[target] = arr;
-		}
-
-		if(message && typeof message.type != 'undefined'){
-			var typeCompactorCallBack = typeCompactor[message.type];
-
-			if(typeof typeCompactorCallBack != 'undefined'){
-				for(let channel of arr) {
-					if(typeCompactorCallBack(message, channel) === channel) {
-						if(typeof channel.__transmisionIndex == 'undefined') {
-							gotCompacted = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		if(!gotCompacted && message){
-			arr.push(message);
-			executionQueue.push(target);
-		}
-	}
-
-	var afterEventsCalls = new Queue();
-	function callAfterAllEvents (){
-		if(!afterEventsCalls.isEmpty()){
-			var callBack = afterEventsCalls.pop();
-			//do not catch exceptions here..
-			callBack();
-		}
-		return !afterEventsCalls.isEmpty();
-	}
-
-	function invalidChannelName(name){
-		var result = false;
-		if(!name || (typeof name != "string" && typeof name != "number")){
-			result = true;
-			wprint("Invalid channel name: " + name);
-		}
-
-		return result;
-	}
-
-	function invalidMessageType(message){
-		var result = false;
-		if(!message || typeof message != "object"){
-			result = true;
-			wprint("Invalid messages types: " + message);
-		}
-		return result;
-	}
-
-	function invalidFunction(callback){
-		var result = false;
-		if(!callback || typeof callback != "function"){
-			result = true;
-			wprint("Expected to be function but is: " + callback);
-		}
-		return result;
-	}
-}
-
-exports.soundPubSub = new SoundPubSub();
-},{"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js":[function(require,module,exports){
-function product(args) {
-    if(!args.length){
-        return [ [] ];
-    }
-    var prod = product(args.slice(1)), r = [];
-    args[0].forEach(function(x) {
-        prod.forEach(function(p) {
-            r.push([ x ].concat(p));
-        });
-    });
-    return r;
-}
-
-function objectProduct(obj) {
-    var keys = Object.keys(obj),
-        values = keys.map(function(x) { return obj[x]; });
-
-    return product(values).map(function(p) {
-        var e = {};
-        keys.forEach(function(k, n) { e[k] = p[n]; });
-        return e;
-    });
-}
-
-module.exports = objectProduct;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js":[function(require,module,exports){
-var meta = "meta";
-
-function OwM(serialized){
-
-    if(serialized){
-        return OwM.prototype.convert(serialized);
-    }
-
-    Object.defineProperty(this, meta, {
-        writable: false,
-        enumerable: true,
-        value: {}
-    });
-
-    Object.defineProperty(this, "setMeta", {
-        writable: false,
-        enumerable: false,
-        configurable:false,
-        value: function(prop, value){
-            if(typeof prop == "object" && typeof value == "undefined"){
-                for(var p in prop){
-                    this[meta][p] = prop[p];
-                }
-                return prop;
-            }
-            this[meta][prop] = value;
-            return value;
-        }
-    });
-
-    Object.defineProperty(this, "getMeta", {
-        writable: false,
-        value: function(prop){
-            return this[meta][prop];
-        }
-    });
-}
-
-function testOwMSerialization(obj){
-    let res = false;
-
-    if(obj){
-        res = typeof obj[meta] != "undefined" && !(obj instanceof OwM);
-    }
-
-    return res;
-}
-
-OwM.prototype.convert = function(serialized){
-    const owm = new OwM();
-
-    for(var metaProp in serialized.meta){
-        if(!testOwMSerialization(serialized[metaProp])) {
-            owm.setMeta(metaProp, serialized.meta[metaProp]);
-        }else{
-            owm.setMeta(metaProp, OwM.prototype.convert(serialized.meta[metaProp]));
-        }
-    }
-
-    for(var simpleProp in serialized){
-        if(simpleProp === meta) {
-            continue;
-        }
-
-        if(!testOwMSerialization(serialized[simpleProp])){
-            owm[simpleProp] = serialized[simpleProp];
-        }else{
-            owm[simpleProp] = OwM.prototype.convert(serialized[simpleProp]);
-        }
-    }
-
-    return owm;
-};
-
-OwM.prototype.getMetaFrom = function(obj, name){
-    var res;
-    if(!name){
-        res = obj[meta];
-    }else{
-        res = obj[meta][name];
-    }
-    return res;
-};
-
-OwM.prototype.setMetaFor = function(obj, name, value){
-    obj[meta][name] = value;
-    return obj[meta][name];
-};
-
-module.exports = OwM;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js":[function(require,module,exports){
-function QueueElement(content) {
-	this.content = content;
-	this.next = null;
-}
-
-function Queue() {
-	this.head = null;
-	this.tail = null;
-	this.length = 0;
-	this.push = function (value) {
-		const newElement = new QueueElement(value);
-		if (!this.head) {
-			this.head = newElement;
-			this.tail = newElement;
-		} else {
-			this.tail.next = newElement;
-			this.tail = newElement;
-		}
-		this.length++;
-	};
-
-	this.pop = function () {
-		if (!this.head) {
-			return null;
-		}
-		const headCopy = this.head;
-		this.head = this.head.next;
-		this.length--;
-
-		//fix???????
-		if(this.length === 0){
-            this.tail = null;
-		}
-
-		return headCopy.content;
-	};
-
-	this.front = function () {
-		return this.head ? this.head.content : undefined;
-	};
-
-	this.isEmpty = function () {
-		return this.head === null;
-	};
-
-	this[Symbol.iterator] = function* () {
-		let head = this.head;
-		while(head !== null) {
-			yield head.content;
-			head = head.next;
-		}
-	}.bind(this);
-}
-
-Queue.prototype.toString = function () {
-	let stringifiedQueue = '';
-	let iterator = this.head;
-	while (iterator) {
-		stringifiedQueue += `${JSON.stringify(iterator.content)} `;
-		iterator = iterator.next;
-	}
-	return stringifiedQueue;
-};
-
-Queue.prototype.inspect = Queue.prototype.toString;
-
-module.exports = Queue;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js":[function(require,module,exports){
-const HEADER_SIZE_RESEARVED = 4;
-
-function SwarmPacker(){
-}
-
-function copyStringtoArrayBuffer(str, buffer){
-    if(typeof str !== "string"){
-        throw new Error("Wrong param type received");
-    }
-    for(var i = 0; i < str.length; i++) {
-        buffer[i] = str.charCodeAt(i);
-    }
-    return buffer;
-}
-
-function copyFromBuffer(target, source){
-    for(let i=0; i<source.length; i++){
-        target[i] = source[i];
-    }
-    return target;
-}
-
-let serializers = {};
-
-SwarmPacker.registerSerializer = function(name, implementation){
-    if(serializers[name]){
-        throw new Error("Serializer name already exists");
-    }
-    serializers[name] = implementation;
-};
-
-function getSerializer(name){
-    return serializers[name];
-}
-
-SwarmPacker.getSerializer = getSerializer;
-
-Object.defineProperty(SwarmPacker.prototype, "JSON", {value: "json"});
-Object.defineProperty(SwarmPacker.prototype, "MSGPACK", {value: "msgpack"});
-
-SwarmPacker.registerSerializer(SwarmPacker.prototype.JSON, {
-    serialize: JSON.stringify,
-    deserialize: (serialization)=>{
-        if(typeof serialization !== "string"){
-            serialization = String.fromCharCode.apply(null, serialization);
-        }
-        return JSON.parse(serialization);
-    },
-    getType: ()=>{
-        return SwarmPacker.prototype.JSON;
-    }
-});
-
-function registerMsgPackSerializer(){
-    const mp = '@msgpack/msgpack';
-    let msgpack;
-
-    try{
-        msgpack = require(mp);
-        if (typeof msgpack === "undefined") {
-            throw new Error("msgpack is unavailable.")
-        }
-    }catch(err){
-        console.log("msgpack not available. If you need msgpack serialization include msgpack in one of your bundles");
-        //preventing msgPack serializer being register if msgPack dep is not found.
-        return;
-    }
-
-    SwarmPacker.registerSerializer(SwarmPacker.prototype.MSGPACK, {
-        serialize: msgpack.encode,
-        deserialize: msgpack.decode,
-        getType: ()=>{
-            return SwarmPacker.prototype.MSGPACK;
-        }
-    });
-}
-
-registerMsgPackSerializer();
-
-SwarmPacker.pack = function(swarm, serializer){
-
-    let jsonSerializer = getSerializer(SwarmPacker.prototype.JSON);
-    if(typeof serializer === "undefined"){
-        serializer = jsonSerializer;
-    }
-
-    let swarmSerialization = serializer.serialize(swarm);
-
-    let header = {
-        command: swarm.getMeta("command"),
-        swarmId : swarm.getMeta("swarmId"),
-        swarmTypeName: swarm.getMeta("swarmTypeName"),
-        swarmTarget: swarm.getMeta("target"),
-        serializationType: serializer.getType()
-    };
-
-    header = serializer.serialize(header);
-
-    if(header.length >= Math.pow(2, 32)){
-        throw new Error("Swarm serialization too big.");
-    }
-
-    //arraybuffer construction
-    let size = HEADER_SIZE_RESEARVED + header.length + swarmSerialization.length;
-    let pack = new ArrayBuffer(size);
-
-    let sizeHeaderView = new DataView(pack, 0);
-    sizeHeaderView.setUint32(0, header.length);
-
-    let headerView = new Uint8Array(pack, HEADER_SIZE_RESEARVED);
-    copyStringtoArrayBuffer(header, headerView);
-
-    let serializationView = new Uint8Array(pack, HEADER_SIZE_RESEARVED+header.length);
-    if(typeof swarmSerialization === "string"){
-        copyStringtoArrayBuffer(swarmSerialization, serializationView);
-    }else{
-        copyFromBuffer(serializationView, swarmSerialization);
-    }
-
-    return pack;
-};
-
-SwarmPacker.unpack = function(pack){
-    let jsonSerialiser = SwarmPacker.getSerializer(SwarmPacker.prototype.JSON);
-    let headerSerialization = getHeaderSerializationFromPack(pack);
-    let header = jsonSerialiser.deserialize(headerSerialization);
-
-    let serializer = SwarmPacker.getSerializer(header.serializationType);
-    let messageView = new Uint8Array(pack, HEADER_SIZE_RESEARVED+headerSerialization.length);
-
-    let swarm = serializer.deserialize(messageView);
-    return swarm;
-};
-
-function getHeaderSerializationFromPack(pack){
-    let headerSize = new DataView(pack).getUint32(0);
-
-    let headerView = new Uint8Array(pack, HEADER_SIZE_RESEARVED, headerSize);
-    return headerView;
-}
-
-SwarmPacker.getHeader = function(pack){
-    let jsonSerialiser = SwarmPacker.getSerializer(SwarmPacker.prototype.JSON);
-    let header = jsonSerialiser.deserialize(getHeaderSerializationFromPack(pack));
-
-    return header;
-};
-module.exports = SwarmPacker;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js":[function(require,module,exports){
-
-function TaskCounter(finalCallback) {
-	let results = [];
-	let errors = [];
-
-	let started = 0;
-
-	function decrement(err, res) {
-		if(err) {
-			errors.push(err);
-		}
-
-		if(arguments.length > 2) {
-			arguments[0] = undefined;
-			res = arguments;
-		}
-
-		if(typeof res !== "undefined") {
-			results.push(res);
-		}
-
-		if(--started <= 0) {
-            return callCallback();
-		}
-	}
-
-	function increment(amount = 1) {
-		started += amount;
-	}
-
-	function callCallback() {
-	    if(errors && errors.length === 0) {
-	        errors = undefined;
-        }
-
-	    if(results && results.length === 0) {
-	        results = undefined;
-        }
-
-        finalCallback(errors, results);
-    }
-
-	return {
-		increment,
-		decrement
-	};
-}
-
-module.exports = TaskCounter;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js":[function(require,module,exports){
-const OwM = require("./OwM");
-
-/*
-    Prepare the state of a swarm to be serialised
-*/
-
-exports.asJSON = function(valueObj, phaseName, args, callback){
-
-        let valueObject = valueObj.valueOf();
-        let res = new OwM();
-        res.publicVars          = valueObject.publicVars;
-        res.privateVars         = valueObject.privateVars;
-
-        res.setMeta("COMMAND_ARGS",        OwM.prototype.getMetaFrom(valueObject, "COMMAND_ARGS"));
-        res.setMeta("SecurityParadigm",        OwM.prototype.getMetaFrom(valueObject, "SecurityParadigm"));
-        res.setMeta("swarmTypeName", OwM.prototype.getMetaFrom(valueObject, "swarmTypeName"));
-        res.setMeta("swarmId",       OwM.prototype.getMetaFrom(valueObject, "swarmId"));
-        res.setMeta("target",        OwM.prototype.getMetaFrom(valueObject, "target"));
-        res.setMeta("homeSecurityContext",        OwM.prototype.getMetaFrom(valueObject, "homeSecurityContext"));
-        res.setMeta("requestId",        OwM.prototype.getMetaFrom(valueObject, "requestId"));
-
-
-        if(!phaseName){
-            res.setMeta("command", "stored");
-        } else {
-            res.setMeta("phaseName", phaseName);
-            res.setMeta("phaseId", $$.uidGenerator.safe_uuid());
-            res.setMeta("args", args);
-            res.setMeta("command", OwM.prototype.getMetaFrom(valueObject, "command") || "executeSwarmPhase");
-        }
-
-        res.setMeta("waitStack", valueObject.meta.waitStack); //TODO: think if is not better to be deep cloned and not referenced!!!
-
-        if(callback){
-            return callback(null, res);
-        }
-        //console.log("asJSON:", res, valueObject);
-        return res;
-};
-
-exports.jsonToNative = function(serialisedValues, result){
-
-    for(let v in serialisedValues.publicVars){
-        result.publicVars[v] = serialisedValues.publicVars[v];
-
-    };
-    for(let l in serialisedValues.privateVars){
-        result.privateVars[l] = serialisedValues.privateVars[l];
-    };
-
-    for(let i in OwM.prototype.getMetaFrom(serialisedValues)){
-        OwM.prototype.setMetaFor(result, i, OwM.prototype.getMetaFrom(serialisedValues, i));
-    };
-
-};
-},{"./OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js":[function(require,module,exports){
-const PING = "PING";
-const PONG = "PONG";
-
-module.exports.fork = function pingPongFork(modulePath, args, options){
-    const child_process = require("child_process");
-    const defaultStdio = ["inherit", "inherit", "inherit", "ipc"];
-
-    if(!options){
-        options = {stdio: defaultStdio};
-    }else{
-        if(typeof options.stdio === "undefined"){
-            options.stdio = defaultStdio;
-        }
-
-        let stdio = options.stdio;
-        if(stdio.length<3){
-            for(let i=stdio.length; i<4; i++){
-                stdio.push("inherit");
-            }
-            stdio.push("ipc");
-        }
-    }
-
-    let child = child_process.fork(modulePath, args, options);
-
-    child.on("message", (message)=>{
-        if(message === PING){
-            child.send(PONG);
-        }
-    });
-
-    return child;
-};
-
-module.exports.enableLifeLine = function(timeout){
-
-    if(typeof process.send === "undefined"){
-        console.log("\"process.send\" not found. LifeLine mechanism disabled!");
-        return;
-    }
-
-    let lastConfirmationTime;
-    const interval = timeout || 2000;
-
-    // this is needed because new Date().getTime() has reduced precision to mitigate timer based attacks
-    // for more information see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime
-    const roundingError = 101;
-
-    function sendPing(){
-        try {
-            process.send(PING);
-        } catch (e) {
-            console.log('Parent is not available, shutting down');
-            exit(1)
-        }
-    }
-
-    process.on("message", function (message){
-        if(message === PONG){
-            lastConfirmationTime = new Date().getTime();
-        }
-    });
-
-    function exit(code){
-        setTimeout(()=>{
-            process.exit(code);
-        }, 0);
-    }
-
-    const exceptionEvents = ["SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM", "SIGHUP"];
-    let killingSignal = false;
-    for(let i=0; i<exceptionEvents.length; i++){
-        process.on(exceptionEvents[i], (event, code)=>{
-            killingSignal = true;
-            clearInterval(timeoutInterval);
-            console.log(`Caught event type [${exceptionEvents[i]}]. Shutting down...`, code, event);
-            exit(code);
-        });
-    }
-
-    const timeoutInterval = setInterval(function(){
-        const currentTime = new Date().getTime();
-
-        if(typeof lastConfirmationTime === "undefined" || currentTime - lastConfirmationTime < interval + roundingError && !killingSignal){
-            sendPing();
-        }else{
-            console.log("Parent process did not answer. Shutting down...", process.argv, killingSignal);
-            exit(1);
-        }
-    }, interval);
-};
-},{"child_process":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js":[function(require,module,exports){
-var commands = {};
-var commands_help = {};
-
-//global function addCommand
-addCommand = function addCommand(verb, adverbe, funct, helpLine){
-    var cmdId;
-    if(!helpLine){
-        helpLine = " ";
-    } else {
-        helpLine = " " + helpLine;
-    }
-    if(adverbe){
-        cmdId = verb + " " +  adverbe;
-        helpLine = verb + " " +  adverbe + helpLine;
-    } else {
-        cmdId = verb;
-        helpLine = verb + helpLine;
-    }
-    commands[cmdId] = funct;
-        commands_help[cmdId] = helpLine;
-};
-
-function doHelp(){
-    console.log("List of commands:");
-    for(var l in commands_help){
-        console.log("\t", commands_help[l]);
-    }
-}
-
-addCommand("-h", null, doHelp, "\t\t\t\t\t\t |just print the help");
-addCommand("/?", null, doHelp, "\t\t\t\t\t\t |just print the help");
-addCommand("help", null, doHelp, "\t\t\t\t\t\t |just print the help");
-
-
-function runCommand(){
-  var argv = Object.assign([], process.argv);
-  var cmdId = null;
-  var cmd = null;
-  argv.shift();
-  argv.shift();
-
-  if(argv.length >=1){
-      cmdId = argv[0];
-      cmd = commands[cmdId];
-      argv.shift();
-  }
-
-
-  if(!cmd && argv.length >=1){
-      cmdId = cmdId + " " + argv[0];
-      cmd = commands[cmdId];
-      argv.shift();
-  }
-
-  if(!cmd){
-    if(cmdId){
-        console.log("Unknown command: ", cmdId);
-    }
-    cmd = doHelp;
-  }
-
-  cmd.apply(null,argv);
-
-}
-
-module.exports = {
-    runCommand
-};
-
-
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js":[function(require,module,exports){
-
-function encode(buffer) {
-    return buffer.toString('base64')
-        .replace(/\+/g, '')
-        .replace(/\//g, '')
-        .replace(/=+$/, '');
-};
-
-function stampWithTime(buf, salt, msalt){
-    if(!salt){
-        salt = 1;
-    }
-    if(!msalt){
-        msalt = 1;
-    }
-    var date = new Date;
-    var ct = Math.floor(date.getTime() / salt);
-    var counter = 0;
-    while(ct > 0 ){
-        //console.log("Counter", counter, ct);
-        buf[counter*msalt] = Math.floor(ct % 256);
-        ct = Math.floor(ct / 256);
-        counter++;
-    }
-}
-
-/*
-    The uid contains around 256 bits of randomness and are unique at the level of seconds. This UUID should by cryptographically safe (can not be guessed)
-
-    We generate a safe UID that is guaranteed unique (by usage of a PRNG to geneate 256 bits) and time stamping with the number of seconds at the moment when is generated
-    This method should be safe to use at the level of very large distributed systems.
-    The UUID is stamped with time (seconds): does it open a way to guess the UUID? It depends how safe is "crypto" PRNG, but it should be no problem...
-
- */
-
-var generateUid = null;
-
-
-exports.init = function(externalGenerator){
-    generateUid = externalGenerator.generateUid;
-    return module.exports;
-};
-
-exports.safe_uuid = function() {
-    var buf = generateUid(32);
-    stampWithTime(buf, 1000, 3);
-    return encode(buf);
-};
-
-
-
-/*
-    Try to generate a small UID that is unique against chance in the same millisecond second and in a specific context (eg in the same choreography execution)
-    The id contains around 6*8 = 48  bits of randomness and are unique at the level of milliseconds
-    This method is safe on a single computer but should be used with care otherwise
-    This UUID is not cryptographically safe (can be guessed)
- */
-exports.short_uuid = function(callback) {
-    require('crypto').randomBytes(12, function (err, buf) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        stampWithTime(buf,1,2);
-        callback(null, encode(buf));
-    });
-};
-},{"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js":[function(require,module,exports){
-(function (Buffer){
-const crypto = require('crypto');
-const Queue = require("./Queue");
-var PSKBuffer = typeof $$ !== "undefined" && $$.PSKBuffer ? $$.PSKBuffer : Buffer;
-
-function UidGenerator(minBuffers, buffersSize) {
-    var buffers = new Queue();
-    var lowLimit = .2;
-
-    function fillBuffers(size) {
-        //notifyObserver();
-        const sz = size || minBuffers;
-        if (buffers.length < Math.floor(minBuffers * lowLimit)) {
-            for (var i = buffers.length; i < sz; i++) {
-                generateOneBuffer(null);
-            }
-        }
-    }
-
-    fillBuffers();
-
-    function generateOneBuffer(b) {
-        if (!b) {
-            b = PSKBuffer.alloc(0);
-        }
-        const sz = buffersSize - b.length;
-        /*crypto.randomBytes(sz, function (err, res) {
-            buffers.push(Buffer.concat([res, b]));
-            notifyObserver();
-        });*/
-        buffers.push(PSKBuffer.concat([crypto.randomBytes(sz), b]));
-        notifyObserver();
-    }
-
-    function extractN(n) {
-        var sz = Math.floor(n / buffersSize);
-        var ret = [];
-
-        for (var i = 0; i < sz; i++) {
-            ret.push(buffers.pop());
-            setTimeout(generateOneBuffer, 1);
-        }
-
-
-        var remainder = n % buffersSize;
-        if (remainder > 0) {
-            var front = buffers.pop();
-            ret.push(front.slice(0, remainder));
-            //generateOneBuffer(front.slice(remainder));
-            setTimeout(function () {
-                generateOneBuffer(front.slice(remainder));
-            }, 1);
-        }
-
-        //setTimeout(fillBuffers, 1);
-
-        return Buffer.concat(ret);
-    }
-
-    var fillInProgress = false;
-
-    this.generateUid = function (n) {
-        var totalSize = buffers.length * buffersSize;
-        if (n <= totalSize) {
-            return extractN(n);
-        } else {
-            if (!fillInProgress) {
-                fillInProgress = true;
-                setTimeout(function () {
-                    fillBuffers(Math.floor(minBuffers * 2.5));
-                    fillInProgress = false;
-                }, 1);
-            }
-            return crypto.randomBytes(n);
-        }
-    };
-
-    var observer;
-    this.registerObserver = function (obs) {
-        if (observer) {
-            console.error(new Error("One observer allowed!"));
-        } else {
-            if (typeof obs == "function") {
-                observer = obs;
-                //notifyObserver();
-            }
-        }
-    };
-
-    function notifyObserver() {
-        if (observer) {
-            var valueToReport = buffers.length * buffersSize;
-            setTimeout(function () {
-                observer(null, {"size": valueToReport});
-            }, 10);
-        }
-    }
-}
-
-module.exports.createUidGenerator = function (minBuffers, bufferSize) {
-    return new UidGenerator(minBuffers, bufferSize);
-};
-
-}).call(this,require("buffer").Buffer)
-
-},{"./Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js":[function(require,module,exports){
+},{"psklogger":false}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js":[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4861,7 +4135,92 @@ module.exports = bufferFrom
 
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":false}],"overwrite-require":[function(require,module,exports){
+},{"buffer":false}],"dossier":[function(require,module,exports){
+const se = require("swarm-engine");
+if(typeof $$ === "undefined" || typeof $$.swarmEngine === "undefined"){
+    se.initialise();
+}
+
+module.exports.load = function(seed, identity, callback){
+    const pathName = "path";
+    const path = require(pathName);
+    const powerCord = new se.OuterThreadPowerCord(path.join(process.env.PSK_ROOT_INSTALATION_FOLDER, "psknode/bundles/threadBoot.js"), false, seed);
+
+    let cord_identity;
+    try{
+        const crypto = require("pskcrypto");
+        cord_identity = crypto.pskHash(seed, "hex");
+        $$.swarmEngine.plug(cord_identity, powerCord);
+    }catch(err){
+        return callback(err);
+    }
+    $$.interactions.startSwarmAs(cord_identity, "transactionHandler", "start", identity, "TooShortBlockChainWorkaroundDeleteThis", "add").onReturn(err => {
+        if (err) {
+            return callback(err);
+        }
+
+        const handler = {
+            attachTo : $$.interactions.attachTo,
+            startTransaction : function (transactionTypeName, methodName, ...args) {
+                //todo: get identity from context somehow
+                return $$.interactions.startSwarmAs(cord_identity, "transactionHandler", "start", identity, transactionTypeName, methodName, ...args);
+            }
+        };
+        //todo implement a way to know when thread is ready
+        setTimeout(()=>{
+            callback(undefined, handler);
+        }, 100);
+    });
+};
+},{"pskcrypto":false,"swarm-engine":false}],"edfs":[function(require,module,exports){
+require("./brickTransportStrategies/brickTransportStrategiesRegistry");
+const constants = require("./moduleConstants");
+
+function generateUniqueStrategyName(prefix) {
+    const randomPart = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    return prefix + "_" + randomPart;
+}
+
+const or = require("overwrite-require");
+const browserContexts = [or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
+if (browserContexts.indexOf($$.environmentType) !== -1) {
+    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/FetchBrickTransportStrategy"));
+}else{
+    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/HTTPBrickTransportStrategy"));
+}
+
+module.exports = {
+    attachToEndpoint(endpoint) {
+        const EDFS = require("./lib/EDFS");
+        return new EDFS(endpoint);
+    },
+    attachWithSeed(compactSeed) {
+        const SEED = require("bar").Seed;
+        const seed = new SEED(compactSeed);
+        return this.attachToEndpoint(seed.getEndpoint());
+    },
+    attachWithPin(pin, callback) {
+        require("./seedCage").getSeed(pin, (err, seed) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let edfs;
+            try {
+                edfs = this.attachWithSeed(seed);
+            } catch (e) {
+                return callback(e);
+            }
+
+            callback(undefined, edfs);
+        });
+    },
+    checkForSeedCage(callback) {
+        require("./seedCage").check(callback);
+    },
+    constants: constants
+};
+},{"./brickTransportStrategies/FetchBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js","./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js","./brickTransportStrategies/brickTransportStrategiesRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js","./lib/EDFS":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js","./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","./seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","bar":false,"overwrite-require":"overwrite-require"}],"overwrite-require":[function(require,module,exports){
 (function (global){
 /*
  require and $$.require are overwriting the node.js defaults in loading modules for increasing security, speed and making it work to the privatesky runtime build with browserify.
@@ -5203,13 +4562,7 @@ module.exports = {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js","./standardGlobalSymbols.js":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\standardGlobalSymbols.js"}],"psk-bindable-model":[function(require,module,exports){
-module.exports = require("./lib/PskBindableModel");
-},{"./lib/PskBindableModel":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-bindable-model\\lib\\PskBindableModel.js"}],"soundpubsub":[function(require,module,exports){
-module.exports = {
-					soundPubSub: require("./lib/soundPubSub").soundPubSub
-};
-},{"./lib/soundPubSub":"D:\\Catalin\\Munca\\privatesky\\modules\\soundpubsub\\lib\\soundPubSub.js"}],"source-map-support":[function(require,module,exports){
+},{"./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js","./standardGlobalSymbols.js":"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\standardGlobalSymbols.js"}],"source-map-support":[function(require,module,exports){
 var SourceMapConsumer = require('source-map').SourceMapConsumer;
 var path = require('path');
 
@@ -5788,39 +5141,5 @@ exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGene
 exports.SourceMapConsumer = require('./lib/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = require('./lib/source-node').SourceNode;
 
-},{"./lib/source-map-consumer":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js","./lib/source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./lib/source-node":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js"}],"swarmutils":[function(require,module,exports){
-(function (global){
-module.exports.OwM = require("./lib/OwM");
-module.exports.beesHealer = require("./lib/beesHealer");
-
-const uidGenerator = require("./lib/uidGenerator").createUidGenerator(200, 32);
-
-module.exports.safe_uuid = require("./lib/safe-uuid").init(uidGenerator);
-
-module.exports.Queue = require("./lib/Queue");
-module.exports.combos = require("./lib/Combos");
-
-module.exports.uidGenerator = uidGenerator;
-module.exports.generateUid = uidGenerator.generateUid;
-module.exports.TaskCounter = require("./lib/TaskCounter");
-module.exports.SwarmPacker = require("./lib/SwarmPacker");
-
-module.exports.createPskConsole = function () {
-  return require('./lib/pskconsole');
-};
-
-module.exports.pingPongFork = require('./lib/pingpongFork');
-
-
-if(typeof global.$$ == "undefined"){
-  global.$$ = {};
-}
-
-if(typeof global.$$.uidGenerator == "undefined"){
-    $$.uidGenerator = module.exports.safe_uuid;
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"./lib/Combos":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js","./lib/OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js","./lib/Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","./lib/SwarmPacker":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js","./lib/TaskCounter":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js","./lib/beesHealer":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js","./lib/pingpongFork":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js","./lib/pskconsole":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js","./lib/safe-uuid":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js","./lib/uidGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js"}]},{},["D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\bindableModel_intermediar.js"])
-//# sourceMappingURL=bindableModel.js.map
+},{"./lib/source-map-consumer":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js","./lib/source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./lib/source-node":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js"}]},{},["D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\csbBoot.js"])
+//# sourceMappingURL=csbBoot.js.map

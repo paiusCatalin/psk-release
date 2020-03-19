@@ -1,16 +1,11 @@
-virtualMQRequire=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\virtualMQ.js":[function(require,module,exports){
-if(typeof $$ === "undefined" || !$$.environmentType) {
-    const or = require('overwrite-require');
-    or.enableForEnvironment(or.constants.NODEJS_ENVIRONMENT_TYPE);
-} else {
-    console.log('VirtualMQ running in test environment');
-}
+walletBootRequire=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\walletBoot.js":[function(require,module,exports){
+const or = require('overwrite-require');
+or.enableForEnvironment(or.constants.NODEJS_ENVIRONMENT_TYPE);
 
-require("./virtualMQ_intermediar");
-require('callflow').initialise();
-},{"./virtualMQ_intermediar":"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\virtualMQ_intermediar.js","callflow":"callflow","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\virtualMQ_intermediar.js":[function(require,module,exports){
+require("./walletBoot_intermediar");
+},{"./walletBoot_intermediar":"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\walletBoot_intermediar.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\walletBoot_intermediar.js":[function(require,module,exports){
 (function (global){
-global.virtualMQLoadModules = function(){ 
+global.walletBootLoadModules = function(){ 
 
 	if(typeof $$.__runtimeModules["source-map-support"] === "undefined"){
 		$$.__runtimeModules["source-map-support"] = require("source-map-support");
@@ -28,66 +23,2918 @@ global.virtualMQLoadModules = function(){
 		$$.__runtimeModules["overwrite-require"] = require("overwrite-require");
 	}
 
-	if(typeof $$.__runtimeModules["pskcrypto"] === "undefined"){
-		$$.__runtimeModules["pskcrypto"] = require("pskcrypto");
-	}
-
 	if(typeof $$.__runtimeModules["edfs"] === "undefined"){
 		$$.__runtimeModules["edfs"] = require("edfs");
 	}
 
-	if(typeof $$.__runtimeModules["virtualmq"] === "undefined"){
-		$$.__runtimeModules["virtualmq"] = require("virtualmq");
+	if(typeof $$.__runtimeModules["dossier"] === "undefined"){
+		$$.__runtimeModules["dossier"] = require("dossier");
 	}
 
-	if(typeof $$.__runtimeModules["buffer-crc32"] === "undefined"){
-		$$.__runtimeModules["buffer-crc32"] = require("buffer-crc32");
-	}
-
-	if(typeof $$.__runtimeModules["node-fd-slicer"] === "undefined"){
-		$$.__runtimeModules["node-fd-slicer"] = require("node-fd-slicer");
-	}
-
-	if(typeof $$.__runtimeModules["edfs-middleware"] === "undefined"){
-		$$.__runtimeModules["edfs-middleware"] = require("edfs-middleware");
-	}
-
-	if(typeof $$.__runtimeModules["psk-http-client"] === "undefined"){
-		$$.__runtimeModules["psk-http-client"] = require("psk-http-client");
-	}
-
-	if(typeof $$.__runtimeModules["zmq_adapter"] === "undefined"){
-		$$.__runtimeModules["zmq_adapter"] = require("zmq_adapter");
-	}
-
-	if(typeof $$.__runtimeModules["swarmutils"] === "undefined"){
-		$$.__runtimeModules["swarmutils"] = require("swarmutils");
+	if(typeof $$.__runtimeModules["swarm-engine"] === "undefined"){
+		$$.__runtimeModules["swarm-engine"] = require("swarm-engine");
 	}
 
 	if(typeof $$.__runtimeModules["callflow"] === "undefined"){
 		$$.__runtimeModules["callflow"] = require("callflow");
 	}
 
-	if(typeof $$.__runtimeModules["soundpubsub"] === "undefined"){
-		$$.__runtimeModules["soundpubsub"] = require("soundpubsub");
+	if(typeof $$.__runtimeModules["pskcrypto"] === "undefined"){
+		$$.__runtimeModules["pskcrypto"] = require("pskcrypto");
 	}
 
-	if(typeof $$.__runtimeModules["psk-security-context"] === "undefined"){
-		$$.__runtimeModules["psk-security-context"] = require("psk-security-context");
+	if(typeof $$.__runtimeModules["swarmutils"] === "undefined"){
+		$$.__runtimeModules["swarmutils"] = require("swarmutils");
+	}
+
+	if(typeof $$.__runtimeModules["bar"] === "undefined"){
+		$$.__runtimeModules["bar"] = require("bar");
+	}
+
+	if(typeof $$.__runtimeModules["psk-http-client"] === "undefined"){
+		$$.__runtimeModules["psk-http-client"] = require("psk-http-client");
+	}
+
+	if(typeof $$.__runtimeModules["bar-fs-adapter"] === "undefined"){
+		$$.__runtimeModules["bar-fs-adapter"] = require("bar-fs-adapter");
+	}
+
+	if(typeof $$.__runtimeModules["edfs-brick-storage"] === "undefined"){
+		$$.__runtimeModules["edfs-brick-storage"] = require("edfs-brick-storage");
+	}
+
+	if(typeof $$.__runtimeModules["adler32"] === "undefined"){
+		$$.__runtimeModules["adler32"] = require("adler32");
+	}
+
+	if(typeof $$.__runtimeModules["boot-script"] === "undefined"){
+		$$.__runtimeModules["boot-script"] = require("pskwallet/index.js");
 	}
 }
-if (false) {
-	virtualMQLoadModules();
+if (true) {
+	walletBootLoadModules();
 }; 
-global.virtualMQRequire = require;
+global.walletBootRequire = require;
 if (typeof $$ !== "undefined") {            
-    $$.requireBundle("virtualMQ");
+    $$.requireBundle("walletBoot");
     };
     require('source-map-support').install({});
     
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"buffer-crc32":"buffer-crc32","buffer-from":"buffer-from","callflow":"callflow","edfs":"edfs","edfs-middleware":"edfs-middleware","node-fd-slicer":"node-fd-slicer","overwrite-require":"overwrite-require","psk-http-client":"psk-http-client","psk-security-context":"psk-security-context","pskcrypto":"pskcrypto","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","swarmutils":"swarmutils","virtualmq":"virtualmq","zmq_adapter":"zmq_adapter"}],"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js":[function(require,module,exports){
+},{"adler32":"adler32","bar":"bar","bar-fs-adapter":"bar-fs-adapter","buffer-from":"buffer-from","callflow":"callflow","dossier":"dossier","edfs":"edfs","edfs-brick-storage":"edfs-brick-storage","overwrite-require":"overwrite-require","psk-http-client":"psk-http-client","pskcrypto":"pskcrypto","pskwallet/index.js":"pskwallet/index.js","source-map":"source-map","source-map-support":"source-map-support","swarm-engine":"swarm-engine","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js":[function(require,module,exports){
+(function (Buffer){
+"use strict";
+
+var util = require('util');
+var Transform = require('stream').Transform;
+var crypto = require('crypto');
+var algorithm = require('./algorithm');
+
+// Provides a node.js Hash style interface for _sum32: http://nodejs.org/api/crypto.html#crypto_class_hash
+var Hash = module.exports = function Hash(options)
+{
+	if (!(this instanceof Hash))
+		return new Hash(options);
+
+	Transform.call(this, options);
+
+	this._sum = 1;
+};
+
+util.inherits(Hash, Transform);
+
+Hash.prototype.update = function(data, encoding)
+{
+	if (this._done)
+		throw new TypeError('HashUpdate fail');
+
+	encoding = encoding || crypto.DEFAULT_ENCODING;
+
+	if (!(data instanceof Buffer)) {
+		data = new Buffer(''+data, encoding === 'buffer' ? 'binary' : encoding);
+	}
+
+	this._sum = algorithm.sum(data, this._sum);
+
+	return this;
+};
+
+Hash.prototype.digest = function(encoding)
+{
+	if (this._done)
+		throw new Error('Not initialized');
+	
+	this._done = true;
+
+	var buf = new Buffer(4);
+	buf.writeUInt32BE(this._sum, 0);
+
+	encoding = encoding || crypto.DEFAULT_ENCODING;
+
+	if (encoding === 'buffer')
+		return buf;
+	else
+		return buf.toString(encoding);
+};
+
+Hash.prototype._transform = function(chunk, encoding, callback)
+{
+	this.update(chunk, encoding);
+	callback();
+};
+
+Hash.prototype._flush = function(callback)
+{
+	var encoding = this._readableState.encoding || 'buffer';
+	this.push(this.digest(encoding), encoding);
+	callback();
+};
+}).call(this,require("buffer").Buffer)
+
+},{"./algorithm":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js","buffer":false,"crypto":false,"stream":false,"util":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js":[function(require,module,exports){
+"use strict";
+
+/**
+ * Largest prime smaller than 2^16 (65536)
+ */
+var BASE = 65521;
+
+/**
+ * Largest value n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
+ *
+ * NMAX is just how often modulo needs to be taken of the two checksum word halves to prevent overflowing a 32 bit
+ * integer. This is an optimization. We "could" take the modulo after each byte, and it must be taken before each
+ * digest.
+ */
+var NMAX = 5552;
+
+exports.sum = function(buf, sum)
+{
+	if (sum == null)
+		sum = 1;
+
+	var a = sum & 0xFFFF,
+		b = (sum >>> 16) & 0xFFFF,
+		i = 0,
+		max = buf.length,
+		n, value;
+
+	while (i < max)
+	{
+		n = Math.min(NMAX, max - i);
+
+		do
+		{
+			a += buf[i++]<<0;
+			b += a;
+		}
+		while (--n);
+
+		a %= BASE;
+		b %= BASE;
+	}
+
+	return ((b << 16) | a) >>> 0;
+};
+
+exports.roll = function(sum, length, oldByte, newByte)
+{
+	var a = sum & 0xFFFF,
+		b = (sum >>> 16) & 0xFFFF;
+
+	if (newByte != null)
+	{
+		a = (a - oldByte + newByte + BASE) % BASE;
+		b = (b - ((length * oldByte) % BASE) + a - 1 + BASE) % BASE;
+	}
+	else
+	{
+		a = (a - oldByte + BASE) % BASE;
+		b = (b - ((length * oldByte) % BASE) - 1 + BASE) % BASE;
+	}
+
+	return ((b << 16) | a) >>> 0;
+};
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\register.js":[function(require,module,exports){
+"use strict";
+
+module.exports = function()
+{
+	var crypto = require('crypto');
+	var Hash = require('./Hash');
+
+	// Silently abort if the adler32 algorithm is already supported by the
+	// crypto module.
+	if (crypto.getHashes().indexOf('adler32') != -1)
+		return;
+
+	crypto.getHashes = function()
+	{
+		return this().concat(['adler32']);
+	}
+	.bind(crypto.getHashes.bind(crypto));
+
+	crypto.createHash = function(algorithm)
+	{
+		if (algorithm === 'adler32')
+			return new Hash();
+		else
+			return this(algorithm);
+	}
+	.bind(crypto.createHash.bind(this));
+};
+},{"./Hash":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js","crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\FsAdapter.js":[function(require,module,exports){
+(function (Buffer){
+const fsModule = "fs";
+const fs = require(fsModule);
+const pathModule = "path";
+const path = require(pathModule);
+const PathAsyncIterator = require('./PathAsyncIterator');
+
+function FsAdapter() {
+
+    let pathAsyncIterator;
+
+    this.getFileSize = function (filePath, callback) {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, stats.size);
+        });
+    };
+
+    this.readBlockFromFile = function (filePath, blockStart, blockEnd, callback) {
+        const readStream = fs.createReadStream(filePath, {
+            start: blockStart,
+            end: blockEnd
+        });
+
+        let data = Buffer.alloc(0);
+
+        readStream.on("data", (chunk) => {
+            data = Buffer.concat([data, chunk]);
+        });
+
+        readStream.on("error", (err) => {
+            callback(err);
+        });
+
+        readStream.on("end", () => {
+            callback(undefined, data);
+        });
+    };
+
+    this.getFilesIterator = function(inputPath) {
+        return new PathAsyncIterator(inputPath);
+    };
+
+    this.getNextFile = function (inputPath, restart, callback) {
+        if(typeof restart === "function") {
+            callback = restart;
+            restart = false;
+        }
+
+        if(restart === true) {
+            pathAsyncIterator = new PathAsyncIterator(inputPath);
+        }
+
+        pathAsyncIterator = pathAsyncIterator || new PathAsyncIterator(inputPath);
+        pathAsyncIterator.next(callback);
+    };
+
+    this.appendBlockToFile = function (filePath, data, callback) {
+        const pth = constructPath(filePath);
+        if (pth !== '') {
+            fs.mkdir(pth, {recursive: true}, (err) => {
+                if (err && err.code !== "EEXIST") {
+                    return callback(err);
+                }
+
+                fs.appendFile(filePath, data, callback);
+            });
+        } else {
+            fs.appendFile(filePath, data, callback);
+        }
+    };
+
+    this.writeBlockToFile = function (filePath, data, position, length, callback) {
+        const folderPath = path.dirname(filePath);
+        fs.access(folderPath, (err) => {
+            if (err) {
+                fs.mkdir(folderPath, {recursive: true}, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    __writeBlock();
+                });
+            } else {
+                __writeBlock();
+            }
+        });
+
+        function __writeBlock() {
+            const writeStream = fs.createWriteStream(filePath, {flags: "a+", start: position});
+
+            writeStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            writeStream.write(data, callback);
+        }
+    };
+
+    function constructPath(filePath) {
+        let slices = filePath.split(path.sep);
+        slices.pop();
+        return slices.join(path.sep);
+    }
+
+}
+
+module.exports = FsAdapter;
+}).call(this,require("buffer").Buffer)
+
+},{"./PathAsyncIterator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\PathAsyncIterator.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\PathAsyncIterator.js":[function(require,module,exports){
+const fsModule = "fs";
+const fs = require(fsModule);
+const pathModule = "path";
+const path = require(pathModule);
+const TaskCounter = require("swarmutils").TaskCounter;
+
+
+function PathAsyncIterator(inputPath) {
+    let removablePathLen;
+    const fileList = [];
+    const folderList = [];
+    let isFirstCall = true;
+    let pathIsFolder;
+
+    this.next = function (callback) {
+        if (isFirstCall === true) {
+            isDir(inputPath, (err, status) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                isFirstCall = false;
+                pathIsFolder = status;
+                if (status === true) {
+                    if(!inputPath.endsWith(path.sep)) {
+                        inputPath += path.sep;
+                    }
+
+                    removablePathLen = inputPath.length;
+                    folderList.push(inputPath);
+                    getNextFileFromFolder(callback);
+                } else {
+                    const fileName = path.basename(inputPath);
+                    const fileParentFolder = path.dirname(inputPath);
+                    callback(undefined, fileName, fileParentFolder);
+                }
+            });
+        } else if (pathIsFolder) {
+            getNextFileFromFolder(callback);
+        } else {
+            callback();
+        }
+    };
+
+    function walkFolder(folderPath, callback) {
+        const taskCounter = new TaskCounter((errors, results) => {
+            if (fileList.length > 0) {
+                const fileName = fileList.shift();
+                return callback(undefined, fileName, inputPath);
+            }
+
+            if (folderList.length > 0) {
+                const folderName = folderList.shift();
+                return walkFolder(folderName, callback);
+            }
+
+            return callback();
+        });
+
+        fs.readdir(folderPath, (err, files) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (files.length === 0 && folderList.length === 0) {
+                return callback();
+            }
+
+            if (files.length === 0) {
+                walkFolder(folderList.shift(), callback);
+            }
+            taskCounter.increment(files.length);
+
+            files.forEach(file => {
+                let filePath = path.join(folderPath, file);
+                isDir(filePath, (err, status) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    if (status) {
+                        folderList.push(filePath);
+                    } else {
+                        fileList.push(filePath.substring(removablePathLen));
+                    }
+
+                    taskCounter.decrement();
+                });
+            });
+        });
+    }
+
+    function isDir(filePath, callback) {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                return callback(err);
+            }
+
+            return callback(undefined, stats.isDirectory());
+        });
+    }
+
+    function getNextFileFromFolder(callback) {
+        if (fileList.length === 0 && folderList.length === 0) {
+            return callback();
+        }
+
+        if (fileList.length > 0) {
+            const fileName = fileList.shift();
+            return callback(undefined, fileName, inputPath);
+        }
+
+
+        walkFolder(folderList.shift(), (err, file) => {
+            if (err) {
+                return callback(err);
+            }
+
+            callback(undefined, file, inputPath);
+        });
+    }
+}
+
+module.exports = PathAsyncIterator;
+},{"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Archive.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require('./Brick');
+const pathModule = "path";
+const path = require(pathModule);
+const isStream = require("../utils/isStream");
+const TaskCounter = require("swarmutils").TaskCounter;
+const crypto = require('pskcrypto');
+const adler32 = require('adler32');
+
+function Archive(archiveConfigurator) {
+
+    const archiveFsAdapter = archiveConfigurator.getFsAdapter();
+    const storageProvider = archiveConfigurator.getStorageProvider();
+    let cachedSEED;
+    let barMap;
+    let cachedMapDigest;
+
+    this.getMapDigest = () => {
+        if (cachedMapDigest) {
+            return cachedMapDigest;
+        }
+
+        cachedMapDigest = archiveConfigurator.getMapDigest();
+        return cachedMapDigest;
+    };
+
+    this.setSeed = (seed) => {
+        cachedSEED = seed;
+        archiveConfigurator.setSeed(Buffer.from(seed));
+    };
+
+    this.getSeed = () => {
+        if (cachedSEED) {
+            return cachedSEED;
+        }
+
+        cachedSEED = archiveConfigurator.getSeed().toString();
+        return cachedSEED;
+    };
+
+    this.getFileHash = (fileBarPath, callback) => {
+        loadBarMapThenExecute(() => {
+            callback(undefined, __computeFileHash(fileBarPath).toString("hex"));
+        }, callback)
+    };
+
+    this.getFolderHash = (folderBarPath, callback) => {
+        loadBarMapThenExecute(() => {
+            const fileList = barMap.getFileList(folderBarPath);
+            let xor;
+            for (let i = 0; i < fileList.length - 1; i++) {
+                xor = crypto.xorBuffers(__computeFileHash(fileList[i]), __computeFileHash(fileList[i + 1]));
+            }
+
+            callback(undefined, crypto.pskHash(xor, "hex"));
+        }, callback);
+    };
+
+    this.update = (fsPath, callback) => {
+        let blocksPositions = {};
+        let checksSumMap = barMap.getDictionaryObject();
+        let fileNameHashes = __setFromHashList();
+        let fileState = {};
+        loadBarMapThenExecute(__update, callback);
+
+        /**
+         * in this function, i do a directory traversal and process every file that i find, looking for blocks that already exists in our archive
+         * @private
+         */
+
+        function __setFromHashList() {
+            let folderHashList = {};
+            barMap.getFileList().forEach((file) => {
+                folderHashList[file.slice(file.indexOf('/'))] = new Set(barMap.getHashList(file));
+            });
+            return folderHashList;
+        }
+
+        function __readDirectoryRecursively(folderPath, sign, callback) {
+            archiveFsAdapter.getNextFile(folderPath, sign, __readFileChk);
+
+            function __readFileChk(err, file) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof file === 'undefined') {
+                    return callback(undefined, blocksPositions, fileNameHashes);
+                }
+
+                const goodPath = path.posix.normalize(path.join(path.dirname(folderPath), file).split(path.sep).join(path.posix.sep));
+                archiveFsAdapter.getFileSize(goodPath, (err, size) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    __readBlock(goodPath, goodPath.slice(goodPath.indexOf('/')), size, 0, archiveConfigurator.getBufferSize(), undefined, undefined, barMap.isInHeader(goodPath), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        __readDirectoryRecursively(folderPath, false, callback);
+                    });
+                });
+
+            }
+
+            function __readBlock(file, cutFile, fileSize, index, blockSize, currentBlockCheckSum, firstByte, alreadyInBarMap, callback) {
+                if (index >= fileSize) {
+                    if (blocksPositions[file] === undefined) {
+                        blocksPositions[file] = [];
+                    }
+                    blocksPositions[file].push({start: fileSize, end: fileSize});
+                    return callback();
+                }
+                archiveFsAdapter.readBlockFromFile(file, index, index + blockSize - 1, (err, data) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (currentBlockCheckSum === undefined) {
+                        currentBlockCheckSum = adler32.sum(data);
+                    } else {
+                        currentBlockCheckSum = adler32.roll(currentBlockCheckSum, blockSize, firstByte, data[blockSize - 1]);
+                    }
+                    let matchFound = false;
+                    if (checksSumMap[currentBlockCheckSum] !== undefined) {
+                        let hardDigest = crypto.pskHash(data).toString('hex');
+                        for (let k = 0; k < checksSumMap[currentBlockCheckSum].length; k++) {
+                            if (checksSumMap[currentBlockCheckSum][k] === hardDigest) {
+                                if (blocksPositions[file] === undefined) {
+                                    blocksPositions[file] = [];
+                                }
+                                blocksPositions[file].push({start: index, end: index + blockSize});
+                                // if(alreadyInBarMap === false){
+                                //     let tempBrick = new Brick();
+                                //     tempBrick.setTransformedData(data);
+                                // }
+                                fileState[file] = alreadyInBarMap;
+                                if (typeof fileNameHashes[cutFile] !== 'undefined') {
+                                    fileNameHashes[cutFile].delete(hardDigest);
+                                }
+                                matchFound = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (matchFound === false) {
+                        __readBlock(file, cutFile, fileSize, index + 1, blockSize, currentBlockCheckSum, data[0], alreadyInBarMap, callback);
+                    } else {
+                        __readBlock(file, cutFile, fileSize, index + blockSize, blockSize, undefined, undefined, alreadyInBarMap, callback);
+                    }
+                });
+            }
+
+        }
+
+        function iterateThroughOffsets(fileName, goodPath, precedence, iteratorIndex, filePositions, callback) {
+            if (iteratorIndex >= filePositions.length) {
+                return callback();
+            }
+            let positionObj = filePositions[iteratorIndex];
+            if (positionObj === undefined) {
+                return callback();
+            }
+            if (positionObj.start > precedence) {
+                archiveFsAdapter.readBlockFromFile(goodPath, precedence, positionObj.end - 1, (err, blockData) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    let bufferSize = archiveConfigurator.getBufferSize();
+                    for (let index = 0; index < blockData.length; index += bufferSize) {
+                        let brick = new Brick();
+                        brick.setTransformedData(blockData.slice(index, index + bufferSize));
+                        barMap.add(fileName, brick);
+                        storageProvider.putBrick(brick, (err) => {
+                            if (err) {
+                                return callback(err);
+                            }
+                            if (index + bufferSize >= blockData.length) {
+                                iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                            }
+                        });
+                    }
+                });
+            } else {
+                if (fileState[goodPath] === false) {
+                    archiveFsAdapter.readBlockFromFile(goodPath, positionObj.start, positionObj.end - 1, (err, blockData) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        let brick = new Brick();
+                        brick.setTransformedData(blockData);
+                        barMap.add(fileName, brick);
+                        iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                    });
+                } else {
+                    iterateThroughOffsets(fileName, goodPath, positionObj.end, iteratorIndex + 1, filePositions, callback);
+                }
+            }
+        }
+
+        function __addBricks(positions, callback) {
+            let precedence;
+            const taskCounter = new TaskCounter((errs, results) => {
+                return callback();
+            });
+            taskCounter.increment(Object.keys(positions).length);
+            Object.keys(positions).forEach((fileName) => {
+                precedence = 0;
+                let goodPath = path.posix.normalize(fileName.split(path.sep).join(path.posix.sep));
+
+                iterateThroughOffsets(fileName, goodPath, precedence, 0, positions[fileName], (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    taskCounter.decrement(undefined, fileName);
+                });
+            });
+        }
+
+        function __deleteBricks(deletions) {
+            //de adaugat, barMap.removeBrick(filePath,brickHash);
+            Object.keys(deletions).forEach((fileName) => {
+                deletions[fileName].forEach((brickHash) => {
+                    barMap.removeBrick(fileName, brickHash);
+                });
+            });
+        }
+
+        function __update() {
+            __readDirectoryRecursively(fsPath, true, (err, positions, deletions) => {
+                if (err) {
+                    return callback(err);
+                }
+                __addBricks(positions, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    __deleteBricks(deletions);
+                    storageProvider.putBarMap(barMap, callback);
+                });
+            });
+        }
+    };
+
+    this.writeFile = (fileBarPath, data, callback) => {
+        loadBarMapThenExecute(__addData, callback);
+
+        function __addData() {
+            const brick = new Brick(archiveConfigurator);
+            if (typeof data === "string") {
+                data = Buffer.from(data);
+            }
+
+            if (!Buffer.isBuffer(data)) {
+                return callback(Error(`Type of data is ${typeof data}. Expected Buffer.`));
+            }
+
+            brick.setRawData(data);
+
+            if (!barMap.isEmpty(fileBarPath)) {
+                barMap.emptyList(fileBarPath);
+            }
+            barMap.add(fileBarPath, brick);
+            storageProvider.putBrick(brick, (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                storageProvider.putBarMap(barMap, (err, digest) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    callback(undefined, digest);
+                });
+            });
+        }
+    };
+
+    this.readFile = (barPath, callback) => {
+        loadBarMapThenExecute(__readFile, callback);
+
+        function __readFile() {
+            let fileData = Buffer.alloc(0);
+            let brickIds;
+            try {
+                brickIds = barMap.getHashList(barPath);
+            } catch (err) {
+                return callback(err);
+            }
+
+            getFileRecursively(0, callback);
+
+            function getFileRecursively(brickIndex, callback) {
+                const brickId = brickIds[brickIndex];
+                storageProvider.getBrick(brickId, (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brick.setConfig(archiveConfigurator);
+                    brick.setTransformParameters(barMap.getTransformParameters(brickId));
+                    fileData = Buffer.concat([fileData, brick.getRawData()]);
+                    ++brickIndex;
+
+                    if (brickIndex < brickIds.length) {
+                        getFileRecursively(brickIndex, callback);
+                    } else {
+                        callback(undefined, fileData);
+                    }
+                });
+            }
+        }
+    };
+
+    this.addFile = (fsFilePath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFilePath;
+        }
+        loadBarMapThenExecute(__addFile, callback);
+
+        function __addFile() {
+            createBricks(fsFilePath, barPath, archiveConfigurator.getBufferSize(), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                barMap.setConfig(archiveConfigurator);
+                if (archiveConfigurator.getMapEncryptionKey()) {
+                    barMap.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+                }
+
+                storageProvider.putBarMap(barMap, callback);
+            });
+        }
+    };
+
+    /* TODO: do not create multiple BARMaps... */
+    this.addFiles = (arrWithFilePaths, barPath, callback) => {
+        let arr = arrWithFilePaths.slice();
+        let self = this;
+
+        function recAdd() {
+            if (arr.length > 0) {
+                let filePath = arr.pop();
+
+                let fileName = path.basename(filePath);
+                self.addFile(filePath, barPath + "/" + fileName, function (err, res) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        recAdd();
+                    }
+                });
+            } else {
+                callback(null, true);
+            }
+        }
+
+        recAdd();
+    };
+
+    this.extractFile = (fsFilePath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFilePath;
+        }
+
+
+        loadBarMapThenExecute(__extractFile, callback);
+
+        function __extractFile() {
+            const brickIds = barMap.getHashList(barPath);
+            getFileRecursively(0, callback);
+
+            function getFileRecursively(brickIndex, callback) {
+                const brickId = brickIds[brickIndex];
+                storageProvider.getBrick(brickId, (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brick.setConfig(archiveConfigurator);
+                    brick.setTransformParameters(barMap.getTransformParameters(brickId));
+                    archiveFsAdapter.appendBlockToFile(fsFilePath, brick.getRawData(), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        ++brickIndex;
+                        if (brickIndex < brickIds.length) {
+                            getFileRecursively(brickIndex, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                });
+            }
+        }
+    };
+
+    this.appendToFile = (filePath, data, callback) => {
+
+        loadBarMapThenExecute(__appendToFile, callback);
+
+        function __appendToFile() {
+            filePath = path.normalize(filePath);
+
+            if (typeof data === "string") {
+                data = Buffer.from(data);
+            }
+            if (Buffer.isBuffer(data)) {
+                const dataBrick = new Brick(data);
+                storageProvider.putBrick(dataBrick, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    barMap.add(filePath, dataBrick);
+                    putBarMap(callback);
+                });
+                return;
+            }
+
+            if (isStream.isReadable(data)) {
+                data.on('error', (err) => {
+                    return callback(err);
+                }).on('data', (chunk) => {
+                    const dataBrick = new Brick(chunk);
+                    barMap.add(filePath, dataBrick);
+                    storageProvider.putBrick(dataBrick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                    });
+                }).on("end", () => {
+                    putBarMap(callback);
+                });
+                return;
+            }
+            callback(new Error("Invalid type of parameter data"));
+        }
+    };
+
+
+    this.replaceFile = (fileName, stream, callback) => {
+        if (typeof stream !== 'object') {
+            return callback(new Error('Wrong stream!'));
+        }
+
+        loadBarMapThenExecute(__replaceFile, callback);
+
+        function __replaceFile() {
+            fileName = path.normalize(fileName);
+            stream.on('error', () => {
+                return callback(new Error("File does not exist!"));
+            }).on('open', () => {
+                storageProvider.deleteFile(fileName, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    barMap.emptyList(fileName);
+                });
+            }).on('data', (chunk) => {
+                let tempBrick = new Brick(chunk);
+                barMap.add(fileName, tempBrick);
+                storageProvider.putBrick(tempBrick, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    putBarMap(callback);
+                });
+            });
+        }
+    };
+
+    this.deleteFile = (filePath, callback) => {
+        loadBarMapThenExecute(() => {
+            storageProvider.deleteFile(filePath, callback);
+        }, callback);
+    };
+
+    this.addFolder = (fsFolderPath, barPath, callback) => {
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = fsFolderPath;
+        }
+        const filesIterator = archiveFsAdapter.getFilesIterator(fsFolderPath);
+
+        loadBarMapThenExecute(__addFolder, callback);
+
+        function __addFolder() {
+
+            filesIterator.next(readFileCb);
+
+            function readFileCb(err, file, rootFsPath) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (typeof file !== "undefined") {
+                    const normalizedFilePath = file.split(path.sep).join("/");
+                    createBricks(path.join(rootFsPath, file), barPath + "/" + normalizedFilePath, archiveConfigurator.getBufferSize(), (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        filesIterator.next(readFileCb);
+                    });
+                } else {
+                    storageProvider.putBarMap(barMap, (err, mapDigest) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        archiveConfigurator.setMapDigest(mapDigest);
+                        callback(undefined, mapDigest);
+                    });
+                }
+            }
+        }
+    };
+
+
+    this.extractFolder = (fsFolderPath, barPath, callback) => {
+        if (typeof fsFolderPath === "function") {
+            callback = fsFolderPath;
+            fsFolderPath = undefined;
+        }
+        if (typeof barPath === "function") {
+            callback = barPath;
+            barPath = undefined;
+        }
+
+        loadBarMapThenExecute(() => {
+            const filePaths = barMap.getFileList(barPath);
+            const taskCounter = new TaskCounter(() => {
+                callback();
+            });
+            taskCounter.increment(filePaths.length);
+            filePaths.forEach(filePath => {
+                let actualPath;
+                if (fsFolderPath) {
+                    if (fsFolderPath.includes(filePath)) {
+                        actualPath = fsFolderPath;
+                    } else {
+                        actualPath = path.join(fsFolderPath, filePath);
+                    }
+                } else {
+                    actualPath = filePath;
+                }
+
+                this.extractFile(actualPath, filePath, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    taskCounter.decrement();
+                });
+            });
+        }, callback);
+    };
+
+    this.store = (callback) => {
+        storageProvider.putBarMap(barMap, callback);
+    };
+
+    this.listFiles = (folderBarPath, callback) => {
+        if (typeof folderBarPath === "function") {
+            callback = folderBarPath;
+            folderBarPath = undefined;
+        }
+        loadBarMapThenExecute(() => {
+            callback(undefined, barMap.getFileList(folderBarPath));
+        }, callback);
+    };
+
+    this.listFolders = (folderBarPath, callback) => {
+        if (typeof folderBarPath === "function") {
+            callback = folderBarPath;
+            folderBarPath = undefined;
+        }
+
+        loadBarMapThenExecute(() => {
+            callback(undefined, barMap.getFolderList(folderBarPath));
+        }, callback);
+    };
+
+    this.clone = (targetStorage, preserveKeys = true, callback
+    ) => {
+        targetStorage.getBarMap((err, targetBarMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            loadBarMapThenExecute(__cloneBricks, callback);
+
+            function __cloneBricks() {
+                const fileList = barMap.getFileList();
+
+                __getFilesRecursively(fileList, 0, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    cachedSEED = archiveConfigurator.getSeed();
+                    archiveConfigurator.generateSeed();
+                    targetBarMap.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+                    targetBarMap.setConfig(archiveConfigurator);
+                    targetStorage.putBarMap(targetBarMap, err => callback(err, archiveConfigurator.getSeed()));
+                });
+            }
+
+            function __getFilesRecursively(fileList, fileIndex, callback) {
+                const filePath = fileList[fileIndex];
+                __getBricksRecursively(filePath, barMap.getHashList(filePath), 0, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    ++fileIndex;
+                    if (fileIndex === fileList.length) {
+                        return callback();
+                    }
+
+                    __getFilesRecursively(fileList, fileIndex, callback);
+                });
+            }
+
+            function __getBricksRecursively(filePath, brickList, brickIndex, callback) {
+                storageProvider.getBrick(brickList[brickIndex], (err, brick) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    if (barMap.getTransformParameters(brickList[brickIndex])) {
+                        brick.setTransformParameters(barMap.getTransformParameters(brickList[brickIndex]));
+                    }
+                    __addBrickToTarget(brick, callback);
+                });
+
+                function __addBrickToTarget(brick, callback) {
+                    brick.setConfig(archiveConfigurator);
+                    if (!preserveKeys) {
+                        brick.createNewTransform();
+                    }
+
+                    ++brickIndex;
+                    targetBarMap.add(filePath, brick);
+                    targetStorage.putBrick(brick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        if (brickIndex === brickList.length) {
+                            return callback();
+                        }
+
+                        __getBricksRecursively(filePath, brickList, brickIndex, callback);
+                    });
+                }
+            }
+        });
+    };
+
+    //------------------------------------------- internal methods -----------------------------------------------------
+
+    function __computeFileHash(fileBarPath) {
+        const hashList = barMap.getHashList(fileBarPath);
+        const PskHash = crypto.PskHash;
+        const pskHash = new PskHash();
+        hashList.forEach(hash => {
+            pskHash.update(hash);
+        });
+
+        return pskHash.digest();
+    }
+
+    function putBarMap(callback) {
+        if (typeof archiveConfigurator.getMapDigest() !== "undefined") {
+            storageProvider.deleteFile(archiveConfigurator.getMapDigest(), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                __putBarMap(callback);
+            });
+            return;
+        }
+        __putBarMap(callback);
+    }
+
+    function __putBarMap(callback) {
+        storageProvider.putBarMap(barMap, (err, newMapDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            archiveConfigurator.setMapDigest(newMapDigest);
+            callback(undefined, archiveConfigurator.getMapDigest());
+        });
+    }
+
+    function createBricks(fsFilePath, barPath, blockSize, callback) {
+
+        archiveFsAdapter.getFileSize(fsFilePath, (err, fileSize) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let noBlocks = Math.floor(fileSize / blockSize);
+            if (fileSize % blockSize > 0) {
+                ++noBlocks;
+            }
+
+            //todo: check if emptyList is called ok in this place.
+            // the scenario: adding a new file at an existing barPath should overwrite the initial content found there.
+            if (!barMap.isEmpty(barPath)) {
+                barMap.emptyList(barPath);
+            }
+            __createBricksRecursively(0, callback);
+
+            function __createBricksRecursively(blockIndex, callback) {
+                archiveFsAdapter.readBlockFromFile(fsFilePath, blockIndex * blockSize, (blockIndex + 1) * blockSize - 1, (err, blockData) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    const brick = new Brick(archiveConfigurator);
+
+                    brick.setRawData(blockData);
+                    barMap.add(barPath, brick);
+                    storageProvider.putBrick(brick, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        ++blockIndex;
+                        if (blockIndex < noBlocks) {
+                            __createBricksRecursively(blockIndex, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function loadBarMapThenExecute(functionToBeExecuted, callback) {
+        storageProvider.getBarMap(archiveConfigurator.getMapDigest(), (err, map) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (archiveConfigurator.getMapEncryptionKey()) {
+                map.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+            }
+
+            if (!map.getConfig()) {
+                map.setConfig(archiveConfigurator);
+            }
+
+            map.load();
+            barMap = map;
+            storageProvider.setBarMap(barMap);
+            functionToBeExecuted();
+        });
+    }
+}
+
+module.exports = Archive;
+
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/isStream":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\isStream.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","adler32":"adler32","buffer":false,"pskcrypto":"pskcrypto","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\ArchiveConfigurator.js":[function(require,module,exports){
+const storageProviders = {};
+const fsAdapters = {};
+const Seed = require("./Seed");
+
+function ArchiveConfigurator() {
+    const config = {};
+
+    let self = this;
+    this.setBufferSize = (bufferSize) => {
+        if (bufferSize < 65535) {
+            throw Error(`Brick size should be equal to or greater than 65535. The provided brick size is ${bufferSize}`);
+        }
+        config.bufferSize = bufferSize;
+    };
+
+    this.getBufferSize = () => {
+        return config.bufferSize;
+    };
+
+    this.setStorageProvider = (storageProviderName, ...args) => {
+        if (!storageProviders[storageProviderName]) {
+            throw new Error(storageProviderName + " is not registered! Did you forget to register it?");
+        }
+        config.storageProvider = storageProviders[storageProviderName](...args);
+    };
+
+    this.getStorageProvider = () => {
+        return config.storageProvider;
+    };
+
+    this.setFsAdapter = (fsAdapterName, ...args) => {
+        config.fsAdapter = fsAdapters[fsAdapterName](...args);
+    };
+
+    this.getFsAdapter = () => {
+        return config.fsAdapter;
+    };
+
+    this.setMapDigest = (mapDigest) => {
+        config.mapDigest = mapDigest;
+    };
+
+    this.getMapDigest = () => {
+        return config.mapDigest;
+    };
+
+    this.setEncryptionAlgorithm = (algorithm) => {
+        if (!config.encryption) {
+            config.encryption = {};
+        }
+
+        config.encryption.algorithm = algorithm;
+    };
+
+    this.getEncryptionAlgorithm = () => {
+        if (!config.encryption) {
+            return;
+        }
+        return config.encryption.algorithm;
+    };
+
+    this.setEncryptionOptions = (options) => {
+        if (!config.encryption) {
+            config.encryption = {};
+        }
+
+        config.encryption.encOptions = options;
+    };
+
+    this.getEncryptionOptions = () => {
+        if (!config.encryption) {
+            return;
+        }
+        return config.encryption.encOptions;
+    };
+
+    this.setCompressionAlgorithm = (algorithm) => {
+        if (!config.compression) {
+            config.compression = {};
+        }
+
+        config.compression.algorithm = algorithm;
+    };
+
+    this.getCompressionAlgorithm = () => {
+        if (!config.compression) {
+            return;
+        }
+
+        return config.compression.algorithm;
+
+    };
+
+    this.setCompressionOptions = (options) => {
+        if (!config.compression) {
+            config.compression = {};
+        }
+
+        config.compression.options = options;
+    };
+
+    this.getCompressionOptions = () => {
+        if (!config.compression) {
+            return;
+        }
+        return config.compression.options;
+    };
+
+    this.setAuthTagLength = (authTagLength = 16) => {
+        const encOptions = this.getEncryptionOptions();
+        if (!encOptions) {
+            config.encryption.encOptions = {};
+        }
+
+        config.encryption.encOptions.authTagLength = authTagLength;
+    };
+
+    this.getAuthTagLength = () => {
+        if (!config.encryption || !config.encryption.encOptions) {
+            return;
+        }
+
+        return config.encryption.encOptions.authTagLength;
+    };
+
+    this.setSeedEndpoint = (endpoint) => {
+        config.seedEndpoint = endpoint;
+    };
+
+    this.setSeedId = (id) => {
+        config.seed.setId(id);
+        this.setMapDigest(id);
+    };
+
+    this.getSeedId = () => {
+        loadSeed();
+        if (config.seed) {
+            return config.seed.getId();
+        }
+    };
+
+    this.setSeed = (compactSeed) => {
+        config.seed = new Seed(compactSeed);
+        const endpoint = config.seed.getEndpoint();
+        if (endpoint) {
+            this.setStorageProvider("EDFSBrickStorage", endpoint);
+        }
+        this.setMapDigest(config.seed.getId());
+    };
+
+    this.getSeed = () => {
+        loadSeed();
+        if (config.seed) {
+            return config.seed.getCompactForm();
+        }
+    };
+
+    this.getMapEncryptionKey = () => {
+        loadSeed();
+        if (!config.seed) {
+            return;
+        }
+
+        if (!config.encryption) {
+            return;
+        }
+
+        return config.seed.getEncryptionKey(config.encryption.algorithm);
+    };
+
+    this.generateSeed = () => {
+        if (!config.seedEndpoint && config.seed) {
+            config.seedEndpoint = config.seed.getEndpoint();
+        }
+        config.seed = new Seed(undefined, undefined, config.seedEndpoint, !!config.encryption);
+        if (config.seed.getId()) {
+            self.setMapDigest(config.seed.getId());
+        }
+    };
+
+    //--------------------------
+    function loadSeed() {
+        if (!config.seed) {
+            config.seed = new Seed(undefined, undefined, config.seedEndpoint, !!config.encryption);
+            if (config.seed.getId()) {
+                self.setMapDigest(config.seed.getId());
+            }
+        }
+    }
+}
+
+ArchiveConfigurator.prototype.registerStorageProvider = (storageProviderName, factory) => {
+    storageProviders[storageProviderName] = factory;
+};
+
+ArchiveConfigurator.prototype.registerFsAdapter = (fsAdapterName, factory) => {
+    fsAdapters[fsAdapterName] = factory;
+};
+
+module.exports = ArchiveConfigurator;
+},{"./Seed":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js":[function(require,module,exports){
+const crypto = require('pskcrypto');
+const BrickTransformFactory = require("./transforms/BrickTransformFactory");
+const transformFactory = new BrickTransformFactory();
+const adler32 = require('adler32');
+
+function Brick(config) {
+    let rawData;
+    let transformedData;
+    let hash;
+    let transformParameters;
+    let transform = transformFactory.createBrickTransform(config);
+
+    this.setConfig = (newConfig)=> {
+        config = newConfig;
+        if (transform) {
+            transform.setConfig(newConfig);
+        }else{
+            transform = transformFactory.createBrickTransform(config);
+        }
+    };
+
+    this.createNewTransform = ()=> {
+        transform = transformFactory.createBrickTransform(config);
+        transformParameters = undefined;
+        transformData();
+    };
+
+    this.getHash = ()=> {
+        if (!hash) {
+            hash = crypto.pskHash(this.getTransformedData()).toString("hex");
+        }
+
+        return hash;
+    };
+
+    this.getId = () => {
+        const seedId = config.getSeedId();
+        if (seedId) {
+            return seedId;
+        }
+        return config.getMapDigest();
+    };
+
+    this.setId = (id) => {
+        config.setSeedId(id);
+    };
+
+    this.getSeed = () => {
+        return config.getSeed().toString();
+    };
+    this.getAdler32 = ()=> {
+        return adler32.sum(this.getTransformedData());
+    };
+
+    this.setRawData = function (data) {
+        rawData = data;
+        if (!transform) {
+            transformedData = rawData;
+        }
+    };
+
+    this.getRawData = ()=> {
+        if (rawData) {
+            return rawData;
+        }
+
+        if (transformedData) {
+            if (!transform) {
+                return transformedData;
+            }
+
+            rawData = transform.applyInverseTransform(transformedData, transformParameters);
+            if (rawData) {
+                return rawData;
+            }
+
+            return transformedData;
+        }
+
+        throw new Error("The brick does not contain any data.");
+    };
+
+    this.setTransformedData = (data)=> {
+        transformedData = data;
+    };
+
+    this.getTransformedData = ()=> {
+        if (!transformedData) {
+            transformData();
+        }
+
+        if (transformedData) {
+            return transformedData;
+        }
+
+        if (rawData) {
+            return rawData;
+        }
+
+        throw new Error("The brick does not contain any data.");
+    };
+
+    this.getTransformParameters = ()=> {
+        if (!transformedData) {
+            transformData();
+        }
+        return transformParameters;
+    };
+
+    this.setTransformParameters =  (newTransformParams) =>{
+        if (!newTransformParams) {
+            return;
+        }
+
+        if (!transformParameters) {
+            transformParameters = newTransformParams;
+            return;
+        }
+
+        Object.keys(newTransformParams).forEach(key => {
+            transformParameters[key] = newTransformParams[key];
+        });
+    };
+
+    this.getRawSize = ()=> {
+        return rawData.length;
+    };
+
+    this.getTransformedSize = ()=> {
+        if (!transformedData) {
+            return rawData.length;
+        }
+
+        return transformedData.length;
+    };
+
+//----------------------------------------------- internal methods -----------------------------------------------------
+    function transformData() {
+        if (!transform) {
+            throw new Error("transform undefined");
+        }
+
+        if (rawData) {
+            transformedData = transform.applyDirectTransform(rawData, transformParameters);
+            if (!transformedData) {
+                transformedData = rawData;
+            }
+        }
+
+        transformParameters = transform.getTransformParameters();
+    }
+
+}
+
+module.exports = Brick;
+
+},{"./transforms/BrickTransformFactory":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransformFactory.js","adler32":"adler32","pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBarMap.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require("./Brick");
+const util = require("../utils/utilities");
+const pathModule = "path";
+const path = require(pathModule);
+
+function FileBarMap(header) {
+    header = header || {};
+
+    let brickOffset = util.getBarMapOffsetSize();
+    let archiveConfig;
+    let encryptionKey;
+
+    this.add = (filePath, brick) => {
+        filePath = filePath.split(path.sep).join(path.posix.sep);
+        this.load();
+        if (typeof header[filePath] === "undefined") {
+            header[filePath] = [];
+        }
+
+        const brickObj = {
+            checkSum: brick.getAdler32(),
+            offset: brickOffset,
+            hash: brick.getHash()
+        };
+
+        const encKey = brick.getTransformParameters() ? brick.getTransformParameters().key : undefined;
+        if (encKey) {
+            brickObj.key = encKey;
+        }
+
+        header[filePath].push(brickObj);
+        brickOffset += brick.getTransformedSize();
+    };
+
+    this.getHashList = (filePath) => {
+        this.load();
+        return header[filePath].map(brickObj => brickObj.offset);
+    };
+
+    this.getFileList = (folderBarPath) => {
+        this.load();
+        if (!folderBarPath) {
+            return Object.keys(header);
+        }
+        return Object.keys(header).filter(fileName => fileName.includes(folderBarPath));
+    };
+
+    this.getDictionaryObject = () => {
+        let objectDict = {};
+        Object.keys(header).forEach((fileName) => {
+            let brickObjects = header[fileName];
+            for (let j = 0; j < brickObjects.length; j++) {
+                if (typeof objectDict[brickObjects[j]['checkSum']] === 'undefined') {
+                    objectDict[brickObjects[j]['checkSum']] = [];
+                }
+                objectDict[brickObjects[j]['checkSum']].push(brickObjects[j]['hash']);
+            }
+        });
+        return objectDict;
+    };
+
+    this.getTransformParameters = (brickId) => {
+        if (!brickId) {
+            return encryptionKey ? {key: encryptionKey} : {};
+        }
+
+        this.load();
+        let bricks = [];
+        const files = this.getFileList();
+
+        files.forEach(filePath => {
+            bricks = bricks.concat(header[filePath]);
+        });
+
+        const brickObj = bricks.find(brick => {
+            return brick.offset === brickId;
+        });
+
+        const addTransformData = {};
+        if (brickObj.key) {
+            addTransformData.key = Buffer.from(brickObj.key);
+        }
+
+        return addTransformData;
+    };
+
+    this.toBrick = () => {
+        this.load();
+        const brick = new Brick(archiveConfig);
+        brick.setTransformParameters({key: encryptionKey});
+        brick.setRawData(Buffer.from(JSON.stringify(header)));
+        return brick;
+    };
+
+    this.load = () => {
+        if (header instanceof Brick) {
+            header.setConfig(archiveConfig);
+            if (encryptionKey) {
+                header.setTransformParameters({key: encryptionKey});
+            }
+            header = JSON.parse(header.getRawData().toString());
+        }
+    };
+
+    this.setConfig = (config) => {
+        archiveConfig = config;
+    };
+
+    this.getConfig = () => {
+        return archiveConfig;
+    };
+
+    this.setEncryptionKey = (encKey) => {
+        encryptionKey = encKey;
+    };
+
+    this.removeFile = (filePath) => {
+        this.load();
+        delete header[filePath];
+    };
+}
+
+module.exports = FileBarMap;
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/utilities":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBrickStorage.js":[function(require,module,exports){
+(function (Buffer){
+const BarMap = require("./FileBarMap");
+const util = require("../utils/utilities");
+const fs = require("fs");
+const Brick = require("./Brick");
+const AsyncDispatcher = require("../utils/AsyncDispatcher");
+
+function FileBrickStorage(filePath) {
+
+    let isFirstBrick = true;
+    let map;
+    let mapOffset;
+
+    this.setBarMap = (barMap) => {
+        map = barMap;
+    };
+
+    this.putBrick = (brick, callback) => {
+        if (isFirstBrick) {
+            isFirstBrick = false;
+            const writeStream = fs.createWriteStream(filePath, {start: util.getBarMapOffsetSize()});
+            writeStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            writeStream.write(brick.getTransformedData(), callback);
+        } else {
+            fs.appendFile(filePath, brick.getTransformedData(), callback);
+        }
+    };
+
+    this.getBrick = (brickId, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+            let brickOffsets = [];
+            const fileList = barMap.getFileList();
+            fileList.forEach(file => {
+                brickOffsets = brickOffsets.concat(barMap.getHashList(file));
+            });
+
+            const brickIndex = brickOffsets.findIndex(el => {
+                return el === brickId;
+            });
+
+            let nextBrickId = brickOffsets[brickIndex + 1];
+            if (!nextBrickId) {
+                nextBrickId = Number(mapOffset);
+            }
+
+            readBrick(brickId, nextBrickId, callback);
+        });
+
+    };
+
+    this.deleteFile = (fileName, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            barMap.removeFile(fileName);
+            this.putBarMap(barMap, callback);
+        });
+    };
+
+
+    this.putBarMap = (barMap, callback) => {
+        map = barMap;
+        readBarMapOffset((err, offset) => {
+            if(offset) {
+                offset = Number(offset);
+                fs.truncate(filePath, offset, (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    __writeBarMap(offset);
+                });
+            }else{
+                fs.stat(filePath, (err, stats) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    const barMapOffset = stats.size;
+
+                    const bufferBarMapOffset = Buffer.alloc(util.getBarMapOffsetSize());
+                    bufferBarMapOffset.writeBigUInt64LE(BigInt(barMapOffset));
+                    mapOffset = barMapOffset;
+                    const offsetWriteStream = fs.createWriteStream(filePath, {flags: "r+", start: 0});
+
+                    offsetWriteStream.on("error", (err) => {
+                        return callback(err);
+                    });
+
+                    offsetWriteStream.write(bufferBarMapOffset, (err) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        __writeBarMap(barMapOffset);
+                    });
+                });
+            }
+        });
+
+        function __writeBarMap(offset) {
+            const mapWriteStream = fs.createWriteStream(filePath, {flags: "r+", start: offset});
+            mapWriteStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            const mapBrick = barMap.toBrick();
+            mapBrick.setTransformParameters(barMap.getTransformParameters());
+            mapWriteStream.write(mapBrick.getTransformedData(), callback);
+        }
+
+    };
+
+    this.getBarMap = (mapDigest, callback) => {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        readBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            map = barMap;
+            callback(undefined, barMap);
+        });
+    };
+
+    //------------------------------------------ Internal functions ---------------------------------------------------
+
+    function readBarMapOffset(callback) {
+        const readStream = fs.createReadStream(filePath, {start: 0, end: util.getBarMapOffsetSize() - 1});
+
+        const buffer = Buffer.alloc(util.getBarMapOffsetSize());
+        let offsetBuffer = 0;
+
+        readStream.on("data", (chunk) => {
+            chunk.copy(buffer, offsetBuffer);
+            offsetBuffer += chunk.length;
+        });
+
+        readStream.on("end", () => {
+            callback(undefined, buffer.readBigUInt64LE());
+        });
+
+        readStream.on("error", (err) => {
+            return callback(err);
+        });
+    }
+
+    function readBarMap(callback) {
+        readBarMapOffset((err, barMapOffset) => {
+            if (err) {
+                if (err.code === "ENOENT") {
+                    return callback(undefined, new BarMap());
+                }
+
+                return callback(err)
+            }
+
+            mapOffset = barMapOffset;
+            const readStream = fs.createReadStream(filePath, {start: Number(barMapOffset)});
+            let barMapData = Buffer.alloc(0);
+
+            readStream.on("data", (chunk) => {
+                barMapData = Buffer.concat([barMapData, chunk]);
+            });
+
+            readStream.on("error", (err) => {
+                return callback(err);
+            });
+
+            readStream.on("end", () => {
+                const mapBrick = new Brick();
+                mapBrick.setTransformedData(barMapData);
+                callback(undefined, new BarMap(mapBrick));
+            });
+        });
+    }
+
+    function readBrick(brickOffsetStart, brickOffsetEnd, callback) {
+        const readStream = fs.createReadStream(filePath, {start: brickOffsetStart, end: brickOffsetEnd - 1});
+        let brickData = Buffer.alloc(0);
+
+        readStream.on("data", (chunk) => {
+            brickData = Buffer.concat([brickData, chunk]);
+        });
+
+        readStream.on("error", (err) => {
+            return callback(err);
+        });
+
+        readStream.on("end", () => {
+            const brick = new Brick();
+            brick.setTransformedData(brickData);
+            callback(undefined, brick);
+        });
+    }
+}
+
+module.exports = {
+    createFileBrickStorage(filePath) {
+        return new FileBrickStorage(filePath);
+    }
+};
+}).call(this,require("buffer").Buffer)
+
+},{"../utils/AsyncDispatcher":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\AsyncDispatcher.js","../utils/utilities":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js","./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./FileBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBarMap.js","buffer":false,"fs":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js":[function(require,module,exports){
+(function (Buffer){
+const Brick = require("./Brick");
+const pathModule = "path";
+const path = require(pathModule);
+
+function FolderBarMap(header) {
+    header = header || {};
+
+    let archiveConfig;
+    let encryptionKey;
+
+    this.add = (filePath, brick) => {
+        filePath = filePath.split(path.sep).join("/");
+        this.load();
+        const splitPath = filePath.split("/");
+        if (splitPath.length === 0) {
+            throw Error("No filepath specified");
+        }
+
+        __addFileRecursively(header, splitPath, brick);
+
+
+        function __addFileRecursively(barMapObj, splitPath, brick) {
+            let fileName = splitPath.shift();
+            if (fileName === "") {
+                fileName = splitPath.shift();
+            }
+            if (splitPath.length === 0) {
+                const brickObj = {
+                    checkSum: brick.getAdler32(),
+                    hash: brick.getHash()
+                };
+
+                const encKey = brick.getTransformParameters() ? brick.getTransformParameters().key : undefined;
+                if (encKey) {
+                    brickObj.key = encKey;
+                }
+
+
+                if (!barMapObj[fileName]) {
+                    barMapObj[fileName] = [];
+                }
+
+
+                barMapObj[fileName].push(brickObj);
+            } else {
+                if (!barMapObj[fileName]) {
+                    barMapObj[fileName] = {};
+                }
+                __addFileRecursively(barMapObj[fileName], splitPath, brick);
+            }
+        }
+    };
+
+    this.isInHeader = (filePath) => {
+        return header[filePath] !== undefined;
+    };
+
+    this.removeBrick = (filePath, brickHash) => {
+        let indexToRemove = header[filePath].findIndex(brickObj => brickObj.hash === brickHash);
+        header[filePath].splice(indexToRemove, 1);
+    };
+
+    this.getDictionaryObject = () => {
+        let objectDict = {};
+        Object.keys(header).forEach((fileName) => {
+            let brickObjects = header[fileName];
+            for (let j = 0; j < brickObjects.length; j++) {
+                if (typeof objectDict[brickObjects[j]['checkSum']] === 'undefined') {
+                    objectDict[brickObjects[j]['checkSum']] = [];
+                }
+                objectDict[brickObjects[j]['checkSum']].push(brickObjects[j]['hash']);
+            }
+        });
+        return objectDict;
+    };
+
+    this.getHashList = (filePath) => {
+        this.load();
+        const splitPath = filePath.split("/");
+        if (splitPath.length === 0) {
+            throw Error("No path was provided.");
+        }
+
+        return __getHashListRecursively(header, splitPath);
+
+        function __getHashListRecursively(barMapObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (barMapObj[folderName]) {
+                if (splitPath.length === 0) {
+                    return barMapObj[folderName].map(brickObj => brickObj.hash);
+                } else {
+                    return __getHashListRecursively(barMapObj[folderName], splitPath);
+                }
+            } else {
+                throw Error(`Invalid path ${filePath}`);
+            }
+        }
+    };
+
+    this.getCheckSumList = (filePath) => {
+        this.load();
+        return header[filePath].map(brickObj => brickObj.checkSum);
+    };
+
+    this.isEmpty = (filePath) => {
+        filePath = filePath.split(path.sep).join("/");
+        this.load();
+
+        if (!filePath || filePath === "" || filePath === "/") {
+            return Object.keys(header).length === 0;
+        } else {
+            const splitPath = filePath.split("/");
+            return __checkIsEmptyRecursively(header, splitPath);
+        }
+
+        function __checkIsEmptyRecursively(folderObj, splitPath) {
+            if (Object.keys(folderObj).length === 0) {
+                return true;
+            }
+
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        return folderObj[folderName].length === 0;
+                    } else {
+                        return Object.keys(folderObj[folderName]).length === 0;
+                    }
+                } else {
+                    return __checkIsEmptyRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                return true;
+            }
+        }
+    };
+
+    this.emptyList = (filePath) => {
+        this.load();
+
+        const splitPath = filePath.split("/");
+        __emptyListRecursively(header, splitPath);
+
+        function __emptyListRecursively(folderObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        folderObj[folderName] = []
+                    } else {
+                        throw Error("Invalid path");
+                    }
+                } else {
+                    __emptyListRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                throw Error("Invalid path");
+            }
+        }
+    };
+
+
+    this.toBrick = () => {
+        this.load();
+        const brick = new Brick(archiveConfig);
+        if (encryptionKey) {
+            brick.setTransformParameters({key: encryptionKey});
+        }
+        brick.setRawData(Buffer.from(JSON.stringify(header)));
+        return brick;
+    };
+
+
+    this.getFileList = (folderBarPath) => {
+        this.load();
+        let files = [];
+
+        if (!folderBarPath || folderBarPath === "" || folderBarPath === "/") {
+            __getAllFilesRecursively(header, "");
+
+            return files;
+        } else {
+            const splitFolderBarPath = folderBarPath.split("/");
+            __getFileListRecursively(header, splitFolderBarPath);
+            return files.map(file => folderBarPath + "/" + file);
+        }
+
+        function __getFileListRecursively(folderObj, splitFolderBarPath) {
+            let folderName = splitFolderBarPath.shift();
+            if (folderName === "") {
+                folderName = splitFolderBarPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitFolderBarPath.length === 0) {
+                    Object.keys(folderObj[folderName]).forEach(file => {
+                        if (Array.isArray(folderObj[folderName][file])) {
+                            files.push(file);
+                        }
+                    });
+                } else {
+                    __getFileListRecursively(folderObj[folderName], splitFolderBarPath);
+                }
+            } else {
+                throw Error(`Invalid path ${folderBarPath}`);
+            }
+        }
+
+        function __getAllFilesRecursively(folderObj, path) {
+            Object.keys(folderObj).forEach(folderName => {
+
+                if (folderObj[folderName]) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        files.push(path + "/" + folderName);
+                    } else {
+                        __getAllFilesRecursively(folderObj[folderName], path + "/" + folderName);
+                    }
+                }
+            });
+        }
+
+
+    };
+
+    this.getFolderList = (barPath) => {
+        let folders = [];
+        if (!barPath || barPath === "" || barPath === "/") {
+             __getAllFolders(header, "");
+            return folders;
+        } else {
+            const splitPath = barPath.split("/");
+            __getFoldersRecursively(header, splitPath, "");
+            return folders;
+        }
+
+        function __getAllFolders(folderObj, path) {
+            Object.keys(folderObj).forEach(folderName => {
+                if (typeof folderObj[folderName] === "object" && !Array.isArray(folderObj[folderName])) {
+                    folders.push(path + "/" + folderName);
+                    __getAllFolders(folderObj[folderName], path + "/" + folderName);
+                }
+            });
+        }
+
+        function __getFoldersRecursively(folderObj, splitPath, folderPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    folders.push(folderPath + "/" + folderName);
+                    Object.keys(folderObj[folderName]).forEach(fileName => {
+                        if (typeof folderObj[folderName][fileName] === "object" && !Array.isArray(folderObj[folderName][fileName])) {
+                            folders.push(folderPath + "/" + fileName);
+                            __getFoldersRecursively(folderObj[folderName][fileName], splitPath, folderPath + "/" + fileName);
+                        }
+                    });
+                } else {
+                    __getFoldersRecursively(folderObj[folderName], splitPath, folderPath + "/" + folderName);
+                }
+            }
+        }
+    };
+
+    this.getTransformParameters = (brickId) => {
+        this.load();
+        if (!brickId) {
+            return encryptionKey ? {key: encryptionKey} : undefined;
+        }
+        let bricks = [];
+        const files = this.getFileList();
+        files.forEach(file => {
+            bricks = bricks.concat(getBricksForFile(file));
+        });
+
+        const brickObj = bricks.find(brick => {
+            return brick.hash === brickId;
+        });
+
+        const addTransformData = {};
+        if (brickObj.key) {
+            addTransformData.key = Buffer.from(brickObj.key);
+        }
+
+        return addTransformData;
+    };
+
+    this.load = () => {
+        if (header instanceof Brick) {
+            header.setConfig(archiveConfig);
+            header.setTransformParameters({key: encryptionKey});
+            header = JSON.parse(header.getRawData().toString());
+        } else {
+            if (Buffer.isBuffer(header)) {
+                header = header.toString();
+            }
+
+            if (typeof header === "string") {
+                header = JSON.parse(header);
+            }
+        }
+    };
+
+    this.setConfig = (config) => {
+        archiveConfig = config;
+    };
+
+    this.getConfig = () => {
+        return archiveConfig;
+    };
+
+    this.setEncryptionKey = (encKey) => {
+        encryptionKey = encKey;
+    };
+
+    this.removeFile = (filePath) => {
+        this.load();
+        delete header[filePath];
+    };
+
+    function getBricksForFile(filePath) {
+        filePath = filePath.split(path.sep).join("/");
+        const splitPath = filePath.split("/");
+        return __getBricksForFileRecursively(header, splitPath);
+
+
+        function __getBricksForFileRecursively(folderObj, splitPath) {
+            let folderName = splitPath.shift();
+            if (folderName === "") {
+                folderName = splitPath.shift();
+            }
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    if (Array.isArray(folderObj[folderName])) {
+                        return folderObj[folderName];
+                    } else {
+                        throw Error("Invalid path");
+                    }
+                } else {
+                    return __getBricksForFileRecursively(folderObj[folderName], splitPath);
+                }
+            } else {
+                throw Error("Invalid path");
+            }
+        }
+    }
+}
+
+module.exports = FolderBarMap;
+}).call(this,require("buffer").Buffer)
+
+},{"./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBrickStorage.js":[function(require,module,exports){
+const fs = require("fs");
+const path = require("path");
+const BarMap = require("./FolderBarMap");
+const Brick = require("./Brick");
+
+function FolderBrickStorage(location) {
+    let map;
+
+    this.setBarMap = (barMap) => {
+        map = barMap;
+    };
+
+    this.putBrick = (brick, callback) => {
+        const writeStream = fs.createWriteStream(path.join(location, brick.getHash()));
+        writeStream.write(brick.getTransformedData(), (...args) => {
+            writeStream.end();
+            callback(...args);
+        });
+    };
+
+    this.getBrick = (brickHash, callback) => {
+        fs.readFile(path.join(location, brickHash), (err, brickData) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const brick = new Brick();
+            brick.setTransformedData(brickData);
+            callback(err, brick);
+        });
+    };
+
+    this.deleteFile = (filePath, callback) => {
+        this.getBarMap((err, barMap) => {
+            if (err) {
+                return callback(err);
+            }
+
+            fs.unlink(path.join(location, barMap.toBrick().getHash()), (err) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                barMap.removeFile(filePath);
+                this.putBarMap(barMap, callback);
+            });
+        });
+    };
+
+    this.putBarMap = (barMap, callback) => {
+        map = barMap;
+        const barMapBrick = barMap.toBrick();
+        barMapBrick.setTransformParameters(barMap.getTransformParameters());
+       
+        let brickId = barMapBrick.getId();
+        if (!brickId) {
+            brickId = barMapBrick.getHash();
+        }
+
+        barMapBrick.setId(brickId);
+        const writeStream = fs.createWriteStream(path.join(location, brickId));
+        writeStream.write(barMapBrick.getTransformedData(), (err) => {
+            writeStream.end();
+            callback(err, barMapBrick.getSeed());
+        });
+    };
+
+    this.getBarMap = (mapDigest, callback) => {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+            mapDigest = undefined;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        if (typeof mapDigest === "undefined") {
+            return callback(undefined, new BarMap());
+        }
+
+        this.getBrick(mapDigest, (err, mapBrick) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const barMap = new BarMap(mapBrick);
+            map = barMap;
+            callback(undefined, barMap);
+        });
+    }
+}
+
+module.exports = {
+    createFolderBrickStorage(location) {
+        return new FolderBrickStorage(location);
+    }
+};
+},{"./Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./FolderBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js","fs":false,"path":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js":[function(require,module,exports){
+(function (Buffer){
+const crypto = require("pskcrypto");
+
+function Seed(compactSeed, id, endpoint, usedForEncryption  = true, randomLength = 32) {
+    let seed;
+
+    init();
+
+    this.getCompactForm = () => {
+        if (!seed) {
+            throw Error("Cannot return seed");
+        }
+
+        return generateCompactForm(seed);
+    };
+
+    this.getLocation = () => {
+        if (!seed) {
+            throw Error("Cannot retrieve location");
+        }
+
+        return seed.endpoint + "/" + seed.id.toString("hex");
+    };
+
+    this.getEndpoint = () => {
+        if (!seed) {
+            throw Error("Cannot retrieve endpoint");
+        }
+
+        return seed.endpoint.toString();
+    };
+
+    this.getId = () => {
+        if (!seed.id) {
+            return;
+        }
+        return seed.id.toString("hex");
+    };
+
+    this.setId = (localId) => {
+        seed.id = localId;
+    };
+
+    this.getEncryptionKey = (algorithm) => {
+        if (seed.tag === 'r') {
+            return;
+        }
+
+        return crypto.deriveKey(algorithm, generateCompactForm(seed));
+    };
+
+    //--------------------------------------- internal methods --------------------------------------------
+    function init() {
+        if (!compactSeed) {
+            seed = create();
+        } else {
+            seed = load(compactSeed);
+        }
+    }
+
+    function create() {
+        const localSeed = {};
+        localSeed.id = id;
+        if (!id && usedForEncryption) {
+            //Bugfix: randomBytes in browser returns an Uint8Array object that has a wrong constructor and prototype
+            //that is why we create a new instance of Buffer/Uint8Array based on the result of randomBytes
+            localSeed.id = Buffer.from(crypto.randomBytes(randomLength));
+            //TODO: why don't we use ID Generator from swarmutils?
+        }
+
+        if (endpoint) {
+            localSeed.endpoint = endpoint;
+        }else{
+            throw Error("The SEED could not be created because an endpoint was not provided.")
+        }
+
+        if (usedForEncryption === true) {
+            localSeed.flag = 'e';
+        }else{
+            localSeed.flag = 'r';
+        }
+
+        return localSeed;
+    }
+
+    function generateCompactForm(expandedSeed) {
+        if (typeof expandedSeed === "string") {
+            return expandedSeed;
+        }
+
+        if(!expandedSeed.id){
+            throw Error("The seed does not contain an id");
+        }
+        let compactSeed = expandedSeed.id.toString('base64');
+        if (expandedSeed.endpoint) {
+            compactSeed += '|' + Buffer.from(JSON.stringify(expandedSeed.endpoint)).toString('base64');
+        }
+
+        compactSeed += expandedSeed.flag;
+        return Buffer.from(encodeURIComponent(compactSeed));
+    }
+
+    function load(compactFormSeed) {
+        if (typeof compactFormSeed === "undefined") {
+            throw new Error(`Expected type string or Buffer. Received undefined`);
+        }
+
+        if (typeof compactFormSeed !== "string") {
+            if (typeof compactFormSeed === "object" && !Buffer.isBuffer(compactFormSeed)) {
+                compactFormSeed = Buffer.from(compactFormSeed);
+            }
+
+            compactFormSeed = compactFormSeed.toString();
+        }
+
+        const decodedCompactSeed = decodeURIComponent(compactFormSeed);
+        const localSeed = {};
+        const splitCompactSeed = decodedCompactSeed.split('|');
+
+        localSeed.flag = splitCompactSeed[1][splitCompactSeed[1].length - 1];
+        splitCompactSeed[1] = splitCompactSeed[1].slice(0, -1);
+        localSeed.id = Buffer.from(splitCompactSeed[0], 'base64');
+
+        if (splitCompactSeed[1] && splitCompactSeed[1].length > 0) {
+            localSeed.endpoint = JSON.parse(Buffer.from(splitCompactSeed[1], 'base64').toString());
+        } else {
+            console.warn('Cannot find endpoint in compact seed')
+        }
+
+        return localSeed;
+    }
+}
+
+module.exports = Seed;
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false,"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransform.js":[function(require,module,exports){
+(function (Buffer){
+function BrickTransform(transformGenerator) {
+    let directTransform;
+    let inverseTransform;
+
+    this.getTransformParameters = () => {
+        return directTransform ? directTransform.transformParameters : undefined;
+    };
+
+    this.applyDirectTransform = (data, transformParameters) => {
+        if (!directTransform) {
+            directTransform = transformGenerator.createDirectTransform(transformParameters);
+        }
+
+        if (!directTransform) {
+            return undefined;
+        }
+
+        let transformedData = directTransform.transform(data);
+
+        if(directTransform.transformParameters){
+            if (directTransform.transformParameters.iv) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.iv]);
+            }
+
+            if (directTransform.transformParameters.aad) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.aad]);
+            }
+
+            if (directTransform.transformParameters.tag) {
+                transformedData = Buffer.concat([transformedData, directTransform.transformParameters.tag]);
+            }
+        }
+
+        return transformedData;
+    };
+
+    this.applyInverseTransform = (data, transformParameters) => {
+        const inverseTransformParams = transformGenerator.getInverseTransformParameters(data);
+        if(inverseTransformParams.params) {
+            Object.keys(inverseTransformParams.params).forEach(param => transformParameters[param] = inverseTransformParams.params[param]);
+        }
+
+        if (!inverseTransform) {
+            inverseTransform = transformGenerator.createInverseTransform(transformParameters);
+        }
+
+        return inverseTransform ? inverseTransform.transform(inverseTransformParams.data) : undefined;
+    };
+}
+
+module.exports = BrickTransform;
+
+
+}).call(this,require("buffer").Buffer)
+
+},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransformFactory.js":[function(require,module,exports){
+const CompressionGenerator = require("./CompressionGenerator");
+const EncryptionGenerator= require("./EncryptionGenerator");
+const CompressionEncryptionGenerator = require("./CompressionEncryptionGenerator");
+const BrickTransform = require("./BrickTransform");
+
+function BrickTransformFactory() {
+    this.createBrickTransform = function (config) {
+        if (!config) {
+            return;
+        }
+
+        const encryption = config.getEncryptionAlgorithm();
+        const compression = config.getCompressionAlgorithm();
+
+        let generator;
+        if (!encryption && !compression) {
+            return;
+        }
+
+        if (compression) {
+            if (encryption) {
+                generator = new CompressionEncryptionGenerator(config);
+            } else {
+                generator = new CompressionGenerator(config);
+            }
+        }else{
+            generator = new EncryptionGenerator(config);
+        }
+
+        return new BrickTransform(generator);
+    }
+}
+
+module.exports = BrickTransformFactory;
+
+
+},{"./BrickTransform":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\BrickTransform.js","./CompressionEncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionEncryptionGenerator.js","./CompressionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js","./EncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionEncryptionGenerator.js":[function(require,module,exports){
+const CompressionGenerator = require("./CompressionGenerator");
+const EncryptionGenerator = require("./EncryptionGenerator");
+
+function CompressionEncryptionGenerator(config) {
+    let compressionGenerator = new CompressionGenerator(config);
+    let encryptionGenerator = new EncryptionGenerator(config);
+
+    this.getInverseTransformParameters = (transformedData) => {
+        return encryptionGenerator.getInverseTransformParameters(transformedData);
+    };
+
+    this.createDirectTransform = (transformParameters) => {
+        const compression = compressionGenerator.createDirectTransform();
+        const encryption = encryptionGenerator.createDirectTransform(transformParameters);
+        const compressionEncryption = {};
+        Object.keys(encryption).forEach(key => {
+            compressionEncryption[key] = encryption[key]
+        });
+
+        compressionEncryption.transform = (data) => {
+            return encryption.transform(compression.transform(data));
+        };
+
+        return compressionEncryption;
+    };
+
+    this.createInverseTransform = (transformParameters) => {
+        const decompression = compressionGenerator.createInverseTransform();
+        const decryption = encryptionGenerator.createInverseTransform(transformParameters);
+        const compressionEncryption = {};
+        Object.keys(decompression).forEach(key => {
+            compressionEncryption[key] = decompression[key]
+        });
+        compressionEncryption.transform = (data) => {
+            return decompression.transform(decryption.transform(data));
+        };
+
+        return compressionEncryption;
+    };
+}
+
+module.exports = CompressionEncryptionGenerator;
+},{"./CompressionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js","./EncryptionGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\CompressionGenerator.js":[function(require,module,exports){
+const zlib = require("zlib");
+
+function CompressionGenerator(config) {
+
+    this.getInverseTransformParameters = (transformedData) => {
+        return {data: transformedData};
+    };
+
+    this.createDirectTransform = () => {
+        return getCompression(true);
+    };
+
+    this.createInverseTransform = () => {
+        return getCompression(false);
+    };
+
+    function getCompression(isCompression) {
+        const algorithm = config.getCompressionAlgorithm();
+        switch (algorithm) {
+            case "gzip":
+                return __createCompress(zlib.gzipSync, zlib.gunzipSync, isCompression);
+            case "br":
+                return __createCompress(zlib.brotliCompressSync, zlib.brotliDecompressSync, isCompression);
+            case "deflate":
+                return __createCompress(zlib.deflateSync, zlib.inflateSync, isCompression);
+            case "deflateRaw":
+                return __createCompress(zlib.deflateRawSync, zlib.inflateRawSync, isCompression);
+            default:
+                return;
+        }
+    }
+
+    function __createCompress(compress, decompress, isCompression) {
+        const options = config.getCompressionOptions();
+        if (!isCompression) {
+            return {
+                transform(data) {
+                    return decompress(data, options);
+                }
+            }
+        }
+
+        return {
+            transform(data) {
+                return compress(data, options);
+            }
+        }
+    }
+}
+
+module.exports = CompressionGenerator;
+
+
+},{"zlib":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\transforms\\EncryptionGenerator.js":[function(require,module,exports){
+const crypto = require("pskcrypto");
+
+function EncryptionGenerator(config) {
+    let key;
+    const pskEncryption = crypto.createPskEncryption(config.getEncryptionAlgorithm());
+    this.setConfig = (newConfig) => {
+        config = newConfig;
+    };
+
+    this.getInverseTransformParameters = (transformedData) => {
+        let decryptionParameters = pskEncryption.getDecryptionParameters(transformedData);
+        const data = decryptionParameters.data;
+        delete decryptionParameters.data;
+        return {
+            data: data,
+            params:decryptionParameters
+        };
+    };
+
+    this.createDirectTransform = (transformParameters) => {
+        return getEncryption(transformParameters);
+    };
+
+    this.createInverseTransform = (transformParameters) => {
+        return getDecryption(transformParameters);
+    };
+
+    //--------------------------------------- internal methods ------------------------------------------------------
+    function getEncryption(transformParameters) {
+        const algorithm = config.getEncryptionAlgorithm();
+        if (!algorithm) {
+            return;
+        }
+
+        const encOptions = config.getEncryptionOptions();
+        if(transformParameters && transformParameters.key){
+            key = transformParameters.key;
+        }else{
+            key = pskEncryption.generateEncryptionKey(algorithm);
+        }
+
+
+        const ret = {
+            transform(data) {
+                const encData = pskEncryption.encrypt(data, key, encOptions);
+                ret.transformParameters = pskEncryption.getEncryptionParameters();
+                return encData;
+            }
+        };
+
+        return ret;
+    }
+
+
+    function getDecryption(transformConfig) {
+        const algorithm = config.getEncryptionAlgorithm();
+        if (!algorithm) {
+            return;
+        }
+        const encOptions = config.getEncryptionOptions();
+        let authTagLength = 0;
+        if (!config.getEncryptionOptions() || !config.getAuthTagLength()) {
+            authTagLength = 16;
+        } else {
+            authTagLength = config.getAuthTagLength();
+        }
+
+        return {
+            transform(data) {
+                return pskEncryption.decrypt(data, transformConfig.key, authTagLength, encOptions);
+            }
+        }
+    }
+
+}
+
+module.exports = EncryptionGenerator;
+},{"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\AsyncDispatcher.js":[function(require,module,exports){
+
+function AsyncDispatcher(finalCallback) {
+	let results = [];
+	let errors = [];
+
+	let started = 0;
+
+	function markOneAsFinished(err, res) {
+		if(err) {
+			errors.push(err);
+		}
+
+		if(arguments.length > 2) {
+			arguments[0] = undefined;
+			res = arguments;
+		}
+
+		if(typeof res !== "undefined") {
+			results.push(res);
+		}
+
+		if(--started <= 0) {
+            return callCallback();
+		}
+	}
+
+	function dispatchEmpty(amount = 1) {
+		started += amount;
+	}
+
+	function callCallback() {
+	    if(errors && errors.length === 0) {
+	        errors = undefined;
+        }
+
+	    if(results && results.length === 0) {
+	        results = undefined;
+        }
+
+        finalCallback(errors, results);
+    }
+
+	return {
+		dispatchEmpty,
+		markOneAsFinished
+	};
+}
+
+module.exports = AsyncDispatcher;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\isStream.js":[function(require,module,exports){
+function isStream(stream){
+    return stream !== null && typeof stream === 'object' && typeof stream.pipe === 'function';
+}
+
+function isWritable(stream) {
+    return isStream(stream) &&
+        stream.writable !== false &&
+        typeof stream._write === 'function' &&
+        typeof stream._writableState === 'object';
+
+}
+
+function isReadable(stream) {
+    return isStream(stream) &&
+        stream.readable !== false &&
+        typeof stream._read === 'function' &&
+        typeof stream._readableState === 'object';
+}
+
+function isDuplex(stream){
+    return isWritable(stream) &&
+        isReadable(stream);
+}
+
+module.exports = {
+    isStream,
+    isReadable,
+    isWritable,
+    isDuplex
+};
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\utils\\utilities.js":[function(require,module,exports){
+const fs = require('fs');
+const OFFSET_SIZE = 8;
+
+function getBarMapOffsetSize() {
+    return OFFSET_SIZE;
+}
+
+function ensureFileDoesNotExist(filePath, callback) {
+    fs.access(filePath, (err) => {
+        if (!err) {
+            fs.unlink(filePath, callback);
+        } else {
+            return callback();
+        }
+    });
+}
+
+module.exports = {getBarMapOffsetSize, ensureFileDoesNotExist};
+},{"fs":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js":[function(require,module,exports){
 $$.CONSTANTS = {
     SWARM_FOR_EXECUTION:"swarm_for_execution",//TODO: remove
     INBOUND:"inbound",//TODO: remove
@@ -1367,270 +4214,120 @@ exports.createForObject = function(valueObject, thisObject, localId){
 	var ret = require("./base").createForObject(valueObject, thisObject, localId);
 	return ret;
 };
-},{"./base":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\utilityFunctions\\base.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\flows\\BricksManager.js":[function(require,module,exports){
-const pathModule = "path";
-const path = require(pathModule);
-const fsModule = "fs";
-const fs = require(fsModule);
-const osModule = "os";
-const endOfLine = require(osModule).EOL;
-const crypto = require("pskcrypto");
-const folderNameSize = process.env.FOLDER_NAME_SIZE || 5;
-const FILE_SEPARATOR = '-';
-let brickStorageFolder;
+},{"./base":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\utilityFunctions\\base.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-brick-storage\\EDFSBrickStorage.js":[function(require,module,exports){
+function EDFSBrickStorage(endpoint) {
 
-$$.flow.describe("BricksManager", {
-    init: function (rootFolder, callback) {
+    const bar = require("bar");
+    const brickTransportStrategy = $$.brickTransportStrategiesRegistry.get(endpoint);
+    let map;
 
-        if (!rootFolder) {
-            callback(new Error("No root folder specified!"));
-            return;
-        }
-        rootFolder = path.resolve(rootFolder);
-        this.__ensureFolderStructure(rootFolder, (err, pth) => {
-            brickStorageFolder = rootFolder;
-            callback(err, rootFolder);
-        });
-    },
-    write: function (fileName, readFileStream, callback) {
-        if (!this.__verifyFileName(fileName, callback)) {
-            return;
-        }
+    this.setBarMap = function (barMap) {
+        map = barMap;
+    };
 
-        if (!readFileStream || !readFileStream.pipe || typeof readFileStream.pipe !== "function") {
-            callback(new Error("Something wrong happened"));
-            return;
-        }
+    this.putBrick = function (brick, callback) {
+        brickTransportStrategy.send(brick.getHash(), brick.getTransformedData(), callback);
+    };
 
-        const folderName = path.join(brickStorageFolder, fileName.substr(0, folderNameSize));
+    this.getBrick = function (brickHash, callback) {
 
-        this.__ensureFolderStructure(folderName, (err) => {
+        brickTransportStrategy.get(brickHash, (err, brickData) => {
             if (err) {
                 return callback(err);
             }
 
-            this.__writeFile(readFileStream, folderName, fileName, callback);
+            const brick = bar.createBrick();
+            brick.setTransformedData(brickData);
+            callback(undefined, brick);
         });
+    };
 
-    },
-    read: function (fileName, writeFileStream, callback) {
-        if (!this.__verifyFileName(fileName, callback)) {
-            return;
+    this.deleteBrick = function (brickHash, callback) {
+        throw new Error("Not implemented");
+    };
+
+    this.putBarMap = function (barMap, callback) {
+        map = barMap;
+        const barMapBrick = barMap.toBrick();
+        barMapBrick.setTransformParameters(barMap.getTransformParameters());
+
+        let brickId = barMapBrick.getId();
+        if (!brickId) {
+            brickId = barMapBrick.getHash();
+            barMapBrick.setId(brickId);
         }
 
-        const folderPath = path.join(brickStorageFolder, fileName.substr(0, folderNameSize));
-        const filePath = path.join(folderPath, fileName);
+        brickTransportStrategy.getHashForAlias(brickId, (err, hashesList) => {
+            if (err) {
+                return callback(err);
+            }
 
-        this.__verifyFileExistence(filePath, (err, result) => {
-            if (!err) {
-                this.__readFile(writeFileStream, filePath, callback);
+            if (hashesList.length === 0) {
+                __sendBarMapBrick();
             } else {
-                callback(new Error(`File ${filePath} was not found.`));
-            }
-        });
-    },
-    addAlias: function (fileHash, readStream, callback) {
-        if (!this.__verifyFileName(fileHash, callback)) {
-            return;
-        }
-
-        this.__streamToString(readStream, (err, alias) => {
-            if (err) {
-                return callback(err);
-            }
-            if (!alias) {
-                return callback(new Error("No alias was provided"));
-            }
-
-            const filePath = path.join(brickStorageFolder, alias);
-            this.__verifyFileExistence(filePath, (err) => {
-                if (err) {
-                    fs.writeFile(filePath, fileHash + endOfLine, callback);
+                const barMapHash = hashesList[hashesList.length - 1];
+                if (barMapHash !== barMapBrick.getHash()) {
+                    __sendBarMapBrick();
                 } else {
-                    fs.appendFile(filePath, fileHash + endOfLine, callback);
+                    callback();
                 }
-            });
+            }
 
+            function __sendBarMapBrick() {
+                brickTransportStrategy.attachHashToAlias(brickId, barMapBrick.getHash(), (err) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    brickTransportStrategy.send(barMapBrick.getHash(), barMapBrick.getTransformedData(), callback);
+                });
+            }
         });
-    },
-    readVersions: function (alias, callback) {
-        const filePath = path.join(brickStorageFolder, alias);
-        fs.readFile(filePath, (err, fileHashes) => {
+    };
+
+    this.getBarMap = function (mapDigest, callback) {
+        if (typeof mapDigest === "function") {
+            callback = mapDigest;
+            mapDigest = undefined;
+        }
+
+        if (map) {
+            return callback(undefined, map);
+        }
+
+        if (typeof mapDigest === "undefined") {
+            return callback(undefined, bar.createBarMap());
+        }
+
+        brickTransportStrategy.getHashForAlias(mapDigest, (err, hashesList) => {
             if (err) {
-                if (err.code === "ENOENT") {
-                    return callback(undefined, []);
-                }
                 return callback(err);
             }
-            callback(undefined, fileHashes.toString().trimEnd().split(endOfLine));
-        });
-    },
-    __verifyFileName: function (fileName, callback) {
-        if (!fileName || typeof fileName !== "string") {
-            return callback(new Error("No fileId specified."));
-        }
 
-        if (fileName.length < folderNameSize) {
-            return callback(new Error("FileId too small. " + fileName));
-        }
-
-        return true;
-    },
-    __ensureFolderStructure: function (folder, callback) {
-        fs.mkdir(folder, {recursive: true}, callback);
-    },
-    __writeFile: function (readStream, folderPath, fileName, callback) {
-        const PskHash = crypto.PskHash;
-        const hash = new PskHash();
-        const filePath = path.join(folderPath, fileName);
-        fs.access(filePath, (err) => {
-            if (err) {
-                readStream.on('data', (data) => {
-                    hash.update(data);
-                });
-
-                const writeStream = fs.createWriteStream(filePath, {mode: 0o444});
-
-                writeStream.on("finish", () => {
-                    callback(undefined, hash.digest("hex"));
-                });
-
-                writeStream.on("error", (err) => {
-                    writeStream.close();
-                    callback(err);
-                });
-
-                readStream.pipe(writeStream);
+            let barMapId;
+            if (hashesList.length === 0) {
+                barMapId = mapDigest;
             } else {
-                callback();
-
+                barMapId = hashesList[hashesList.length - 1];
             }
+            brickTransportStrategy.get(barMapId, (err, barMapData) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                const mapBrick = bar.createBrick();
+                mapBrick.setTransformedData(barMapData);
+                map = bar.createBarMap(mapBrick);
+                callback(undefined, map);
+            });
         });
-    },
-    __readFile: function (writeFileStream, filePath, callback) {
-        const readStream = fs.createReadStream(filePath);
-
-        writeFileStream.on("finish", callback);
-        writeFileStream.on("error", callback);
-
-        readStream.pipe(writeFileStream);
-    },
-    __verifyFileExistence: function (filePath, callback) {
-        fs.access(filePath, callback);
-    },
-    __streamToString: function (readStream, callback) {
-        let str = '';
-        readStream.on("data", (chunk) => {
-            str += chunk;
-        });
-
-        readStream.on("end", () => {
-            callback(undefined, str);
-        });
-
-        readStream.on("error", callback);
-    }
-});
-
-},{"pskcrypto":"pskcrypto"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSClient.js":[function(require,module,exports){
-require("psk-http-client");
-
-function EDFSClient(url) {
-    this.attachAlias = (fileName, alias, callback) => {
-        $$.remote.doHttpPost(url + "/EDFS/attachHashToAlias/" + fileName, alias, callback);
-    };
-
-    this.writeToAlias = (alias, data, callback) => {
-        $$.remote.doHttpPost(url + "/EDFS/alias/" + alias, data, callback);
-    };
-
-    this.readFromAlias = (alias, callback) => {
-        $$.remote.doHttpGet(url + "/EDFS/alias/" + alias, callback);
-    };
-
-    this.writeFile = (fileName, data, callback) => {
-        $$.remote.doHttpPost(url + "/EDFS/" + fileName, data, callback);
-    };
-
-    this.readFile = (fileName, callback) => {
-        $$.remote.doHttpGet(url + "/EDFS/" + fileName, callback);
     };
 }
 
-module.exports = EDFSClient;
-},{"psk-http-client":"psk-http-client"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSMiddleware.js":[function(require,module,exports){
-require("../flows/BricksManager");
+module.exports = EDFSBrickStorage;
 
-function EDFSMiddleware(server) {
 
-    server.use('/*',function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-
-        // Request methods you wish to allow
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-        // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Content-Length, X-Content-Length');
-        next();
-
-    });
-
-    server.post('/:fileId', (req, res) => {
-        $$.flow.start("BricksManager").write(req.params.fileId, req, (err, result) => {
-            res.statusCode = 201;
-            if (err) {
-                res.statusCode = 500;
-
-                if (err.code === 'EACCES') {
-                    res.statusCode = 409;
-                }
-            }
-            res.end();
-        });
-    });
-
-    server.get('/:fileId', (req, res) => {
-        res.setHeader("content-type", "application/octet-stream");
-        $$.flow.start("BricksManager").read(req.params.fileId, res, (err, result) => {
-            res.statusCode = 200;
-            if (err) {
-                console.log(err);
-                res.statusCode = 404;
-            }
-            res.end();
-        });
-    });
-
-    server.post('/attachHashToAlias/:fileId', (req, res) => {
-        $$.flow.start("BricksManager").addAlias(req.params.fileId, req, (err, result) => {
-            res.statusCode = 201;
-            if (err) {
-                res.statusCode = 500;
-
-                if (err.code === 'EACCES') {
-                    res.statusCode = 409;
-                }
-            }
-            res.end();
-        });
-    });
-
-    server.get('/getVersions/:alias', (req, res) => {
-        $$.flow.start("BricksManager").readVersions(req.params.alias, (err, fileHashes) => {
-            res.statusCode = 200;
-            if(err) {
-                console.error(err);
-                res.statusCode = 404;
-            }
-            res.setHeader("content-type", "application/json");
-            res.end(JSON.stringify(fileHashes));
-        });
-    });
-}
-
-module.exports = EDFSMiddleware;
-
-},{"../flows/BricksManager":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\flows\\BricksManager.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js":[function(require,module,exports){
+},{"bar":"bar"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js":[function(require,module,exports){
 (function (Buffer){
 
 function FetchBrickTransportStrategy(initialConfig) {
@@ -1921,7 +4618,7 @@ function EDFS(endpoint) {
 }
 
 module.exports = EDFS;
-},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","../seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","./RawDossier":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js","bar":false,"bar-fs-adapter":false,"edfs-brick-storage":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js":[function(require,module,exports){
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","../seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","./RawDossier":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js","bar":"bar","bar-fs-adapter":"bar-fs-adapter","edfs-brick-storage":"edfs-brick-storage"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\RawDossier.js":[function(require,module,exports){
 /*
 
 Sinica: to be renamed CSBHandler. RootCSB should be deleted
@@ -2124,7 +4821,7 @@ function RawDossier(endpoint, seed) {
 }
 
 module.exports = RawDossier;
-},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","bar":false,"bar-fs-adapter":false,"blockchain":false,"edfs-brick-storage":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js":[function(require,module,exports){
+},{"../moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","bar":"bar","bar-fs-adapter":"bar-fs-adapter","blockchain":false,"edfs-brick-storage":"edfs-brick-storage"}],"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js":[function(require,module,exports){
 const HTTPBrickTransportStrategy = require("./brickTransportStrategies/HTTPBrickTransportStrategy");
 HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK_TRANSPORT_STRATEGY";
 
@@ -2348,64 +5045,7 @@ switch ($$.environmentType) {
     default:
         throw new Error("No implementation of SeedCage for this env type.");
 }
-},{"./BrowserSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js","./NodeSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\modules\\node-fd-slicer\\modules\\node-pend\\index.js":[function(require,module,exports){
-module.exports = Pend;
-
-function Pend() {
-  this.pending = 0;
-  this.max = Infinity;
-  this.listeners = [];
-  this.waiting = [];
-  this.error = null;
-}
-
-Pend.prototype.go = function(fn) {
-  if (this.pending < this.max) {
-    pendGo(this, fn);
-  } else {
-    this.waiting.push(fn);
-  }
-};
-
-Pend.prototype.wait = function(cb) {
-  if (this.pending === 0) {
-    cb(this.error);
-  } else {
-    this.listeners.push(cb);
-  }
-};
-
-Pend.prototype.hold = function() {
-  return pendHold(this);
-};
-
-function pendHold(self) {
-  self.pending += 1;
-  var called = false;
-  return onCb;
-  function onCb(err) {
-    if (called) throw new Error("callback called twice");
-    called = true;
-    self.error = self.error || err;
-    self.pending -= 1;
-    if (self.waiting.length > 0 && self.pending < self.max) {
-      pendGo(self, self.waiting.shift());
-    } else if (self.pending === 0) {
-      var listeners = self.listeners;
-      self.listeners = [];
-      listeners.forEach(cbListener);
-    }
-  }
-  function cbListener(listener) {
-    listener(self.error);
-  }
-}
-
-function pendGo(self, fn) {
-  fn(pendHold(self));
-}
-
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
+},{"./BrowserSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\BrowserSeedCage.js","./NodeSeedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\NodeSeedCage.js","overwrite-require":"overwrite-require"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
 module.exports = {
   BROWSER_ENVIRONMENT_TYPE: 'browser',
   SERVICE_WORKER_ENVIRONMENT_TYPE: 'service-worker',
@@ -3471,167 +6111,7 @@ $$.remote.base64Decode = function base64Decode(encodedString){
 
 }).call(this,require("buffer").Buffer)
 
-},{"./psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","buffer":false,"http":false,"https":false,"url":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\Agent.js":[function(require,module,exports){
-function Agent(agentId, publicKey){
-    this.agentId = agentId;
-    this.publicKey = publicKey;
-}
-
-module.exports = Agent;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js":[function(require,module,exports){
-function EncryptedSecret(encryptedData, agentId){
-    this.encryptedData = encryptedData;
-    this.agentId = agentId;
-}
-
-module.exports = EncryptedSecret;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js":[function(require,module,exports){
-function PSKSignature(message, signature, type, agentId) {
-    this.message = message;
-    this.signature = signature;
-    this.type = type;
-    this.agentId = agentId;
-}
-
-module.exports = PSKSignature;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RawCSBSecurityContext.js":[function(require,module,exports){
-function RawCSBSecurityContext(parentSecurityContext) {
-    this.generateIdentity = parentSecurityContext.generateIdentity;
-    this.getCurrentAgentIdentity = parentSecurityContext.getCurrentAgentIdentity;
-    this.generateSeed = parentSecurityContext.generateRandom;
-    this.getSeed = parentSecurityContext.getSecret;
-    this.shareSeed = parentSecurityContext.shareSecret;
-    this.sign = parentSecurityContext.sign;
-    this.verify = parentSecurityContext.verify;
-}
-
-module.exports = RawCSBSecurityContext;
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RootCSBSecurityContext.js":[function(require,module,exports){
-const SecurityContext = require("./SecurityContext");
-
-function RootCSBSecurityContext() {
-    const securityContext = new SecurityContext();
-
-    this.generateIdentity = securityContext.generateIdentity;
-    this.getCurrentAgentIdentity = securityContext.getCurrentAgentIdentity;
-    this.generateSeed = securityContext.generateRandom;
-    this.getSeed = securityContext.getSecret;
-    this.shareSeed = securityContext.shareSecret;
-    this.sign = securityContext.sign;
-    this.verify = securityContext.verify;
-}
-
-module.exports = RootCSBSecurityContext;
-},{"./SecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js":[function(require,module,exports){
-const crypto = require("pskcrypto");
-const swarmUtils = require("swarmutils");
-const PSKSignature = require("./PSKSignature");
-const EncryptedSecret = require("./EncryptedSecret");
-const Agent = require("./Agent");
-
-function SecurityContext() {
-
-    const knownAgents = []; // contains pairs (agentId, publicKey)
-    const privateKeys = {};
-    const signType = "sha256";
-
-    this.generateIdentity = (callback) => {
-        crypto.generateKeyPair((err, publicKey, privateKey) => {
-            if (err) {
-                return callback(err);
-            }
-
-            const agent = new Agent($$.uidGenerator.safe_uuid(), publicKey);
-            knownAgents.push(agent);
-            privateKeys[agent.agentId] = privateKey;
-
-            return callback(undefined, agent.agentId);
-        });
-    };
-
-    this.getCurrentAgentIdentity = () => {
-        return knownAgents[0].agentId;
-    };
-
-    this.getSecret = (readList, callback) => {
-        const encSecret = readList.find(secret => secret.agentId === this.getCurrentAgentIdentity());
-        if (!encSecret) {
-            return callback(Error("The current agent cannot get the secret"));
-        }
-
-        callback(undefined, crypto.privateDecrypt(privateKeys[this.getCurrentAgentIdentity()], encSecret));
-    };
-
-    this.shareSecret = (secret, list, callback) => {
-        const readList = [];
-        list.forEach(agentId => {
-            const publicKey = getPublicKey(agentId);
-            readList.push(new EncryptedSecret(crypto.publicEncrypt(publicKey, secret), agentId));
-        });
-
-        callback(undefined, readList);
-    };
-
-    this.sign = (digest, writeList, all, callback) => {
-        if (typeof all === "function") {
-            callback = all;
-            all = false;
-        }
-
-        if (!listHasElement(writeList, this.getCurrentAgentIdentity())) {
-            return callback(Error("The current agent does not have signing privileges"));
-        }
-
-        if (!all) {
-            const agentId = this.getCurrentAgentIdentity();
-            const signature = crypto.sign(privateKeys[agentId], digest);
-            return callback(undefined, new PSKSignature(digest, signature, signType, agentId));
-        }
-
-        const pskSignatures = [];
-        const taskCounter = new swarmUtils.TaskCounter(() => {
-            callback(undefined, pskSignatures);
-        });
-
-        taskCounter.increment(knownAgents.length);
-        knownAgents.forEach(agent => {
-            if (listHasElement(writeList, agent.agentId)) {
-                const signature = crypto.sign(privateKeys[agent.agentId], digest);
-                pskSignatures.push(new PSKSignature(digest, signature, signType, agent.agentId));
-                taskCounter.decrement();
-            }else{
-                taskCounter.decrement();
-            }
-        })
-    };
-
-    this.verify = (pskSignature) => {
-        return crypto.verify(getPublicKey(pskSignature.agentId), pskSignature.signature, pskSignature.message);
-    };
-
-    this.generateRandom = (len = 32) => {
-        crypto.randomBytes(len);
-    };
-
-    //----------------------------- internal functions ------------------------------
-    function listHasElement(list, element) {
-        return !!list.find(el => element === el);
-    }
-
-    function getPublicKey(agentId) {
-        const agent = knownAgents.find(ag => ag.agentId === agentId);
-        if(!agent){
-            return undefined;
-        }
-
-        return agent.publicKey;
-    }
-
-}
-
-module.exports = SecurityContext;
-
-},{"./Agent":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\Agent.js","./EncryptedSecret":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js","./PSKSignature":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js","pskcrypto":"pskcrypto","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js":[function(require,module,exports){
+},{"./psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","buffer":false,"http":false,"https":false,"url":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js":[function(require,module,exports){
 (function (Buffer){
 function PskCrypto() {
     const crypto = require('crypto');
@@ -4218,382 +6698,2175 @@ exports.createSignature = function (agent,counter, nextPublic, arr, size){
 
     return agent + ":" + counter + ":" + nextPublic + ":" + result;
 }
-},{"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\soundpubsub\\lib\\soundPubSub.js":[function(require,module,exports){
-/*
-Initial License: (c) Axiologic Research & Alboaie Sînică.
-Contributors: Axiologic Research , PrivateSky project
-Code License: LGPL or MIT.
-*/
+},{"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\bar.js":[function(require,module,exports){
+const utils = require("../utils/utils");
 
+function listFiles(alseed, folderPath) {
+    if (arguments.length === 1) {
+        folderPath = alseed;
+        utils.loadWallet(undefined, (err, wallet) => {
+            if (err) {
+                throw err;
+            }
 
-/**
- *   Usually an event could cause execution of other callback events . We say that is a level 1 event if is causeed by a level 0 event and so on
- *
- *      SoundPubSub provides intuitive results regarding to asynchronous calls of callbacks and computed values/expressions:
- *   we prevent immediate execution of event callbacks to ensure the intuitive final result is guaranteed as level 0 execution
- *   we guarantee that any callback function is "re-entrant"
- *   we are also trying to reduce the number of callback execution by looking in queues at new messages published by
- *   trying to compact those messages (removing duplicate messages, modifying messages, or adding in the history of another event ,etc)
- *
- *      Example of what can be wrong without non-sound asynchronous calls:
- *
- *  Step 0: Initial state:
- *   a = 0;
- *   b = 0;
- *
- *  Step 1: Initial operations:
- *   a = 1;
- *   b = -1;
- *
- *  // an observer reacts to changes in a and b and compute CORRECT like this:
- *   if( a + b == 0) {
- *       CORRECT = false;
- *       notify(...); // act or send a notification somewhere..
- *   } else {
- *      CORRECT = false;
- *   }
- *
- *    Notice that: CORRECT will be true in the end , but meantime, after a notification was sent and CORRECT was wrongly, temporarily false!
- *    soundPubSub guarantee that this does not happen because the syncronous call will before any observer (bot asignation on a and b)
- *
- *   More:
- *   you can use blockCallBacks and releaseCallBacks in a function that change a lot a collection or bindable objects and all
- *   the notifications will be sent compacted and properly
- */
+            wallet.listFiles(folderPath, (err, files) => {
+                if (err) {
+                    throw err;
+                }
 
-// TODO: optimisation!? use a more efficient queue instead of arrays with push and shift!?
-// TODO: see how big those queues can be in real applications
-// for a few hundreds items, queues made from array should be enough
-//*   Potential TODOs:
-//    *     prevent any form of problem by calling callbacks in the expected order !?
-//*     preventing infinite loops execution cause by events!?
-//*
-//*
-// TODO: detect infinite loops (or very deep propagation) It is possible!?
+                console.log("Files:", files);
+            });
+        });
+    } else {
+        if (utils.isAlias(alseed)) {
+            utils.loadArchiveWithAlias(alseed, (err, bar) => {
+                if (err) {
+                    throw err;
+                }
 
-const Queue = require('swarmutils').Queue;
+                bar.listFiles(folderPath, (err, fileList) => {
+                    if (err) {
+                        throw err;
+                    }
 
-function SoundPubSub(){
+                    console.log("Files:", fileList);
+                    process.exit(0);
+                });
+            });
+        } else {
+            utils.getEDFS(alseed, (err, edfs) => {
+                if (err) {
+                    throw err;
+                }
 
-	/**
-	 * publish
-	 *      Publish a message {Object} to a list of subscribers on a specific topic
-	 *
-	 * @params {String|Number} target,  {Object} message
-	 * @return number of channel subscribers that will be notified
-	 */
-	this.publish = function(target, message){
-		if(!invalidChannelName(target) && !invalidMessageType(message) && (typeof channelSubscribers[target] != 'undefined')){
-			compactAndStore(target, message);
-			setTimeout(dispatchNext, 0);
-			return channelSubscribers[target].length;
-		} else{
-			return null;
-		}
-	};
+                const bar = edfs.loadBar(alseed);
+                bar.listFiles(folderPath, (err, fileList) => {
+                    if (err) {
+                        throw err;
+                    }
 
-	/**
-	 * subscribe
-	 *      Subscribe / add a {Function} callBack on a {String|Number}target channel subscribers list in order to receive
-	 *      messages published if the conditions defined by {Function}waitForMore and {Function}filter are passed.
-	 *
-	 * @params {String|Number}target, {Function}callBack, {Function}waitForMore, {Function}filter
-	 *
-	 *          target      - channel name to subscribe
-	 *          callback    - function to be called when a message was published on the channel
-	 *          waitForMore - a intermediary function that will be called after a successfuly message delivery in order
-	 *                          to decide if a new messages is expected...
-	 *          filter      - a function that receives the message before invocation of callback function in order to allow
-	 *                          relevant message before entering in normal callback flow
-	 * @return
-	 */
-	this.subscribe = function(target, callBack, waitForMore, filter){
-		if(!invalidChannelName(target) && !invalidFunction(callBack)){
-			var subscriber = {"callBack":callBack, "waitForMore":waitForMore, "filter":filter};
-			var arr = channelSubscribers[target];
-			if(typeof arr == 'undefined'){
-				arr = [];
-				channelSubscribers[target] = arr;
-			}
-			arr.push(subscriber);
-		}
-	};
-
-	/**
-	 * unsubscribe
-	 *      Unsubscribe/remove {Function} callBack from the list of subscribers of the {String|Number} target channel
-	 *
-	 * @params {String|Number} target, {Function} callBack, {Function} filter
-	 *
-	 *          target      - channel name to unsubscribe
-	 *          callback    - reference of the original function that was used as subscribe
-	 *          filter      - reference of the original filter function
-	 * @return
-	 */
-	this.unsubscribe = function(target, callBack, filter){
-		if(!invalidFunction(callBack)){
-			var gotit = false;
-			if(channelSubscribers[target]){
-				for(var i = 0; i < channelSubscribers[target].length;i++){
-					var subscriber =  channelSubscribers[target][i];
-					if(subscriber.callBack === callBack && ( typeof filter === 'undefined' || subscriber.filter === filter )){
-						gotit = true;
-						subscriber.forDelete = true;
-						subscriber.callBack = undefined;
-						subscriber.filter = undefined;
-					}
-				}
-			}
-			if(!gotit){
-				wprint("Unable to unsubscribe a callback that was not subscribed!");
-			}
-		}
-	};
-
-	/**
-	 * blockCallBacks
-	 *
-	 * @params
-	 * @return
-	 */
-	this.blockCallBacks = function(){
-		level++;
-	};
-
-	/**
-	 * releaseCallBacks
-	 *
-	 * @params
-	 * @return
-	 */
-	this.releaseCallBacks = function(){
-		level--;
-		//hack/optimisation to not fill the stack in extreme cases (many events caused by loops in collections,etc)
-		while(level === 0 && dispatchNext(true)){
-			//nothing
-		}
-
-		while(level === 0 && callAfterAllEvents()){
-            //nothing
-		}
-	};
-
-	/**
-	 * afterAllEvents
-	 *
-	 * @params {Function} callback
-	 *
-	 *          callback - function that needs to be invoked once all events are delivered
-	 * @return
-	 */
-	this.afterAllEvents = function(callBack){
-		if(!invalidFunction(callBack)){
-			afterEventsCalls.push(callBack);
-		}
-		this.blockCallBacks();
-		this.releaseCallBacks();
-	};
-
-	/**
-	 * hasChannel
-	 *
-	 * @params {String|Number} channel
-	 *
-	 *          channel - name of the channel that need to be tested if present
-	 * @return
-	 */
-	this.hasChannel = function(channel){
-		return !invalidChannelName(channel) && (typeof channelSubscribers[channel] != 'undefined') ? true : false;
-	};
-
-	/**
-	 * addChannel
-	 *
-	 * @params {String} channel
-	 *
-	 *          channel - name of a channel that needs to be created and added to soundpubsub repository
-	 * @return
-	 */
-	this.addChannel = function(channel){
-		if(!invalidChannelName(channel) && !this.hasChannel(channel)){
-			channelSubscribers[channel] = [];
-		}
-	};
-
-	/* ---------------------------------------- protected stuff ---------------------------------------- */
-	var self = this;
-	// map channelName (object local id) -> array with subscribers
-	var channelSubscribers = {};
-
-	// map channelName (object local id) -> queue with waiting messages
-	var channelsStorage = {};
-
-	// object
-	var typeCompactor = {};
-
-	// channel names
-	var executionQueue = new Queue();
-	var level = 0;
-
-
-
-	/**
-	 * registerCompactor
-	 *
-	 *       An compactor takes a newEvent and and oldEvent and return the one that survives (oldEvent if
-	 *  it can compact the new one or the newEvent if can't be compacted)
-	 *
-	 * @params {String} type, {Function} callBack
-	 *
-	 *          type        - channel name to unsubscribe
-	 *          callBack    - handler function for that specific event type
-	 * @return
-	 */
-	this.registerCompactor = function(type, callBack) {
-		if(!invalidFunction(callBack)){
-			typeCompactor[type] = callBack;
-		}
-	};
-
-	/**
-	 * dispatchNext
-	 *
-	 * @param fromReleaseCallBacks: hack to prevent too many recursive calls on releaseCallBacks
-	 * @return {Boolean}
-	 */
-	function dispatchNext(fromReleaseCallBacks){
-		if(level > 0) {
-			return false;
-		}
-		const channelName = executionQueue.front();
-		if(typeof channelName != 'undefined'){
-			self.blockCallBacks();
-			try{
-				let message;
-				if(!channelsStorage[channelName].isEmpty()) {
-					message = channelsStorage[channelName].front();
-				}
-				if(typeof message == 'undefined'){
-					if(!channelsStorage[channelName].isEmpty()){
-						wprint("Can't use as message in a pub/sub channel this object: " + message);
-					}
-					executionQueue.pop();
-				} else {
-					if(typeof message.__transmisionIndex == 'undefined'){
-						message.__transmisionIndex = 0;
-						for(var i = channelSubscribers[channelName].length-1; i >= 0 ; i--){
-							var subscriber =  channelSubscribers[channelName][i];
-							if(subscriber.forDelete === true){
-								channelSubscribers[channelName].splice(i,1);
-							}
-						}
-					} else{
-						message.__transmisionIndex++;
-					}
-					//TODO: for immutable objects it will not work also, fix for shape models
-					if(typeof message.__transmisionIndex == 'undefined'){
-						wprint("Can't use as message in a pub/sub channel this object: " + message);
-					}
-					subscriber = channelSubscribers[channelName][message.__transmisionIndex];
-					if(typeof subscriber == 'undefined'){
-						delete message.__transmisionIndex;
-						channelsStorage[channelName].pop();
-					} else{
-						if(subscriber.filter === null || typeof subscriber.filter === "undefined" || (!invalidFunction(subscriber.filter) && subscriber.filter(message))){
-							if(!subscriber.forDelete){
-								subscriber.callBack(message);
-								if(subscriber.waitForMore && !invalidFunction(subscriber.waitForMore) && !subscriber.waitForMore(message)){
-									subscriber.forDelete = true;
-								}
-							}
-						}
-					}
-				}
-			} catch(err){
-				wprint("Event callback failed: "+ subscriber.callBack +"error: " + err.stack);
-			}
-			//
-			if(fromReleaseCallBacks){
-				level--;
-			} else{
-				self.releaseCallBacks();
-			}
-			return true;
-		} else{
-			return false;
-		}
-	}
-
-	function compactAndStore(target, message){
-		var gotCompacted = false;
-		var arr = channelsStorage[target];
-		if(typeof arr == 'undefined'){
-			arr = new Queue();
-			channelsStorage[target] = arr;
-		}
-
-		if(message && typeof message.type != 'undefined'){
-			var typeCompactorCallBack = typeCompactor[message.type];
-
-			if(typeof typeCompactorCallBack != 'undefined'){
-				for(let channel of arr) {
-					if(typeCompactorCallBack(message, channel) === channel) {
-						if(typeof channel.__transmisionIndex == 'undefined') {
-							gotCompacted = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		if(!gotCompacted && message){
-			arr.push(message);
-			executionQueue.push(target);
-		}
-	}
-
-	var afterEventsCalls = new Queue();
-	function callAfterAllEvents (){
-		if(!afterEventsCalls.isEmpty()){
-			var callBack = afterEventsCalls.pop();
-			//do not catch exceptions here..
-			callBack();
-		}
-		return !afterEventsCalls.isEmpty();
-	}
-
-	function invalidChannelName(name){
-		var result = false;
-		if(!name || (typeof name != "string" && typeof name != "number")){
-			result = true;
-			wprint("Invalid channel name: " + name);
-		}
-
-		return result;
-	}
-
-	function invalidMessageType(message){
-		var result = false;
-		if(!message || typeof message != "object"){
-			result = true;
-			wprint("Invalid messages types: " + message);
-		}
-		return result;
-	}
-
-	function invalidFunction(callback){
-		var result = false;
-		if(!callback || typeof callback != "function"){
-			result = true;
-			wprint("Expected to be function but is: " + callback);
-		}
-		return result;
-	}
+                    console.log("Files:", fileList);
+                });
+            });
+        }
+    }
 }
 
-exports.soundPubSub = new SoundPubSub();
-},{"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js":[function(require,module,exports){
+function extractFolder(alseed, barPath, fsFolderPath) {
+    if (utils.isAlias(alseed)) {
+        utils.loadArchiveWithAlias(alseed, (err, bar) => {
+            if (err) {
+                throw err;
+            }
+
+            bar.extractFolder(fsFolderPath, barPath, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log("Extracted folder.");
+                process.exit(0);
+            });
+        });
+    } else {
+        utils.getEDFS(alseed, (err, edfs) => {
+            if (err) {
+                throw err;
+            }
+
+            const bar = edfs.loadBar(alseed);
+            bar.extractFolder(fsFolderPath, barPath, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log("Extracted folder.");
+            });
+        });
+    }
+}
+
+function extractFile(alseed, barPath, fsFilePath) {
+    if (utils.isAlias(alseed)) {
+        utils.loadArchiveWithAlias(alseed, (err, bar) => {
+            if (err) {
+                throw err;
+            }
+
+            bar.extractFile(fsFilePath, barPath, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log("Extracted file.");
+                process.exit(0);
+            });
+        });
+    } else {
+        utils.getEDFS(alseed, (err, edfs) => {
+            if (err) {
+                throw err;
+            }
+
+            const bar = edfs.loadBar(alseed);
+            bar.extractFile(fsFilePath, barPath, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log("Extracted file.");
+            });
+        });
+    }
+}
+
+addCommand("list", "files", listFiles, " <archiveSeed>/<alias> <folderPath> \t\t\t\t |prints the list of all files stored at path <folderPath> inside the archive whose SEED is <archiveSeed>. If an alias is specified then the CSB's SEED is searched from the wallet.");
+addCommand("extract", "folder", extractFolder, " <archiveSeed> <archivePath> <fsFolderPath> \t\t |extracts the folder stored at <archivePath> inside the archive whose SEED is <archiveSeed> and writes all the extracted file on disk at path <fsFolderPath>");
+addCommand("extract", "file", extractFile, " <archiveSeed> <archivePath> <fsFilePath> \t\t |extracts the folder stored at <archivePath> inside the archive whose SEED is <archiveSeed> and writes all the extracted file on disk at path <fsFilePath>");
+
+
+},{"../utils/utils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\utils.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\csb.js":[function(require,module,exports){
+const utils = require("../utils/utils");
+const AGENT_IDENTITY = require("../utils/utils").getOwnIdentity();
+
+function createCSB(domainName, constitutionPath, noSave) {
+    const pth = "path";
+    const path = require(pth);
+    const EDFS = require("edfs");
+
+    if (noSave === "nosave") {
+        const edfs = utils.getInitializedEDFS();
+        edfs.createBarWithConstitution(path.resolve(constitutionPath), (err, archive) => {
+            if (err) {
+                throw err;
+            }
+
+            archive.writeFile(EDFS.constants.CSB.DOMAIN_IDENTITY_FILE, domainName, () => {
+                if (err) {
+                    throw err;
+                }
+                console.log("The CSB was created. Its SEED is the following.");
+                console.log("SEED", archive.getSeed());
+            });
+        });
+    } else {
+        getPin((err, pin) => {
+            if (err) {
+                throw err;
+            }
+
+            EDFS.attachWithPin(pin, (err, edfs) => {
+                if (err) {
+                    throw err;
+                }
+
+                edfs.loadWallet(undefined, pin, true, (err, wallet) => {
+                    if (err) {
+                        throw err;
+                    }
+
+                    const dossier = require("dossier");
+                    dossier.load(wallet.getSeed(), AGENT_IDENTITY, (err, csb) => {
+                        if (err) {
+                            console.error(err);
+                            process.exit(1);
+                        }
+
+                        csb.startTransaction("StandardCSBTransactions", "domainLookup", domainName).onReturn((err, domain) => {
+                            if (err) {
+                                console.log(err);
+                                process.exit(1);
+                            }
+                            if (domain) {
+                                console.log(`Domain ${domainName} already exists!`);
+                                process.exit(1);
+                            }
+                            edfs.createBarWithConstitution(path.resolve(constitutionPath), (err, archive) => {
+                                if (err) {
+                                    throw err;
+                                }
+
+                                csb.startTransaction("StandardCSBTransactions", "addFileAnchor", domainName, "csb", archive.getSeed(), wallet.getMapDigest()).onReturn((err, res) => {
+                                    if (err) {
+                                        console.error(err);
+                                        process.exit(1);
+                                    }
+
+                                    console.log("The CSB was created and a reference to it has been added to the wallet.");
+                                    console.log("Its SEED is:", archive.getSeed());
+                                    process.exit(0);
+                                });
+
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    }
+}
+
+function setApp(alseed, appPath) {
+    if (!alseed) {
+        throw new Error('Missing first argument, the archive seed or alais');
+    }
+
+    if (!appPath) {
+        throw new Error('Missing the second argument, the app path');
+    }
+
+    const EDFS = require("edfs");
+    if (utils.isAlias(alseed)) {
+        utils.loadArchiveWithAlias(alseed, (err, bar) => {
+            if (err) {
+                throw err;
+            }
+
+            bar.addFolder(appPath, EDFS.constants.CSB.APP_FOLDER, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log('All done');
+            })
+        });
+    } else {
+        utils.getEDFS(alseed, (err, edfs) => {
+            if (err) {
+                throw err;
+            }
+
+            const bar = edfs.loadBar(alseed);
+            bar.addFolder(appPath, EDFS.constants.CSB.APP_FOLDER, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                console.log('All done');
+            })
+        });
+    }
+}
+
+addCommand("create", "csb", createCSB, "<domainName> <constitutionPath> <nosave>\t\t\t\t |creates an archive containing constitutions folder <constitutionPath> for Domain <domainName>");
+addCommand("set", "app", setApp, " <seed>/<alias> <folderPath> \t\t\t\t\t |add an app to an existing archive");
+
+},{"../utils/utils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\utils.js","dossier":"dossier","edfs":"edfs"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\index.js":[function(require,module,exports){
+require("./wallet");
+require("./bar");
+require("./csb");
+
+},{"./bar":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\bar.js","./csb":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\csb.js","./wallet":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\wallet.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\wallet.js":[function(require,module,exports){
+const consoleUtils = require("../utils/consoleUtils");
+const utils = require("../utils/utils");
+
+function createWallet(templateSeed) {
+    const Seed = require("bar").Seed;
+    try {
+        new Seed(templateSeed);
+    } catch (e) {
+        throw Error("Invalid template seed");
+    }
+
+    const EDFS = require("edfs");
+    EDFS.checkForSeedCage(err => {
+        const edfs = utils.getInitializedEDFS();
+        if (!err) {
+            consoleUtils.getFeedback("A wallet already exists. Do you want to create a new one?(y/n)", (err, ans) => {
+                if (err) {
+                    throw err;
+                }
+
+                if (ans[0] === "y") {
+                    __createWallet(edfs, true);
+                }
+            });
+        } else {
+            __createWallet(edfs, false);
+        }
+    });
+
+    function __createWallet(edfs, overwrite) {
+        consoleUtils.insertPassword({validationFunction: utils.validatePin}, (err, pin) => {
+            if (err) {
+                console.log(`Caught error: ${err.message}`);
+                process.exit(1);
+            }
+
+            consoleUtils.insertPassword({
+                prompt: "Confirm pin:",
+                validationFunction: utils.validatePin
+            }, (err, newPin) => {
+                if (err) {
+                    console.log(`Caught error: ${err.message}`);
+                    process.exit(1);
+                }
+
+                if (pin !== newPin) {
+                    console.log("The PINs do not coincide. Try again.");
+                    __createWallet(edfs, overwrite);
+                } else {
+                    edfs.createWallet(templateSeed, pin, overwrite, (err, seed) => {
+                        if (err) {
+                            throw err;
+                        }
+
+                        console.log("Wallet with SEED was created. Please save the SEED:", seed);
+                    });
+                }
+            });
+        });
+    }
+}
+
+
+function restore(seed) {
+    const EDFS = require("edfs");
+    let edfs;
+    try {
+        edfs = EDFS.attachWithSeed(seed);
+    } catch (e) {
+        throw Error("The provided seed is invalid.");
+    }
+
+    __saveSeed();
+
+    function __saveSeed() {
+        consoleUtils.insertPassword({validationFunction: utils.validatePin}, (err, pin) => {
+            if (err) {
+                console.log(`Caught error: ${err.message}`);
+                process.exit(1);
+            }
+
+            consoleUtils.insertPassword({
+                prompt: "Confirm pin:",
+                validationFunction: utils.validatePin
+            }, (err, newPin) => {
+                if (err) {
+                    console.log(`Caught error: ${err.message}`);
+                    process.exit(1);
+                }
+
+                if (pin !== newPin) {
+                    console.log("The PINs do not coincide. Try again.");
+                    __saveSeed();
+                } else {
+                    edfs.loadWallet(seed, pin, true, (err, wallet) => {
+                        if (err) {
+                            throw err;
+                        }
+
+                        console.log("Wallet was restored");
+                    });
+                }
+            });
+        });
+    }
+}
+
+function changePin() {
+    utils.loadWallet(undefined, (err, wallet) => {
+        if (err) {
+            throw err;
+        }
+
+        consoleUtils.insertPassword({prompt: "Insert a new PIN:", validationFunction: utils.validatePin}, (err, pin) => {
+            if (err) {
+                throw err;
+            }
+
+            utils.getEDFS(wallet.getSeed(), (err, edfs) => {
+                if (err) {
+                    throw err;
+                }
+
+                edfs.loadWallet(wallet.getSeed(), pin, true, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+
+                    console.log("The PIN has been changed.");
+                });
+            });
+        });
+    });
+}
+
+addCommand("create", "wallet", createWallet, "<templateSeed> \t\t\t\t\t\t |creates a clone of the CSB whose SEED is <templateSeed>");
+addCommand("restore", null, restore, "<seed> \t\t\t\t |Checks the seed is valid and allows the selection of a PIN");
+addCommand("change", "pin", changePin, "\t\t\t\t |Asks for the PIN and then allows for the selection of a new PIN");
+
+},{"../utils/consoleUtils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\consoleUtils.js","../utils/utils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\utils.js","bar":"bar","edfs":"edfs"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\consoleUtils.js":[function(require,module,exports){
+const rl = "readline";
+const readline = require(rl);
+const getPassword = require("./getPassword").readPassword;
+
+const NO_TRIES = 3;
+const DEFAULT_PROMPT = "Insert pin:";
+
+function insertPassword(options, callback) {
+    if (typeof options === "function") {
+        callback = options;
+        options = {};
+    }
+
+    if (!callback) {
+        throw new Error("Misuse of function, reason: No callback given.");
+    }
+
+    options.prompt = options.prompt || DEFAULT_PROMPT;
+
+    if (typeof options.noTries === "undefined") {
+        options.noTries = NO_TRIES;
+    }
+
+    if (options.noTries === 0) {
+        return callback(new Error(`You have inserted an invalid pin ${NO_TRIES} times`));
+    } else {
+        getPassword(options.prompt,  (err, pin)=> {
+            if (options.validationFunction && !options.validationFunction(pin)) {
+                if (options.noTries !== 1) {
+                    console.log("Validation failed. Maybe you have inserted an invalid character.");
+                    console.log("Try again");
+                }
+                options.noTries--;
+                insertPassword(options, callback);
+            } else {
+                return callback(null, pin);
+            }
+        });
+    }
+}
+
+function getFeedback(question, callback) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    rl.question(question, (answer) => {
+        rl.close();
+        callback(null, answer);
+    });
+}
+
+
+module.exports = {
+    insertPassword,
+    getFeedback,
+};
+},{"./getPassword":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\getPassword.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\getPassword.js":[function(require,module,exports){
+exports.readPassword = function (prompt, callback) {
+    const stdin = process.stdin;
+    const stdout = process.stdout;
+
+    if (prompt) {
+        stdout.write(prompt);
+    }
+
+    stdin.resume();
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+
+    let password = "";
+
+    function escaping(...args) {
+        stdin.removeListener("data", readingInput);
+        stdin.pause();
+        callback(...args);
+    }
+
+    function readingInput(data) {
+        switch (data) {
+            case "\x03":
+                stdin.removeListener("data", readingInput);
+                stdin.setRawMode(false);
+                stdin.pause();
+                break;
+            case "\x0A":
+            case "\x0D":
+            case "\x04":
+                stdout.write('\n');
+                stdin.setRawMode(false);
+                stdin.pause();
+                escaping(false, password);
+                break;
+            case "\x08":
+            case "\x7f":
+                password = password.slice(0, password.length - 1);
+                stdout.clearLine();
+                stdout.cursorTo(0);
+                stdout.write(prompt);
+                for (let i = 0; i < password.length; i++) {
+                    stdout.write("*");
+                }
+                break;
+            default:
+                let str = "";
+                for (let i = 0; i < data.length; i++) {
+                    str += "*";
+                }
+                stdout.write(str);
+                password += data;
+        }
+    }
+
+    stdin.on('data', readingInput);
+};
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\utils.js":[function(require,module,exports){
+(function (global){
+const consoleUtils = require("./consoleUtils");
+
+function getEndpoint() {
+    let endpoint = process.env.EDFS_ENDPOINT;
+    if (typeof endpoint === "undefined") {
+        console.log("Using default endpoint. To configure set ENV['EDFS_ENDPOINT']");
+        endpoint = "http://localhost:8080";
+    }
+    return endpoint;
+}
+
+function getInitializedEDFS() {
+    const EDFS = require("edfs");
+    const endpoint = getEndpoint();
+    return EDFS.attachToEndpoint(endpoint);
+}
+
+function validatePin(pin) {
+    if (typeof pin === "undefined" || pin.length < 4) {
+        return false;
+    }
+
+    //The regex below checks that the pin only contains utf-8 characters
+    return !/[\x00-\x03]|[\x05-\x07]|[\x09]|[\x0B-\x0C]|[\x0E-\x1F]/.test(pin);
+}
+
+function getEDFS(seed, callback) {
+    const EDFS = require("edfs");
+    if (!seed) {
+        getPin((err, pin) => {
+            if (err) {
+                return callback(err);
+            }
+
+            EDFS.attachWithPin(pin, callback);
+        });
+
+    } else {
+        callback(undefined, EDFS.attachWithSeed(seed));
+    }
+}
+
+function loadWallet(walletSeed, callback) {
+    getEDFS(walletSeed, (err, edfs) => {
+        if (err) {
+            return callback(err);
+        }
+
+
+        getPin((err, pin) => {
+            if (err) {
+                return callback(err);
+            }
+
+            edfs.loadWallet(walletSeed, pin, true, callback);
+        });
+    });
+}
+
+function loadArchiveWithAlias(alias, callback) {
+    loadWallet(undefined, (err, wallet) => {
+        if (err) {
+            return callback(err);
+        }
+
+        const dossier = require("dossier");
+        dossier.load(wallet.getSeed(), getOwnIdentity(), (err, csb) => {
+            if (err) {
+                return callback(err);
+            }
+
+            csb.startTransaction("StandardCSBTransactions", "getSeed", alias).onReturn((err, seed) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                getEDFS(seed, (err, edfs) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    callback(undefined, edfs.loadBar(seed));
+                });
+            });
+        });
+    });
+}
+
+function isAlias(str) {
+    const Seed = require("bar").Seed;
+    try {
+        new Seed(str)
+    } catch (e) {
+        return true;
+    }
+
+    return false;
+}
+
+function getOwnIdentity() {
+    return "pskwallet-identity";
+}
+
+let lastPin;
+let timeStamp;
+const PIN_LIFETIME = 5000;
+global.getPin = function (callback) {
+    const currentTimestamp = new Date().getTime();
+    if (!lastPin || (currentTimestamp - timeStamp) > PIN_LIFETIME) {
+        consoleUtils.insertPassword({validationFunction: validatePin}, (err, pin) => {
+            if (err) {
+                return callback(err);
+            }
+
+            lastPin = pin;
+            timeStamp = new Date().getTime();
+            callback(undefined, pin);
+        });
+    } else {
+        callback(undefined, lastPin);
+    }
+};
+
+module.exports = {
+    getInitializedEDFS,
+    validatePin,
+    isAlias,
+    loadWallet,
+    getEDFS,
+    getOwnIdentity,
+    loadArchiveWithAlias
+};
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./consoleUtils":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\utils\\consoleUtils.js","bar":"bar","dossier":"dossier","edfs":"edfs"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\SwarmEngine.js":[function(require,module,exports){
+function SwarmEngine(identity) {
+    let myOwnIdentity = identity || SwarmEngine.prototype.ANONYMOUS_IDENTITY;
+
+    const protectedFunctions = {};
+
+    const SwarmPacker = require("swarmutils").SwarmPacker;
+    //serializationType used when starting a swarm from this SwarmEngine instance
+    let serializationType = SwarmPacker.prototype.JSON;
+
+    const swarmInstancesCache = new Map();
+    const powerCordCollection = new Map();
+
+    this.updateIdentity = function (identify) {
+        if (myOwnIdentity === SwarmEngine.prototype.ANONYMOUS_IDENTITY) {
+            console.log("Updating my identity with", identify);
+            myOwnIdentity = identify;
+        } else {
+            $$.err(`Trying to changing identity from "${myOwnIdentity}" to "${identify}"`);
+        }
+    };
+
+    this.setSerializationType = function (type) {
+        if (typeof SwarmPacker.getSerializer(type) !== "undefined") {
+            serializationType = type;
+        } else {
+            $$.throw(`Unknown serialization type "${type}"`);
+        }
+    };
+
+    this.plug = function (identity, powerCordImpl) {
+        makePluggable(powerCordImpl);
+        powerCordImpl.plug(identity, relay);
+
+        powerCordCollection.set(identity, powerCordImpl);
+    };
+
+    this.unplug = function (identity) {
+        const powerCord = powerCordCollection.get(identity);
+
+        if (!powerCord) {
+            //silent fail
+            return;
+        }
+
+        powerCord.unplug();
+        powerCordCollection.delete(identity);
+    };
+
+    function relay(swarmSerialization, ignoreMyIdentity) {
+        try {
+
+            const swarmutils = require('swarmutils');
+
+            const OwM = swarmutils.OwM;
+            const SwarmPacker = swarmutils.SwarmPacker;
+
+            const swarmHeader = SwarmPacker.getHeader(swarmSerialization);
+            const swarmTargetIdentity = swarmHeader.swarmTarget;
+
+            if(typeof ignoreMyIdentity === "undefined" || !ignoreMyIdentity){
+                if (myOwnIdentity === swarmTargetIdentity || myOwnIdentity === "*") {
+                    const deserializedSwarm = OwM.prototype.convert(SwarmPacker.unpack(swarmSerialization));
+                    protectedFunctions.execute_swarm(deserializedSwarm);
+                    return;
+                }
+            }
+
+            const targetPowerCord = powerCordCollection.get(swarmTargetIdentity) || powerCordCollection.get(SwarmEngine.prototype.WILD_CARD_IDENTITY);
+
+            if (targetPowerCord) {
+                //console.log(myOwnIdentity, "calling powercord", swarmTargetIdentity);
+                targetPowerCord.sendSwarm(swarmSerialization);
+                return;
+            } else {
+                $$.err(`Bad Swarm Engine configuration. No PowerCord for identity "${swarmTargetIdentity}" found.`);
+            }
+        } catch (superError) {
+            console.log(superError);
+        }
+    }
+
+    function getPowerCord(identity) {
+        const powerCord = powerCordCollection.get(identity);
+
+        if (!powerCord) {
+            //should improve the search of powerCord based on * and self :D
+
+            $$.throw(`No powerCord found for the identity "${identity}"`);
+        }
+
+        return powerCord;
+    }
+
+    /* ???
+    swarmCommunicationStrategy.enableSwarmExecution(function(swarm){
+
+    }); */
+
+    function serialize(swarm) {
+        const beesHealer = require("swarmutils").beesHealer;
+        const simpleJson = beesHealer.asJSON(swarm, swarm.meta.phaseName, swarm.meta.args);
+        const serializer = SwarmPacker.getSerializer(swarm.meta.serializationType || serializationType);
+        return SwarmPacker.pack(simpleJson, serializer);
+    }
+
+    function createBaseSwarm(swarmTypeName) {
+        const swarmutils = require('swarmutils');
+        const OwM = swarmutils.OwM;
+
+        const swarm = new OwM();
+        swarm.setMeta("swarmId", $$.uidGenerator.safe_uuid());
+        swarm.setMeta("requestId", swarm.getMeta("swarmId"));
+        swarm.setMeta("swarmTypeName", swarmTypeName);
+        swarm.setMeta(SwarmEngine.META_SECURITY_HOME_CONTEXT, myOwnIdentity);
+
+        return swarm;
+    }
+
+    function cleanSwarmWaiter(swarmSerialisation) { // TODO: add better mechanisms to prevent memory leaks
+        let swarmId = swarmSerialisation.meta.swarmId;
+        let watcher = swarmInstancesCache[swarmId];
+
+        if (!watcher) {
+            $$.warn("Invalid swarm received: " + swarmId);
+            return;
+        }
+
+        let args = swarmSerialisation.meta.args;
+        args.push(swarmSerialisation);
+
+        watcher.callback.apply(null, args);
+        if (!watcher.keepAliveCheck()) {
+            delete swarmInstancesCache[swarmId];
+        }
+    }
+
+    protectedFunctions.startSwarmAs = function (identity, swarmTypeName, phaseName, ...args) {
+        const swarm = createBaseSwarm(swarmTypeName);
+        swarm.setMeta($$.swarmEngine.META_SECURITY_HOME_CONTEXT, myOwnIdentity);
+
+        protectedFunctions.sendSwarm(swarm, SwarmEngine.EXECUTE_PHASE_COMMAND, identity, phaseName, args);
+        return swarm;
+    };
+
+    protectedFunctions.sendSwarm = function (swarmAsVO, command, identity, phaseName, args) {
+
+        swarmAsVO.setMeta("phaseName", phaseName);
+        swarmAsVO.setMeta("target", identity);
+        swarmAsVO.setMeta("command", command);
+        swarmAsVO.setMeta("args", args);
+
+        relay(serialize(swarmAsVO), true);
+    };
+
+    protectedFunctions.waitForSwarm = function (callback, swarm, keepAliveCheck) {
+
+        function doLogic() {
+            let swarmId = swarm.getInnerValue().meta.swarmId;
+            let watcher = swarmInstancesCache.get(swarmId);
+            if (!watcher) {
+                watcher = {
+                    swarm: swarm,
+                    callback: callback,
+                    keepAliveCheck: keepAliveCheck
+                };
+                swarmInstancesCache.set(swarmId, watcher);
+            }
+        }
+
+        function filter() {
+            return swarm.getInnerValue().meta.swarmId;
+        }
+
+        //$$.uidGenerator.wait_for_condition(condition,doLogic);
+        swarm.observe(doLogic, null, filter);
+    };
+
+    protectedFunctions.execute_swarm = function (swarmOwM) {
+
+        const swarmCommand = swarmOwM.getMeta('command');
+
+        //console.log("Switching on command ", swarmCommand);
+        switch (swarmCommand) {
+            case SwarmEngine.prototype.EXECUTE_PHASE_COMMAND:
+                let swarmId = swarmOwM.getMeta('swarmId');
+                let swarmType = swarmOwM.getMeta('swarmTypeName');
+                let instance = swarmInstancesCache.get(swarmId);
+
+                let swarm;
+
+                if (instance) {
+                    swarm = instance.swarm;
+                    swarm.actualize(swarmOwM);
+
+                } else {
+                    if (typeof $$.blockchain !== "undefined") {
+                        swarm = $$.swarm.startWithContext($$.blockchain, swarmType);
+                    } else {
+                        swarm = $$.swarm.start(swarmType);
+                    }
+
+                    if (!swarm) {
+                        throw new Error(`Unknown swarm with type <${swarmType}>. Check if this swarm is defined in the domain constitution!`);
+                    } else {
+                        swarm.actualize(swarmOwM);
+                    }
+
+                    /*swarm = $$.swarm.start(swarmType, swarmSerialisation);*/
+                }
+                swarm.runPhase(swarmOwM.meta.phaseName, swarmOwM.meta.args);
+                break;
+            case SwarmEngine.prototype.EXECUTE_INTERACT_PHASE_COMMAND:
+                is.dispatch(swarmOwM);
+                break;
+            case SwarmEngine.prototype.RETURN_PHASE_COMMAND:
+                is.dispatch(swarmOwM);
+                break;
+            default:
+                $$.err(`Unrecognized swarm command ${swarmCommand}`);
+        }
+    };
+
+    protectedFunctions.acknowledge = function(method, swarmId, swarmName, swarmPhase, cb){
+        powerCordCollection.forEach((powerCord, identity)=>{
+            if(typeof powerCord[method] === "function"){
+                powerCord[method].call(powerCord, swarmId, swarmName, swarmPhase, cb);
+            }
+        });
+    };
+
+    require("./swarms")(protectedFunctions);
+    const is = require("./interactions")(protectedFunctions);
+}
+
+Object.defineProperty(SwarmEngine.prototype, "EXECUTE_PHASE_COMMAND", {value: "executeSwarmPhase"});
+Object.defineProperty(SwarmEngine.prototype, "EXECUTE_INTERACT_PHASE_COMMAND", {value: "executeInteractPhase"});
+Object.defineProperty(SwarmEngine.prototype, "RETURN_PHASE_COMMAND", {value: "__return__"});
+
+Object.defineProperty(SwarmEngine.prototype, "META_RETURN_CONTEXT", {value: "returnContext"});
+Object.defineProperty(SwarmEngine.prototype, "META_SECURITY_HOME_CONTEXT", {value: "homeSecurityContext"});
+Object.defineProperty(SwarmEngine.prototype, "META_WAITSTACK", {value: "waitStack"});
+
+Object.defineProperty(SwarmEngine.prototype, "ANONYMOUS_IDENTITY", {value: "anonymous"});
+Object.defineProperty(SwarmEngine.prototype, "SELF_IDENTITY", {value: "self"});
+Object.defineProperty(SwarmEngine.prototype, "WILD_CARD_IDENTITY", {value: "*"});
+
+function makePluggable(powerCord) {
+    powerCord.plug = function (identity, powerTransfer) {
+        powerCord.transfer = powerTransfer;
+        powerCord.identity = identity;
+    };
+
+    powerCord.unplug = function () {
+        powerCord.transfer = null;
+    };
+
+    Object.defineProperty(powerCord, "identity", {
+        set: (value) => {
+            if(typeof powerCord.__identity === "undefined"){
+                powerCord.__identity = value;
+            }
+        }, get: () => {
+            return powerCord.__identity;
+        }
+    });
+
+    return powerCord;
+}
+
+module.exports = SwarmEngine;
+},{"./interactions":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\index.js","./swarms":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\swarms\\index.js","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\BootEngine.js":[function(require,module,exports){
+function BootEngine(getSeed, getEDFS, initializeSwarmEngine, runtimeBundles, constitutionBundles) {
+
+    if(typeof getSeed !== "function"){
+        throw new Error("getSeed missing or not a function");
+    }
+    getSeed = promisify(getSeed);
+
+    if(typeof getEDFS !== "function"){
+        throw new Error("getEDFS missing or not a function");
+    }
+    getEDFS = promisify(getEDFS);
+
+    if(typeof initializeSwarmEngine !== "function"){
+        throw new Error("initializeSwarmEngine missing or not a function");
+    }
+    initializeSwarmEngine = promisify(initializeSwarmEngine);
+
+    if(typeof runtimeBundles !== "undefined" && !Array.isArray(runtimeBundles)){
+        throw new Error("runtimeBundles is not array");
+    }
+
+    if(typeof constitutionBundles !== "undefined" && !Array.isArray(constitutionBundles)){
+        throw new Error("constitutionBundles is not array");
+    }
+
+    const EDFS = require('edfs');
+    let edfs;
+
+    const evalBundles = async (bundles, ignore) => {
+        const listFiles = promisify(this.bar.listFiles);
+        const readFile = promisify(this.bar.readFile);
+
+        let fileList = await listFiles(EDFS.constants.CSB.CONSTITUTION_FOLDER);
+        fileList = bundles.filter(bundle => fileList.includes(`${EDFS.constants.CSB.CONSTITUTION_FOLDER}/${bundle}`))
+            .map(bundle => `${EDFS.constants.CSB.CONSTITUTION_FOLDER}/${bundle}`);
+
+        if (fileList.length !== bundles.length) {
+            const message = `Some bundles missing. Expected to have ${JSON.stringify(bundles)} but got only ${JSON.stringify(fileList)}`;
+            if(!ignore){
+                throw new Error(message);
+            }else{
+                console.log(message);
+            }
+        }
+
+        for (let i = 0; i < fileList.length; i++) {
+            var fileContent = await readFile(fileList[i]);
+            eval(fileContent.toString());
+        }
+    };
+
+    this.boot = function (callback) {
+       const __boot = async () => {
+           const seed = await getSeed();
+           edfs = await getEDFS();
+           this.bar = edfs.loadBar(seed);
+           await evalBundles(runtimeBundles);
+           await initializeSwarmEngine();
+           if (typeof constitutionBundles !== "undefined") {
+               await evalBundles(constitutionBundles, true);
+           }
+        };
+
+        __boot()
+            .then(() => callback(undefined, this.bar))
+            .catch(callback);
+    };
+}
+
+function promisify(fn) {
+    return function (...args) {
+        return new Promise((resolve, reject) => {
+            fn(...args, (err, ...res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(...res);
+                }
+            });
+        });
+    }
+}
+
+module.exports = BootEngine;
+
+},{"edfs":"edfs"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\IsolateBootScript.js":[function(require,module,exports){
+
+async function getIsolatesWorker({workerData: {constitutions}, externalApi}) {
+    const swarmUtils = require('swarmutils');
+    const beesHealer = swarmUtils.beesHealer;
+    const OwM = swarmUtils.OwM;
+    const SwarmPacker = swarmUtils.SwarmPacker;
+    const IsolatedVM = require('pskisolates');
+    const {EventEmitter} = require('events');
+
+    const config = IsolatedVM.IsolateConfig.defaultConfig;
+    config.logger = {
+        send([logChannel, logObject]) {
+            $$.redirectLog(logChannel, logObject)
+        }
+    };
+
+    const fs = require('fs');
+
+    constitutions = constitutions.map(constitution => fs.readFileSync(constitution, 'utf8'));
+
+    const isolate = await IsolatedVM.getDefaultIsolate({
+        shimsBundle: constitutions[0],
+        browserifyBundles: constitutions.slice(1),
+        config: config,
+        externalApi: externalApi
+    });
+
+    class IsolatesWrapper extends EventEmitter {
+        postMessage(packedSwarm) {
+            const swarm = SwarmPacker.unpack(packedSwarm);
+
+            const phaseName = OwM.prototype.getMetaFrom(swarm, 'phaseName');
+            const args = OwM.prototype.getMetaFrom(swarm, 'args');
+            const serializedSwarm = beesHealer.asJSON(swarm, phaseName, args);
+            const stringifiedSwarm = JSON.stringify(serializedSwarm);
+
+            isolate.run(`
+                if(typeof global.identitySet === "undefined"){
+                    global.identitySet = true;
+                  
+				    $$.swarmEngine.updateIdentity(getIdentity.applySync(undefined, []));
+				}
+            `).then(() => {
+                const powerCordRef = isolate.context.global.getSync('powerCord');
+                const transferFnRef = powerCordRef.getSync('transfer');
+                const swarmAsRef = new isolate.ivm.ExternalCopy(new Uint8Array(packedSwarm)).copyInto();
+                // console.log(transferFnRef, swarmAsRef);
+
+                transferFnRef.applyIgnored(powerCordRef.derefInto(), [swarmAsRef]);
+            }).catch((err) => {
+                this.emit('error', err);
+            });
+
+        }
+    }
+
+    const isolatesWrapper = new IsolatesWrapper();
+    isolatesWrapper.globalSetSync = isolate.globalSetSync;
+
+    isolate.globalSetSync('returnSwarm', (err, swarm) => {
+        try {
+            isolatesWrapper.emit('message', swarm);
+        } catch (e) {
+            console.log('Caught error', e);
+        }
+    });
+
+    await isolate.run(`
+            const se = require("swarm-engine");
+            global.powerCord = new se.InnerIsolatePowerCord();
+            $$.swarmEngine.plug($$.swarmEngine.WILD_CARD_IDENTITY, global.powerCord);
+		`);
+
+    //TODO: this might cause a memory leak
+    setInterval(async () => {
+        const rawIsolate = isolate.rawIsolate;
+        const cpuTime = rawIsolate.cpuTime;
+        const wallTime = rawIsolate.wallTime;
+
+        const heapStatistics = await rawIsolate.getHeapStatistics();
+        const activeCPUTime = (cpuTime[0] + cpuTime[1] / 1e9) * 1000;
+        const totalCPUTime = (wallTime[0] + wallTime[1] / 1e9) * 1000;
+        const idleCPUTime = totalCPUTime - activeCPUTime;
+        $$.event('sandbox.metrics', {heapStatistics, activeCPUTime, totalCPUTime, idleCPUTime});
+
+    }, 10 * 1000); // 10 seconds
+
+
+    return isolatesWrapper;
+}
+
+module.exports = getIsolatesWorker;
+
+},{"events":false,"fs":false,"pskisolates":false,"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\ThreadWorkerBootScript.js":[function(require,module,exports){
+function boot() {
+    const worker_threads ='worker_threads';
+    const {parentPort, workerData} = require(worker_threads);
+
+    process.on("uncaughtException", (err) => {
+        console.error('unchaughtException inside worker', err);
+        setTimeout(() => {
+            process.exit(1);
+        }, 100);
+    });
+
+    function getSeed(callback){
+        let err;
+        if (!workerData.hasOwnProperty('constitutionSeed') || typeof workerData.constitutionSeed !== "string") {
+            err = new Error(`Missing or wrong type of constitutionSeed in worker data configuration: ${JSON.stringify(workerData)}`);
+            if(!callback){
+                throw err;
+            }
+        }
+        if(callback){
+            return callback(err, workerData.constitutionSeed);
+        }
+        return workerData.constitutionSeed;
+    }
+
+    let edfs;
+    function getEDFS(callback){
+        const EDFS = require("edfs");
+        edfs = EDFS.attachWithSeed(getSeed());
+        callback(null, edfs);
+    }
+
+    function initializeSwarmEngine(callback){
+        require('callflow').initialise();
+        const swarmEngine = require('swarm-engine');
+
+        swarmEngine.initialise(process.env.IDENTITY);
+        const powerCord = new swarmEngine.InnerThreadPowerCord();
+
+        $$.swarmEngine.plug($$.swarmEngine.WILD_CARD_IDENTITY, powerCord);
+
+        parentPort.on('message', (packedSwarm) => {
+            powerCord.transfer(packedSwarm);
+        });
+
+        edfs.bootCSB(workerData.constitutionSeed, (err, csbhandler) =>{
+            if(err){
+                $$.throwError(err);
+            }
+            callback();
+        });
+    }
+
+    const BootEngine = require("./BootEngine.js");
+
+    const booter = new BootEngine(getSeed, getEDFS, initializeSwarmEngine, ["pskruntime.js", "blockchain.js"], ["domain.js"]);
+
+    booter.boot((err) => {
+        if(err){
+            throw err;
+        }
+        parentPort.postMessage('ready');
+    });
+}
+
+boot();
+//module.exports = boot.toString();
+
+},{"./BootEngine.js":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\BootEngine.js","callflow":"callflow","edfs":"edfs","swarm-engine":"swarm-engine"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\domainBootScript.js":[function(require,module,exports){
+const path = require('path');
+//enabling life line to parent process
+require(path.join(process.env.PSK_ROOT_INSTALATION_FOLDER, "psknode/core/utils/pingpongFork.js")).enableLifeLine();
+
+const seed = process.env.PSK_DOMAIN_SEED;
+//preventing children to access the env parameter
+process.env.PSK_DOMAIN_SEED = undefined;
+
+if(process.argv.length > 3){
+    process.env.PRIVATESKY_DOMAIN_NAME = process.argv[2];
+}else{
+    process.env.PRIVATESKY_DOMAIN_NAME = "AnonymousDomain" + process.pid;
+}
+
+process.env.PRIVATESKY_TMP = path.resolve(process.env.PRIVATESKY_TMP || "../tmp");
+process.env.DOMAIN_WORKSPACE = path.resolve(process.env.PRIVATESKY_TMP, "domainsWorkspace", process.env.PRIVATESKY_DOMAIN_NAME);
+
+const config = JSON.parse(process.env.config);
+
+if (typeof config.constitution !== "undefined" && config.constitution !== "undefined") {
+    process.env.PRIVATESKY_DOMAIN_CONSTITUTION = config.constitution;
+}
+
+if (typeof config.workspace !== "undefined" && config.workspace !== "undefined") {
+    process.env.DOMAIN_WORKSPACE = config.workspace;
+}
+
+function boot(){
+    const BootEngine = require("./BootEngine");
+
+    const bootter = new BootEngine(getSeed, getEDFS, initializeSwarmEngine, ["pskruntime.js", "virtualMQ.js", "edfsBar.js"], ["blockchain.js"]);
+    bootter.boot(function(err, archive){
+        if(err){
+            console.log(err);
+            return;
+        }
+        try{
+            plugPowerCords();
+        }catch(err){
+            console.log("Caught an error will finishing booting process", err);
+        }
+    })
+}
+
+function getSeed(callback){
+    callback(undefined, self.seed);
+}
+
+let self = {seed};
+function getEDFS(callback){
+    let EDFS = require("edfs");
+    self.edfs = EDFS.attachWithSeed(seed);
+    callback(undefined, self.edfs);
+}
+
+function initializeSwarmEngine(callback){
+    const EDFS = require("edfs");
+    const bar = self.edfs.loadBar(self.seed);
+    bar.readFile(EDFS.constants.CSB.DOMAIN_IDENTITY_FILE, (err, content)=>{
+        if(err){
+            return callback(err);
+        }
+        self.domainName = content.toString();
+        $$.log(`Domain ${self.domainName} is booting...`);
+
+        $$.PSK_PubSub = require("soundpubsub").soundPubSub;
+        const se = require("swarm-engine");
+        se.initialise(self.domainName);
+
+        callback();
+    });
+}
+
+function plugPowerCords(){
+    const dossier = require("dossier");
+    dossier.load(self.seed, "DomainIdentity", function(err, dossierHandler){
+        if(err){
+            throw err;
+        }
+
+        dossierHandler.startTransaction("DomainConfigTransaction", "getDomains").onReturn(function(err, domainConfigs){
+            if(err){
+                throw  err;
+            }
+
+            const se = require("swarm-engine");
+            if(domainConfigs.length === 0){
+                console.log("No domain configuration found in CSB. Boot process will stop here...");
+                return;
+            }
+            self.domainConf = domainConfigs[0];
+
+            for (const alias in self.domainConf.communicationInterfaces) {
+                if (self.domainConf.communicationInterfaces.hasOwnProperty(alias)) {
+                    let remoteUrls = self.domainConf.communicationInterfaces[alias];
+                    let powerCordToDomain = new se.SmartRemoteChannelPowerCord([remoteUrls.virtualMQ + "/"], self.domainConf.alias, remoteUrls.zeroMQ);
+                    $$.swarmEngine.plug("*", powerCordToDomain);
+                }
+            }
+
+            dossierHandler.startTransaction("Agents", "getAgents").onReturn(function(err, agents){
+                if(err){
+                    throw err;
+                }
+
+                if (agents.length === 0) {
+                    agents.push({alias: 'system'});
+                }
+
+                const EDFS = require("edfs");
+                const bar = self.edfs.loadBar(self.seed);
+                bar.readFile(EDFS.constants.CSB.CONSTITUTION_FOLDER + '/threadBoot.js', (err, fileContents) => {
+                    if(err) {
+                        throw err;
+                    }
+
+                    agents.forEach(agent => {
+                        const agentPC = new se.OuterThreadPowerCord(fileContents.toString(), true, seed);
+                        $$.swarmEngine.plug(`${self.domainConf.alias}/agent/${agent.alias}`, agentPC);
+                    });
+
+                    $$.event('status.domains.boot', {name: self.domainConf.alias});
+                    console.log("Domain boot successfully");
+                });
+            });
+        })
+    });
+}
+
+boot();
+},{"./BootEngine":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\BootEngine.js","dossier":"dossier","edfs":"edfs","path":false,"soundpubsub":false,"swarm-engine":"swarm-engine"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\index.js":[function(require,module,exports){
+module.exports = {
+    getIsolatesBootScript: function() {
+        return require('./IsolateBootScript');
+    },
+    getThreadBootScript: function() {
+        return `(${require("./ThreadWorkerBootScript")})()`;
+    },
+    executeDomainBootScript: function() {
+        return require('./domainBootScript');
+    }
+};
+},{"./IsolateBootScript":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\IsolateBootScript.js","./ThreadWorkerBootScript":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\ThreadWorkerBootScript.js","./domainBootScript":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\domainBootScript.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\InteractionSpace.js":[function(require,module,exports){
+function InteractionSpace(swarmEngineApi) {
+    const listeners = {};
+    const interactionTemplate = require('./interaction_template').getTemplateHandler(swarmEngineApi);
+
+    function createThis(swarm) {
+        const thisObj = interactionTemplate.createForObject(swarm);
+        //todo: implement a proxy for public and private vars...
+        return thisObj;
+    }
+
+    this.dispatch = function (swarm) {
+        const {swarmId, swarmTypeName, phaseName, args} = swarm.meta;
+
+        const genericKey = `*/${swarmTypeName}/${phaseName}`;
+        const particularKey = `${swarmId}/${swarmTypeName}/${phaseName}`;
+
+        const handlers = listeners[particularKey] || listeners[genericKey] || [];
+
+        handlers.forEach(fn => {
+            fn.call(createThis(swarm), ...args);
+        });
+
+        if (phaseName === $$.swarmEngine.RETURN_PHASE_COMMAND) {
+            delete listeners[particularKey];
+        }
+
+        if (handlers.length === 0) {
+            console.log(`No implementation for phase "${phaseName}" was found`);
+        }
+    };
+
+    this.on = function (swarmId, swarmTypeName, phaseName, handler) {
+        const key = `${swarmId}/${swarmTypeName}/${phaseName}`;
+        if (typeof listeners[key] === "undefined") {
+            listeners[key] = [];
+        }
+        listeners[key].push(handler);
+        swarmEngineApi.acknowledge("on", swarmId, swarmTypeName, phaseName, handler);
+    };
+
+    this.off = function (swarmId = '*', swarmTypeName = '*', phaseName = '*', handler) {
+
+        function escapeIfStar(str) {
+            return str.replace("*", "\\*")
+        }
+
+        swarmId = escapeIfStar(swarmId);
+        swarmTypeName = escapeIfStar(swarmTypeName);
+        phaseName = escapeIfStar(phaseName);
+
+        const regexString = `(${swarmId})\\/(${swarmTypeName})\\/(${phaseName})`;
+        const reg = new RegExp(regexString);
+
+        const keys = Object.keys(listeners);
+        keys.forEach(key => {
+            if (key.match(reg)) {
+                const handlers = listeners[key];
+
+                if (!handler) {
+                    listeners[key] = [];
+                } else {
+                    listeners[key] = handlers.filter(fn => fn !== handler);
+                }
+            }
+        });
+        swarmEngineApi.acknowledge("off", swarmId, swarmTypeName, phaseName, handler);
+    };
+}
+
+module.exports = InteractionSpace;
+
+},{"./interaction_template":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\interaction_template.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\index.js":[function(require,module,exports){
+module.exports = function (swarmEngineApi) {
+    let cm = require("callflow");
+    const InteractionSpace = require("./InteractionSpace");
+    const is = new InteractionSpace(swarmEngineApi);
+
+    $$.interactions = {};
+    //cm.createSwarmEngine("interaction", require("./interaction_template"));
+    $$.interaction = $$.interactions;
+
+    $$.interactions.attachTo = function (swarmTypeName, interactionDescription) {
+        Object.keys(interactionDescription).forEach(phaseName => {
+            is.on('*', swarmTypeName, phaseName, interactionDescription[phaseName]);
+        });
+    };
+
+    $$.interactions.startSwarmAs = function (identity, swarmTypeName, phaseName, ...args) {
+        const swarm = swarmEngineApi.startSwarmAs(identity, swarmTypeName, phaseName, ...args);
+        let swarmId = swarm.getMeta('swarmId');
+
+        return {
+            on: function (interactionDescription) {
+                Object.keys(interactionDescription).forEach(phaseName => {
+                    is.on(swarmId, swarmTypeName, phaseName, interactionDescription[phaseName]);
+                });
+
+                return this;
+            },
+            off: function (interactionDescription) {
+                is.off(interactionDescription);
+
+                return this;
+            },
+            onReturn: function (callback) {
+                is.on(swarmId, swarmTypeName, $$.swarmEngine.RETURN_PHASE_COMMAND, callback);
+
+                return this;
+            }
+        }
+    };
+
+    return is;
+};
+
+},{"./InteractionSpace":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\InteractionSpace.js","callflow":"callflow"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\interactions\\interaction_template.js":[function(require,module,exports){
+exports.getTemplateHandler = function (swarmEngineApi) {
+
+    return {
+        createForObject: function (valueObject, thisObject, localId) {
+            let cm = require("callflow");
+
+            let swarmFunction = function (destinationContext, phaseName, ...args) {
+                //make the execution at level 0  (after all pending events) and wait to have a swarmId
+                ret.observe(function () {
+                    swarmEngineApi.sendSwarm(valueObject, $$.swarmEngine.EXECUTE_PHASE_COMMAND, destinationContext, phaseName, args);
+                }, null, null);
+                ret.notify();
+                return thisObject;
+            };
+
+            function off() {
+                const swarmId = valueObject.getMeta('swarmId');
+                const swarmTypeName = valueObject.getMeta('swarmTypeName');
+
+                swarmEngineApi.off(swarmId, swarmTypeName);
+            }
+
+
+            let ret = cm.createStandardAPIsForSwarms(valueObject, thisObject, localId);
+
+            ret.swarm = swarmFunction;
+            ret.swarmAs = swarmFunction;
+            ret.off = off;
+
+            delete ret.home;
+            delete ret.onReturn;
+            delete ret.onResult;
+
+            delete ret.asyncReturn;
+            delete ret.return;
+
+            delete ret.autoInit;
+
+            return ret;
+        }
+    }
+};
+
+},{"callflow":"callflow"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\InnerIsolatePowerCord.js":[function(require,module,exports){
+(function (global){
+function InnerIsolatePowerCord() {
+
+    let setterTransfer;
+
+    function transfer(...args) {
+
+        args = args.map(arg => {
+            if(arg.buffer) {
+                // transforming UInt8Array to ArrayBuffer
+                arg = arg.buffer;
+            }
+
+            return arg;
+        });
+
+        return setterTransfer(...args);
+    }
+
+    Object.defineProperty(this, "transfer", {
+        set: (fn) => {
+            setterTransfer = fn;
+        }, get: () => {
+            return setterTransfer ? transfer : undefined;
+        }
+    });
+
+    this.sendSwarm = function (swarmSerialization) {
+        try{
+            if(swarmSerialization instanceof ArrayBuffer) {
+                swarmSerialization = global.createCopyIntoExternalCopy(new Uint8Array(swarmSerialization));
+            }
+
+            returnSwarm.apply(undefined, [null, swarmSerialization])
+                .catch((err) => {
+                    console.log(err);
+                })
+        }catch(err){
+           console.log(err);
+        }
+
+    };
+
+}
+
+module.exports = InnerIsolatePowerCord;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\InnerThreadPowerCord.js":[function(require,module,exports){
+function InnerThreadPowerCord() {
+    const worker_threads = 'worker_threads';
+    const {parentPort} = require(worker_threads);
+
+    this.sendSwarm = function (swarmSerialization) {
+        parentPort.postMessage(swarmSerialization);
+    };
+
+}
+
+module.exports = InnerThreadPowerCord;
+
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\OuterIsolatePowerCord.js":[function(require,module,exports){
+function OuterIsolatePowerCord(energySource, numberOfWires = 1, apis) { // seed or array of constitution bundle paths
+    const syndicate = require('syndicate');
+    const bootScripts = require('../bootScripts');
+    const pskisolates = require('pskisolates');
+    let pool = null;
+
+
+    function connectToEnergy() {
+        const WorkerStrategies = syndicate.WorkerStrategies;
+
+        if(!apis) {
+            apis = {};
+        }
+
+        if(typeof apis.require === "undefined"){
+            apis.require = function(name) {
+                console.log('Creating proxy for', name);
+                return pskisolates.createDeepReference(require(name));
+            };
+        }
+
+        const config = {
+            bootScript: bootScripts.getIsolatesBootScript(),
+            maximumNumberOfWorkers: numberOfWires,
+            workerStrategy: WorkerStrategies.ISOLATES,
+            workerOptions: {
+                workerData: {
+                    constitutions: energySource
+                },
+                externalApi: apis
+            }
+        };
+
+        pool = syndicate.createWorkerPool(config, (isolate) => {
+
+            isolate.globalSetSync("getIdentity", () => {
+                return superThis.identity;
+            });
+        });
+
+    }
+
+    let superThis = this;
+    connectToEnergy();
+
+
+    this.sendSwarm = function (swarmSerialization) {
+        pool.addTask(swarmSerialization, (err, msg) => {
+            if (err instanceof Error) {
+                throw err;
+            }
+
+            this.transfer(msg.buffer || msg);
+        });
+    };
+
+}
+
+module.exports = OuterIsolatePowerCord;
+
+},{"../bootScripts":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\index.js","pskisolates":false,"syndicate":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\OuterThreadPowerCord.js":[function(require,module,exports){
+function OuterThreadPowerCord(threadBootScript, eval= false, energySourceSeed, numberOfWires = 1) { // seed or array of constitution bundle paths
+    const syndicate = require('syndicate');
+    let pool = null;
+    let self = this;
+
+    function connectToEnergy() {
+        const config = {
+            maximumNumberOfWorkers: numberOfWires,
+            workerStrategy: syndicate.WorkerStrategies.THREADS,
+            bootScript: threadBootScript,
+            workerOptions: {
+                // cwd: process.env.DOMAIN_WORKSPACE,
+                eval: eval,
+                env: {
+                    IDENTITY: self.identity
+                },
+                workerData: {
+                    constitutionSeed: energySourceSeed
+                }
+            }
+        };
+
+        pool = syndicate.createWorkerPool(config);
+
+    }
+
+    this.sendSwarm = function (swarmSerialization) {
+        pool.addTask(swarmSerialization, (err, msg) => {
+            if (err instanceof Error) {
+                throw err;
+            }
+
+            this.transfer(msg.buffer || msg);
+        });
+    };
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if(p === 'identity') {
+                connectToEnergy();
+            }
+        }
+    })
+}
+
+module.exports = OuterThreadPowerCord;
+
+},{"syndicate":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\RemoteChannelPairPowerCord.js":[function(require,module,exports){
+const outbound = "outbound";
+const inbound = "inbound";
+
+function RemoteChannelPairPowerCord(host, channelName, receivingHost, receivingChannelName){
+
+    receivingHost = receivingHost || host;
+    receivingChannelName = receivingChannelName || generateChannelName();
+
+    function setup(){
+        //injecting necessary http methods
+        require("../../psk-http-client");
+
+        //this should be a channel that exists... we don't try to create
+        $$.remote.registerHttpChannelClient(outbound, host, channelName, {autoCreate: false});
+        $$.remote[outbound].setSenderMode();
+
+        //maybe instead of receivingChannelName we sould use our identity? :-??
+        $$.remote.registerHttpChannelClient(inbound, receivingHost, receivingChannelName, {autoCreate: true});
+        $$.remote[inbound].setReceiverMode();
+
+        $$.remote[inbound].on("*", "*", "*", function (err, swarmSerialization){
+            const swarmUtils = require("swarmutils");
+            const SwarmPacker = swarmUtils.SwarmPacker;
+            let header = SwarmPacker.getHeader(swarmSerialization);
+            if(header.swarmTarget === $$.remote[inbound].getReceiveAddress() && startedSwarms[header.swarmId] === true){
+                //it is a swarm that we started
+                let message = swarmUtils.OwM.prototype.convert(SwarmPacker.unpack(swarmSerialization));
+                //we set the correct target
+                message.setMeta("target", identityOfOurSwarmEngineInstance);
+                //... and transfer to our swarm engine instance
+                self.transfer(SwarmPacker.pack(message, SwarmPacker.getSerializer(header.serializationType)));
+            }else{
+                self.transfer(swarmSerialization);
+            }
+        });
+    }
+
+    let identityOfOurSwarmEngineInstance;
+    let startedSwarms = {};
+    const self = this;
+    this.sendSwarm = function (swarmSerialization) {
+        const swarmUtils = require("swarmutils");
+        const SwarmPacker = swarmUtils.SwarmPacker;
+        let header = SwarmPacker.getHeader(swarmSerialization);
+        let message = swarmUtils.OwM.prototype.convert(SwarmPacker.unpack(swarmSerialization));
+
+        if(typeof message.publicVars === "undefined"){
+            startedSwarms[message.getMeta("swarmId")] = true;
+
+            //it is the start of swarm...
+            if(typeof identityOfOurSwarmEngineInstance === "undefined"){
+                identityOfOurSwarmEngineInstance = message.getMeta("homeSecurityContext");
+            }
+            //we change homeSecurityContext with a url in order to get back the swarm when is done.
+            message.setMeta("homeSecurityContext", $$.remote[inbound].getReceiveAddress());
+            //send the updated version of it
+            $$.remote[outbound].sendSwarm(SwarmPacker.pack(message, SwarmPacker.getSerializer(header.serializationType)));
+        }else{
+            //the swarm was not started from our pair swarm engine so we just send it
+            $$.remote[outbound].sendSwarm(swarmSerialization);
+        }
+    };
+
+    function generateChannelName(){
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if(p === 'identity') {
+                setup();
+            }
+        }
+    });
+}
+
+module.exports = RemoteChannelPairPowerCord;
+},{"../../psk-http-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\index.js","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\RemoteChannelPowerCord.js":[function(require,module,exports){
+const inbound = "inbound";
+
+function RemoteChannelPowerCord(receivingHost, receivingChannelName){
+
+    receivingHost = receivingHost || host;
+    receivingChannelName = receivingChannelName || generateChannelName();
+
+    let setup = ()=>{
+        //injecting necessary http methods
+        require("../../psk-http-client");
+
+        //maybe instead of receivingChannelName we sould use our identity? :-??
+        $$.remote.registerHttpChannelClient(inbound, receivingHost, receivingChannelName, {autoCreate: true});
+        $$.remote[inbound].setReceiverMode();
+
+        this.on("*", "*", "*", (err, result)=>{
+            if(!err){
+                console.log("We got a swarm for channel");
+                this.transfer(result);
+            }else{
+                console.log("Got an error from our channel", err);
+            }
+        });
+    };
+
+    this.on = function(swarmId, swarmName, swarmPhase, callback){
+        $$.remote[inbound].on(swarmId, swarmName, swarmPhase, callback);
+    };
+
+    this.off = function(swarmId, swarmName, swarmPhase, callback){
+
+    };
+
+    this.sendSwarm = function (swarmSerialization) {
+        const SwarmPacker = require("swarmutils").SwarmPacker;
+        let header = SwarmPacker.getHeader(swarmSerialization);
+        let target = header.swarmTarget;
+        console.log("Sending swarm to", target);
+        //test if target is an url... else complain
+        if(true){
+            $$.remote.doHttpPost(target, swarmSerialization, (err, res)=>{
+
+            });
+        }else{
+
+        }
+    };
+
+    function generateChannelName(){
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if(p === 'identity') {
+                setup();
+            }
+        }
+    });
+}
+
+module.exports = RemoteChannelPowerCord;
+},{"../../psk-http-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\index.js","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\SmartRemoteChannelPowerCord.js":[function(require,module,exports){
+(function (Buffer){
+const inbound = "inbound";
+
+function SmartRemoteChannelPowerCord(communicationAddrs, receivingChannelName, zeroMQAddress) {
+
+    //here are stored, for later use, fav hosts for different identities
+    const favoriteHosts = {};
+    let receivingHost = Array.isArray(communicationAddrs) && communicationAddrs.length > 0 ? communicationAddrs[0] : "http://127.0.0.1";
+    receivingChannelName = receivingChannelName || generateChannelName();
+
+    let setup = () => {
+        //injecting necessary http methods
+        require("../../psk-http-client");
+
+        const opts = {autoCreate: true, enableForward: typeof zeroMQAddress !== "undefined", publicSignature: "none"};
+
+        console.log(`\n[***] Using channel "${receivingChannelName}" on "${receivingHost}".\n`);
+        //maybe instead of receivingChannelName we sould use our identity? :-??
+        $$.remote.registerHttpChannelClient(inbound, receivingHost, receivingChannelName, opts);
+        $$.remote[inbound].setReceiverMode();
+
+        function toArrayBuffer(buffer) {
+            const ab = new ArrayBuffer(buffer.length);
+            const view = new Uint8Array(ab);
+            for (let i = 0; i < buffer.length; ++i) {
+                view[i] = buffer[i];
+            }
+            return ab;
+        }
+
+
+        if (typeof zeroMQAddress === "undefined") {
+            $$.remote[inbound].on("*", "*", "*", (err, swarmSerialization) => {
+                if (err) {
+                    console.log("Got an error from our channel", err);
+                    return;
+                }
+
+                if(Buffer && Buffer.isBuffer(swarmSerialization)){
+                    swarmSerialization = toArrayBuffer(swarmSerialization);
+                }
+
+                handlerSwarmSerialization(swarmSerialization);
+            });
+        } else {
+            //let's connect to zmq
+            const reqFactory = require("virtualmq").getVMQRequestFactory(receivingHost, zeroMQAddress);
+            reqFactory.receiveMessageFromZMQ($$.remote.base64Encode(receivingChannelName), opts.publicSignature, (...args) => {
+                console.log("zeromq connection established");
+            }, (channelName, swarmSerialization) => {
+                console.log("Look", channelName, swarmSerialization);
+                handlerSwarmSerialization(swarmSerialization);
+            });
+        }
+    };
+
+    /* this.on = function(swarmId, swarmName, swarmPhase, callback){
+         $$.remote[inbound].on(swarmId, swarmName, swarmPhase, callback);
+     };
+
+     this.off = function(swarmId, swarmName, swarmPhase, callback){
+
+     };*/
+
+    function getMetaFromIdentity(identity){
+        const vRegex = /([a-zA-Z0-9]*|.)*\/agent\/([a-zA-Z0-9]+(\/)*)+/g;
+
+        if(!identity.match(vRegex)){
+            throw new Error("Invalid format. (Eg. domain[.subdomain]*/agent/[organisation/]*agentId)");
+        }
+
+        const separatorKeyword = "/agent/";
+        let domain;
+        let agentIdentity;
+
+        const splitPoint = identity.indexOf(separatorKeyword);
+        if(splitPoint !== -1){
+            domain = identity.slice(0, splitPoint);
+            agentIdentity = identity.slice(splitPoint+separatorKeyword.length);
+        }
+
+        return {domain, agentIdentity};
+    }
+
+    function handlerSwarmSerialization(swarmSerialization) {
+        const swarmUtils = require("swarmutils");
+        const SwarmPacker = swarmUtils.SwarmPacker;
+        let header = SwarmPacker.getHeader(swarmSerialization);
+        if (header.swarmTarget === $$.remote[inbound].getReceiveAddress() && startedSwarms[header.swarmId] === true) {
+            //it is a swarm that we started
+            let message = swarmUtils.OwM.prototype.convert(SwarmPacker.unpack(swarmSerialization));
+            //we set the correct target
+            message.setMeta("target", identityOfOurSwarmEngineInstance);
+            //... and transfer to our swarm engine instance
+            self.transfer(SwarmPacker.pack(message, SwarmPacker.getSerializer(header.serializationType)));
+        } else {
+            self.transfer(swarmSerialization);
+        }
+    }
+
+    let identityOfOurSwarmEngineInstance;
+    let startedSwarms = {};
+    const self = this;
+    this.sendSwarm = function (swarmSerialization) {
+        const swarmUtils = require("swarmutils");
+        const SwarmPacker = swarmUtils.SwarmPacker;
+        let header = SwarmPacker.getHeader(swarmSerialization);
+        let message = swarmUtils.OwM.prototype.convert(SwarmPacker.unpack(swarmSerialization));
+
+        if (typeof message.publicVars === "undefined") {
+            startedSwarms[message.getMeta("swarmId")] = true;
+
+            //it is the start of swarm...
+            if (typeof identityOfOurSwarmEngineInstance === "undefined") {
+                identityOfOurSwarmEngineInstance = message.getMeta("homeSecurityContext");
+            }
+            //we change homeSecurityContext with a url in order to get back the swarm when is done.
+            message.setMeta("homeSecurityContext", $$.remote[inbound].getReceiveAddress());
+
+            swarmSerialization = SwarmPacker.pack(message, SwarmPacker.getSerializer(header.serializationType));
+        }
+
+        let target = header.swarmTarget;
+        console.log("Sending swarm to", target);
+        const urlRegex = new RegExp(/^(www|http:|https:)+[^\s]+[\w]/);
+
+        if (urlRegex.test(target)) {
+            $$.remote.doHttpPost(target, swarmSerialization, (err, res) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            deliverSwarmToRemoteChannel(target, swarmSerialization, 0);
+        }
+    };
+
+    function deliverSwarmToRemoteChannel(target, swarmSerialization, remoteIndex) {
+        let identityMeta;
+        try{
+            identityMeta = getMetaFromIdentity(target);
+        }catch(err){
+            //identityMeta = {};
+            console.log(err);
+        }
+
+        if (remoteIndex >= communicationAddrs.length) {
+            //end of the line
+            console.log(`Unable to deliver swarm to target "${target}" on any of the remote addresses provided.`);
+            return;
+        }
+        const currentAddr = communicationAddrs[remoteIndex];
+        //if we don't have a fav host for target then lets start discovery process...
+        const remoteChannelAddr = favoriteHosts[identityMeta.domain] || [currentAddr, "send-message/", $$.remote.base64Encode(identityMeta.domain) + "/"].join("");
+
+        $$.remote.doHttpPost(remoteChannelAddr, swarmSerialization, (err, res) => {
+            if (err) {
+                setTimeout(() => {
+                    deliverSwarmToRemoteChannel(target, swarmSerialization, ++remoteIndex);
+                }, 10);
+            } else {
+                //success: found fav host for target
+                favoriteHosts[identityMeta.domain] = remoteChannelAddr;
+                console.log("Found our fav", remoteChannelAddr, "for target", target);
+            }
+        });
+    }
+
+    function generateChannelName() {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if (p === 'identity') {
+                setup();
+            }
+        }
+    });
+}
+
+module.exports = SmartRemoteChannelPowerCord;
+}).call(this,require("buffer").Buffer)
+
+},{"../../psk-http-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\index.js","buffer":false,"swarmutils":"swarmutils","virtualmq":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\HostPowerCord.js":[function(require,module,exports){
+function HostPowerCord(parent){
+
+    this.sendSwarm = function (swarmSerialization){
+        parent.postMessage(swarmSerialization, "*");
+    };
+
+    let receivedMessageHandler  = (event)=>{
+        console.log("Message received in iframe",event);
+        let swarmSerialization = event.data;
+        this.transfer(swarmSerialization);
+    };
+
+    let subscribe = () => {
+        if(!window.iframePCMessageHandler){
+            window.iframePCMessageHandler = receivedMessageHandler;
+            window.addEventListener("message",receivedMessageHandler)
+        }
+    };
+
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if(p === 'identity') {
+                subscribe.call(target);
+            }
+        }
+    });
+}
+
+
+module.exports = HostPowerCord;
+},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\IframePowerCord.js":[function(require,module,exports){
+function IframePowerCord(iframe){
+
+    let iframeSrc = iframe.src;
+
+    this.sendSwarm = function (swarmSerialization){
+        const SwarmPacker = require("swarmutils").SwarmPacker;
+
+        try {
+           SwarmPacker.getHeader(swarmSerialization);
+        }
+        catch (e) {
+            console.error("Could not deserialize swarm");
+        }
+
+        if(iframe && iframe.contentWindow){
+            iframe.contentWindow.postMessage(swarmSerialization, iframe.src);
+        }
+        else{
+            //TODO: check if the iframe/psk-app should be loaded again
+            console.error(`Iframe is no longer available. ${iframeSrc}`);
+        }
+
+    };
+
+    let receivedMessageHandler  = (event)=>{
+
+        if (event.source !== window) {
+            console.log("Message received in parent", event);
+            this.transfer(event.data);
+        }
+
+    };
+
+    let subscribe = () => {
+
+        // if(this.identity && this.identity!=="*"){
+        // }
+        // else{
+        //     //TODO: you should use a power cord capable of handling * identities.
+        //     console.error("Cannot handle identity '*'. You should use a power cord capable of handling '*' identities.")
+        // }
+
+        if(!window.iframePCMessageHandler){
+            window.iframePCMessageHandler = receivedMessageHandler;
+            window.addEventListener("message",receivedMessageHandler)
+        }
+    };
+
+    return new Proxy(this, {
+        set(target, p, value, receiver) {
+            target[p] = value;
+            if(p === 'identity') {
+                subscribe.call(target);
+            }
+        }
+    });
+}
+
+module.exports = IframePowerCord;
+},{"swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\swarms\\index.js":[function(require,module,exports){
+module.exports = function(swarmEngineApi){
+    const cm = require("callflow");
+    const swarmUtils = require("./swarm_template-se");
+
+    $$.swarms           = cm.createSwarmEngine("swarm", swarmUtils.getTemplateHandler(swarmEngineApi));
+    $$.swarm            = $$.swarms;
+
+    $$.swarms.startAs = function(identity, swarmName, ctor, ...params){
+        swarmEngineApi.startSwarmAs(identity, swarmName, ctor, ...params);
+    };
+};
+},{"./swarm_template-se":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\swarms\\swarm_template-se.js","callflow":"callflow"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\swarms\\swarm_template-se.js":[function(require,module,exports){
+exports.getTemplateHandler = function (swarmEngine) {
+    let cm = require("callflow");
+
+    let beesHealer = require("swarmutils").beesHealer;
+    return {
+        createForObject: function (valueObject, thisObject, localId) {
+
+            function messageIdentityFilter(valueObject) {
+                return valueObject.meta.swarmId;
+            }
+
+            let swarmFunction = function (destinationContext, phaseName, ...args) {
+                //make the execution at level 0  (after all pending events) and wait to have a swarmId
+                ret.observe(function () {
+                    swarmEngine.sendSwarm(valueObject, $$.swarmEngine.EXECUTE_PHASE_COMMAND, destinationContext, phaseName, args);
+                }, null, null);
+                ret.notify();
+                return thisObject;
+            };
+
+            let asyncReturn = function (err, result) {
+
+                let destinationContext = valueObject.meta[$$.swarmEngine.META_SECURITY_HOME_CONTEXT];
+                if (!destinationContext && valueObject.meta[$$.swarmEngine.META_WAITSTACK]) {
+                    destinationContext = valueObject.meta[$$.swarmEngine.META_WAITSTACK].pop();
+                }
+                if (!destinationContext) {
+                    destinationContext = valueObject.meta[$$.swarmEngine.META_SECURITY_HOME_CONTEXT];
+                }
+
+                const {OwM} = require("swarmutils");
+                const swarmClone = OwM.prototype.convert(JSON.parse(JSON.stringify(valueObject)));
+
+                swarmEngine.sendSwarm(swarmClone, $$.swarmEngine.RETURN_PHASE_COMMAND, destinationContext, $$.swarmEngine.RETURN_PHASE_COMMAND, [err, result]);
+            };
+
+            function interact(phaseName, ...args) {
+                const {OwM} = require("swarmutils");
+                const swarmClone = OwM.prototype.convert(JSON.parse(JSON.stringify(valueObject)));
+                let destinationContext = valueObject.meta[$$.swarmEngine.META_SECURITY_HOME_CONTEXT];
+
+                swarmEngine.sendSwarm(swarmClone, $$.swarmEngine.EXECUTE_INTERACT_PHASE_COMMAND, destinationContext, phaseName, args);
+            }
+
+            function home(err, result) {
+                let homeContext = valueObject.meta[$$.swarmEngine.META_SECURITY_HOME_CONTEXT];
+                swarmEngine.sendSwarm(valueObject, $$.swarmEngine.RETURN_PHASE_COMMAND, homeContext, $$.swarmEngine.RETURN_PHASE_COMMAND, [err, result]);
+            }
+
+            function waitResults(callback, keepAliveCheck, swarm) {
+                if (!swarm) {
+                    swarm = this;
+                }
+                if (!keepAliveCheck) {
+                    keepAliveCheck = function () {
+                        return false;
+                    }
+                }
+                var inner = swarm.getInnerValue();
+                if (!inner.meta[$$.swarmEngine.META_WAITSTACK]) {
+                    inner.meta[$$.swarmEngine.META_WAITSTACK] = [];
+                    inner.meta[$$.swarmEngine.META_WAITSTACK].push($$.HRN_securityContext)
+                }
+                swarmEngine.waitForSwarm(callback, swarm, keepAliveCheck);
+            }
+
+
+            let ret = cm.createStandardAPIsForSwarms(valueObject, thisObject, localId);
+
+            ret.interact        = interact;
+            ret.swarm           = swarmFunction;
+            ret.home            = home;
+            ret.onReturn        = waitResults;
+            ret.onResult        = waitResults;
+            ret.asyncReturn     = asyncReturn;
+            ret.return          = asyncReturn;
+
+            ret.autoInit = function (someContext) {
+
+            };
+
+            return ret;
+        }
+    }
+};
+},{"callflow":"callflow","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js":[function(require,module,exports){
 function product(args) {
     if(!args.length){
         return [ [] ];
@@ -5370,1426 +9643,7 @@ module.exports.createUidGenerator = function (minBuffers, bufferSize) {
 
 }).call(this,require("buffer").Buffer)
 
-},{"./Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\ChannelsManager.js":[function(require,module,exports){
-(function (Buffer,__dirname){
-const storageFolder = process.env.vmq_channel_storage || "../tmp";
-const maxQueueSize = process.env.vmq_max_queue_size || 100;
-const tokenSize = process.env.vmq_token_size || 48;
-const tokenHeaderName = process.env.vmq_token_header_name || "x-tokenHeader";
-const signatureHeaderName = process.env.vmq_signature_header_name || "x-signature";
-
-const channelsFolderName = "channels";
-const channelKeyFileName = "channel_key";
-
-const path = require("path");
-const fs = require("fs");
-const crypto = require('crypto');
-const integration = require("zmq_adapter");
-
-const Queue = require("swarmutils").Queue;
-const SwarmPacker = require("swarmutils").SwarmPacker;
-
-function ChannelsManager(server){
-
-    const rootFolder = path.join(storageFolder, channelsFolderName);
-    fs.mkdirSync(rootFolder, {recursive: true});
-
-    const channelKeys = {};
-    const queues = {};
-    const subscribers = {};
-
-
-    process.env.enable_signature_check = true;
-
-    let baseDir = __dirname;
-
-    //if __dirname appears in process.cwd path it means that the code isn't run from browserified version
-    //TODO: check for better implementation
-    if(process.cwd().indexOf(__dirname) ===-1){
-        baseDir = path.join(process.cwd(), __dirname);
-    }
-
-
-    const forwarder = integration.getForwarderInstance(process.env.vmq_zeromq_forward_address);
-
-    function generateToken(){
-        let buffer = crypto.randomBytes(tokenSize);
-        return buffer.toString('hex');
-    }
-
-    function createChannel(name, publicKey, callback){
-        let channelFolder = path.join(rootFolder, name);
-        let keyFile = path.join(channelFolder, channelKeyFileName);
-        let token = generateToken();
-
-        if(typeof channelKeys[name] !== "undefined" || fs.existsSync(channelFolder)){
-            let e = new Error("channel exists!");
-            e.code = 409;
-            return callback(e);
-        }
-
-        fs.mkdirSync(channelFolder);
-
-        if(fs.existsSync(keyFile)){
-            let e = new Error("channel exists!");
-            e.code = 409;
-            return callback(e);
-        }
-
-        const config = JSON.stringify({publicKey, token});
-        fs.writeFile(keyFile, config, (err, res)=>{
-            if(!err){
-                channelKeys[name] = config;
-            }
-            return callback(err, !err ? token : undefined);
-        });
-    }
-
-    function retriveChannelDetails(channelName, callback){
-        if(typeof channelKeys[channelName] !== "undefined"){
-            return callback(null, channelKeys[channelName]);
-        }else{
-            fs.readFile(path.join(rootFolder, channelName, channelKeyFileName), (err, res)=>{
-                if(res){
-                    channelKeys[channelName] = JSON.parse(res);
-                }
-                callback(err, channelKeys[channelName]);
-            });
-        }
-    }
-
-    function forwardChannel(channelName, forward, callback){
-        let channelKeyFile = path.join(rootFolder, channelName, channelKeyFileName);
-        fs.readFile(channelKeyFile, (err, content)=>{
-            let config;
-            try{
-                config = JSON.parse(content);
-            }catch(e){
-                return callback(e);
-            }
-
-            if(typeof config !== "undefined"){
-                config.forward = forward;
-                fs.writeFile(channelKeyFile, JSON.stringify(config), (err, ...args)=>{
-                    if(!err){
-                        channelKeys[channelName] = config;
-                    }
-                    callback(err, ...args);
-                });
-            }
-        });
-    }
-
-    function readBody(req, callback){
-        let data = "";
-        req.on("data", (messagePart)=>{
-            data += messagePart;
-        });
-
-        req.on("end", ()=>{
-           callback(null, data);
-        });
-
-        req.on("error", (err)=>{
-           callback(err);
-        });
-    }
-
-    function createChannelHandler(req, res){
-        const channelName = req.params.channelName;
-
-        readBody(req, (err, message)=>{
-            if(err){
-                return sendStatus(res, 400);
-            }
-
-            const publicKey = message;
-            if (typeof channelName !== "string" || channelName.length === 0 ||
-                typeof publicKey !== "string" || publicKey.length === 0) {
-                return sendStatus(res, 400);
-            }
-
-            let handler = getBasicReturnHandler(res);
-
-            createChannel(channelName, publicKey, (err, token)=>{
-                if(!err){
-                    res.setHeader('Cookie', [`${tokenHeaderName}=${token}`]);
-                }
-                handler(err, res);
-            });
-        });
-    }
-
-    function sendStatus(res, reasonCode){
-        res.statusCode = reasonCode;
-        res.end();
-    }
-
-    function getBasicReturnHandler(res){
-        return function(err, result){
-            if(err){
-                return sendStatus(res, err.code || 500);
-            }
-
-            return sendStatus(res, 200);
-        }
-    }
-
-    function enableForwarderHandler(req, res){
-
-        readBody(req, (err, message)=>{
-            const {enable} = message;
-            const channelName = req.params.channelName;
-            const signature = req.headers[signatureHeaderName];
-
-            if(typeof channelName !== "string" || typeof signature !== "string"){
-                return sendStatus(res, 400);
-            }
-
-            retriveChannelDetails(channelName, (err, details)=>{
-                if(err){
-                    return sendStatus(res, 500);
-                }else{
-                    //todo: check signature against key [details.publickey]
-
-                    if(typeof enable === "undefined" || enable){
-                        forwardChannel(channelName, true, getBasicReturnHandler(res));
-                    }else{
-                        forwardChannel(channelName, null, getBasicReturnHandler(res));
-                    }
-                }
-            });
-        });
-    }
-
-    function getQueue(name){
-        if(typeof queues[name] === "undefined"){
-            queues[name] = new Queue();
-        }
-
-        return queues[name];
-    }
-
-    function checkIfChannelExist(channelName, callback){
-        retriveChannelDetails(channelName, (err, details)=>{
-            callback(null, err ? false : true);
-        });
-    }
-
-    function writeMessage(subscribers, message){
-        let dispatched = false;
-        try {
-            while(subscribers.length>0){
-                let subscriber = subscribers.pop();
-                if(!dispatched){
-                    deliverMessage(subscriber, message);
-                    dispatched = true;
-                }else{
-                    sendStatus(subscriber, 403);
-                }
-            }
-        }catch(err) {
-            //... some subscribers could have a timeout connection
-            if(subscribers.length>0){
-                deliverMessage(subscribers, message);
-            }
-        }
-
-        return dispatched;
-    }
-
-    function readSendMessageBody(req, callback){
-        const contentType = req.headers['content-type'];
-
-        if (contentType === 'application/octet-stream') {
-            const contentLength = Number.parseInt(req.headers['content-length'], 10);
-
-            if(Number.isNaN(contentLength)){
-                let error = new Error("Wrong content length header received!");
-                error.code = 411;
-                return callback(error);
-            }
-
-            streamToBuffer(req, contentLength, (err, bodyAsBuffer) => {
-                if(err) {
-                    return callback(err);
-                }
-                callback(undefined, bodyAsBuffer);
-            });
-        } else {
-            callback(new Error("Wrong message format received!"));
-        }
-
-        function streamToBuffer(stream, bufferSize, callback) {
-            const buffer = Buffer.alloc(bufferSize);
-            let currentOffset = 0;
-
-            stream.on('data', function(chunk){
-                const chunkSize = chunk.length;
-                const nextOffset = chunkSize + currentOffset;
-
-                if (currentOffset > bufferSize - 1) {
-                    stream.close();
-                    return callback(new Error('Stream is bigger than reported size'));
-                }
-
-                write2Buffer(buffer, chunk, currentOffset);
-                currentOffset = nextOffset;
-
-            });
-            stream.on('end', function(){
-                callback(undefined, buffer);
-            });
-            stream.on('error', callback);
-        }
-
-        function write2Buffer(buffer, dataToAppend, offset) {
-            const dataSize = dataToAppend.length;
-
-            for (let i = 0; i < dataSize; i++) {
-                buffer[offset++] = dataToAppend[i];
-            }
-        }
-    }
-
-    function sendMessageHandler(req, res){
-        let channelName = req.params.channelName;
-
-        checkIfChannelExist(channelName, (err, exists)=>{
-            if(!exists){
-                return sendStatus(res, 403);
-            }else{
-                retriveChannelDetails(channelName, (err, details)=>{
-                    //we choose to read the body of request only after we know that we recognize the destination channel
-                    readSendMessageBody(req, (err, message)=>{
-                        if(err){
-                            //console.log(err);
-                            return sendStatus(res, 403);
-                        }
-
-                        let header;
-                        try{
-                            header = SwarmPacker.unpack(message.buffer);
-                        }catch(error){
-                            //console.log(error);
-                            return sendStatus(res, 400);
-                        }
-
-                        //TODO: to all checks based on message header
-
-                        if(details.forward){
-                            //console.log("Forwarding message <", message, "> on channel", channelName);
-                            forwarder.send(channelName, message);
-                        }else{
-                            let queue = getQueue(channelName);
-                            let subscribers = getSubscribersList(channelName);
-                            let dispatched = false;
-                            if(queue.isEmpty()){
-                                dispatched = writeMessage(subscribers, message);
-                            }
-                            if(!dispatched) {
-                                if(queue.length < maxQueueSize){
-                                    queue.push(message);
-                                }else{
-                                    //queue is full
-                                    return sendStatus(res, 429);
-                                }
-
-                                /*
-                                if(subscribers.length>0){
-                                    //... if we have somebody waiting for a message and the queue is not empty means that something bad
-                                    //happened and maybe we should try to dispatch first message from queue
-                                }
-                                */
-
-                            }
-                        }
-                        return sendStatus(res, 200);
-                    });
-                })
-            }
-        });
-    }
-
-    function getSubscribersList(channelName){
-        if(typeof subscribers[channelName] === "undefined"){
-            subscribers[channelName] = [];
-        }
-
-        return subscribers[channelName];
-    }
-
-    function deliverMessage(res, message){
-        if(Buffer.isBuffer(message)) {
-            res.setHeader('content-type', 'application/octet-stream');
-        }
-
-        if(typeof message.length !== "undefined"){
-            res.setHeader('content-length', message.length);
-        }
-
-        res.write(message);
-        sendStatus(res, 200);
-    }
-
-    function getCookie(res, cookieName){
-        let cookies = res.headers['cookie'];
-        if(typeof cookies === "undefined"){
-            return undefined;
-        }
-        if(Array.isArray(cookies)){
-            for(let i=0; i<cookies.length; i++){
-                let cookie = cookies[i];
-                if(cookie.indexOf(cookieName) !== -1){
-                    return cookie.substr(cookieName.length+1);
-                }
-            }
-        }else{
-            cookieName = cookieName.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-
-            let regex = new RegExp('(?:^|;)\\s?' + cookieName + '=(.*?)(?:;|$)','i');
-            let match = cookies.match(regex);
-
-            return match && unescape(match[1]);
-        }
-    }
-
-    function receiveMessageHandler(req, res){
-        let channelName = req.params.channelName;
-        checkIfChannelExist(channelName, (err, exists)=>{
-            if(!exists){
-                return sendStatus(res, 403);
-            }else{
-                retriveChannelDetails(channelName, (err, details)=>{
-                    if(err){
-                        return sendStatus(res, 500);
-                    }
-                    //TODO: check signature agains details.publickey
-
-
-                    if(details.forward){
-                        //if channel is forward it does not make sense
-                        return sendStatus(res, 409);
-                    }
-
-                    /*let signature = req.headers["signature"];
-                    if(typeof signature === "undefined"){
-                        return sendStatus(res, 403);
-                    }*/
-
-                    // let cookie = getCookie(req, tokenHeaderName);
-
-                    // if(typeof cookie === "undefined" || cookie === null){
-                    //     return sendStatus(res, 412);
-                    // }
-
-                    let queue = getQueue(channelName);
-                    let message = queue.pop();
-
-                    if(!message){
-                        getSubscribersList(channelName).push(res);
-                    }else{
-                        deliverMessage(res, message);
-                    }
-                });
-            }
-        });
-    }
-
-    server.put("/create-channel/:channelName", createChannelHandler);
-    server.post("/forward-zeromq/:channelName", enableForwarderHandler);
-    server.post("/send-message/:channelName", sendMessageHandler);
-    server.get("/receive-message/:channelName", receiveMessageHandler);
-}
-
-module.exports = ChannelsManager;
-}).call(this,require("buffer").Buffer,"/modules/virtualmq")
-
-},{"buffer":false,"crypto":false,"fs":false,"path":false,"swarmutils":"swarmutils","zmq_adapter":"zmq_adapter"}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\VMQRequestFactory.js":[function(require,module,exports){
-(function (Buffer){
-const http = require('http');
-const {URL} = require('url');
-const swarmUtils = require('swarmutils');
-const SwarmPacker = swarmUtils.SwarmPacker;
-const signatureHeaderName = process.env.vmq_signature_header_name || "x-signature";
-
-function RequestFactory(virtualMQAddress, zeroMQAddress) {
-    function createChannel(channelName, publicKey, callback) {
-        const options = {
-            path: `/create-channel/${channelName}`,
-            method: "PUT"
-        };
-
-        const req = http.request(virtualMQAddress, options, callback);
-        req.write(publicKey);
-        req.end();
-    }
-
-    function createForwardChannel(channelName, publicKey, callback) {
-        const options = {
-            path: `/create-channel/${channelName}`,
-            method: "PUT"
-        };
-
-        const req = http.request(virtualMQAddress, options, (res) => {
-            this.enableForward(channelName, "justASignature", callback);
-        });
-        req.write(publicKey);
-        req.end();
-    }
-
-    function enableForward(channelName, signature, callback) {
-        const options = {
-            path: `/forward-zeromq/${channelName}`,
-            method: "POST"
-        };
-
-        const req = http.request(virtualMQAddress, options, callback);
-        req.setHeader(signatureHeaderName, signature);
-        req.end();
-    }
-
-    function sendMessage(channelName, message, signature, callback) {
-        const options = {
-            path: `/send-message/${channelName}`,
-            method: "POST"
-        };
-
-        const req = http.request(virtualMQAddress, options, callback);
-        req.setHeader(signatureHeaderName, signature);
-
-        let pack = SwarmPacker.pack(message);
-
-        req.setHeader("content-length", pack.byteLength);
-        req.setHeader("content-type", 'application/octet-stream');
-        req.write(Buffer.from(pack));
-        req.end();
-    }
-
-    function receiveMessage(channelName, signature, callback) {
-        const options = {
-            path: `/receive-message/${channelName}`,
-            method: "GET"
-        };
-
-        const req = http.request(virtualMQAddress, options, function (res) {
-            const utils = require("./utils");
-            utils.readMessageBufferFromStream(res, function (err, message) {
-
-                callback(err, res, (message && Buffer.isBuffer(message)) ? SwarmPacker.unpack(message.buffer) : message);
-            });
-        });
-
-        req.setHeader(signatureHeaderName, signature);
-        req.end();
-    }
-
-    function receiveMessageFromZMQ(channelName, signature, readyCallback, receivedCallback) {
-        const zmqIntegration = require("zmq_adapter");
-
-        let catchEvents = (eventType, ...args) => {
-            // console.log("Event type caught", eventType, ...args);
-            if (eventType === "connect") {
-                //connected so all good
-                readyCallback();
-            }
-        };
-
-        let consumer = zmqIntegration.createZeromqConsumer(zeroMQAddress, catchEvents);
-        consumer.subscribe(channelName, signature, (channel, receivedMessage) => {
-            receivedCallback(JSON.parse(channel.toString()).channelName, receivedMessage.buffer);
-        });
-    }
-
-    function generateMessage(swarmName, swarmPhase, args, targetAgent, returnAddress){
-        return {
-            meta:{
-                swarmId: swarmUtils.generateUid(32).toString("hex"),
-                requestId: swarmUtils.generateUid(32).toString("hex"),
-                swarmTypeName: swarmName || "testSwarmType",
-                phaseName: swarmPhase || "swarmPhaseName",
-                args: args || [],
-                command: "executeSwarmPhase",
-                target: targetAgent || "agentURL",
-                homeSecurityContext: returnAddress || "no_home_no_return"
-            }};
-    }
-
-    function getPort() {
-        try {
-            return new URL(virtualMQAddress).port;
-        } catch (e) {
-          console.error(e);
-        }
-    }
-
-    // targeted virtualmq apis
-    this.createChannel = createChannel;
-    this.createForwardChannel = createForwardChannel;
-    this.enableForward = enableForward;
-    this.sendMessage = sendMessage;
-    this.receiveMessage = receiveMessage;
-    this.receiveMessageFromZMQ = receiveMessageFromZMQ;
-
-    // utils for testing
-    if(!process.env.NODE_ENV || (process.env.NODE_ENV && !process.env.NODE_ENV.startsWith('prod'))) { // if NODE_ENV does not exist or if it exists and is not set to production
-        this.getPort = getPort;
-        this.generateMessage = generateMessage;
-    }
-}
-
-module.exports = RequestFactory;
-}).call(this,require("buffer").Buffer)
-
-},{"./utils":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\utils.js","buffer":false,"http":false,"swarmutils":"swarmutils","url":false,"zmq_adapter":"zmq_adapter"}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\fileManager.js":[function(require,module,exports){
-(function (Buffer){
-const fs = require('fs');
-const path = require('path');
-let rootFolder = process.env.npm_package_config_ROOT_FILE_UPLOAD || process.env.ROOT_FILE_UPLOAD || "./FileUploads";
-
-rootFolder = path.resolve(rootFolder);
-
-guid = function() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-
-    return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
-};
-
-module.exports.upload = function (req, callback) {
-    const readFileStream = req;
-    if(!readFileStream || !readFileStream.pipe || typeof readFileStream.pipe !== "function"){
-        callback(new Error("Something wrong happened"));
-        return;
-    }
-
-    const folder = Buffer.from(req.params.folder, 'base64').toString().replace('\n', '');
-    if (folder.includes('..')){
-        return callback('err');
-    }
-    let filename = guid();
-    if (filename.split('.').length > 1){
-        return callback('err');
-    }
-    const completeFolderPath = path.join( rootFolder, folder );
-
-    const contentType = req.headers['content-type'].split('/');
-
-    if (contentType[0] === 'image' || ( contentType[0] === 'application' && contentType[1] === 'pdf') ) {
-        filename += '.' + contentType[1];
-    }else {
-        return callback('err');
-    }
-    try {
-        fs.mkdirSync(completeFolderPath, { recursive: true });
-    }catch (e) {
-        return callback(e);
-    }
-    const writeStream = fs.createWriteStream( path.join(completeFolderPath, filename));
-
-    writeStream.on('finish', () => {
-        writeStream.close();
-        return callback(null, {'path': path.posix.join(folder,filename)});
-    });
-
-    writeStream.on('error', (err) => {
-        writeStream.close();
-        return callback(err);
-    });
-    req.pipe(writeStream);
-};
-
-module.exports.download = function (req, res, callback) {
-    const readFileStream = req;
-    if(!readFileStream || !readFileStream.pipe || typeof readFileStream.pipe !== "function"){
-        callback(new Error("Something wrong happened"));
-        return;
-    }
-    const folder = Buffer.from(req.params.filepath, 'base64').toString().replace('\n', '');
-
-    const completeFolderPath = path.join( rootFolder, folder );
-    if (folder.includes('..')){
-        return callback('err');
-    }
-    if (fs.existsSync(completeFolderPath)) {
-        const fileToSend = fs.createReadStream(completeFolderPath);
-        res.setHeader('Content-Type', `image/${folder.split('.')[1]}`);
-        return callback(null, fileToSend);
-    }
-    else {
-        return callback('err');
-    }
-};
-
-}).call(this,require("buffer").Buffer)
-
-},{"buffer":false,"fs":false,"path":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\TokenBucket.js":[function(require,module,exports){
-/**
- * An implementation of the Token bucket algorithm
- * @param startTokens - maximum number of tokens possible to obtain and the default starting value
- * @param tokenValuePerTime - number of tokens given back for each "unitOfTime"
- * @param unitOfTime - for each "unitOfTime" (in milliseconds) passed "tokenValuePerTime" amount of tokens will be given back
- * @constructor
- */
-
-function TokenBucket(startTokens = 6000, tokenValuePerTime = 10, unitOfTime = 100) {
-
-    if(typeof startTokens !== 'number' || typeof  tokenValuePerTime !== 'number' || typeof unitOfTime !== 'number') {
-        throw new Error('All parameters must be of type number');
-    }
-
-    if(isNaN(startTokens) || isNaN(tokenValuePerTime) || isNaN(unitOfTime)) {
-        throw new Error('All parameters must not be NaN');
-    }
-
-    if(startTokens <= 0 || tokenValuePerTime <= 0 || unitOfTime <= 0) {
-        throw new Error('All parameters must be bigger than 0');
-    }
-
-
-    TokenBucket.prototype.COST_LOW    = 10;  // equivalent to 10op/s with default values
-    TokenBucket.prototype.COST_MEDIUM = 100; // equivalent to 1op/s with default values
-    TokenBucket.prototype.COST_HIGH   = 500; // equivalent to 12op/minute with default values
-
-    TokenBucket.ERROR_LIMIT_EXCEEDED  = 'error_limit_exceeded';
-    TokenBucket.ERROR_BAD_ARGUMENT    = 'error_bad_argument';
-
-
-
-    const limits = {};
-
-    function takeToken(userKey, cost, callback = () => {}) {
-        if(typeof cost !== 'number' || isNaN(cost) || cost <= 0 || cost === Infinity) {
-            callback(TokenBucket.ERROR_BAD_ARGUMENT);
-            return;
-        }
-
-        const userBucket = limits[userKey];
-
-        if (userBucket) {
-            userBucket.tokens += calculateReturnTokens(userBucket.timestamp);
-            userBucket.tokens -= cost;
-
-            userBucket.timestamp = Date.now();
-
-
-
-            if (userBucket.tokens < 0) {
-                userBucket.tokens = 0;
-                callback(TokenBucket.ERROR_LIMIT_EXCEEDED, 0);
-                return;
-            }
-
-            return callback(undefined, userBucket.tokens);
-        } else {
-            limits[userKey] = new Limit(startTokens, Date.now());
-            takeToken(userKey, cost, callback);
-        }
-    }
-
-    function getLimitByCost(cost) {
-        if(startTokens === 0 || cost === 0) {
-            return 0;
-        }
-
-        return Math.floor(startTokens / cost);
-    }
-
-    function getRemainingTokenByCost(tokens, cost) {
-        if(tokens === 0 || cost === 0) {
-            return 0;
-        }
-
-        return Math.floor(tokens / cost);
-    }
-
-    function Limit(maximumTokens, timestamp) {
-        this.tokens = maximumTokens;
-        this.timestamp = timestamp;
-
-        const self = this;
-
-        return {
-            set tokens(numberOfTokens) {
-                if (numberOfTokens < 0) {
-                    numberOfTokens = -1;
-                }
-
-                if (numberOfTokens > maximumTokens) {
-                    numberOfTokens = maximumTokens;
-                }
-
-                self.tokens = numberOfTokens;
-            },
-            get tokens() {
-                return self.tokens;
-            },
-            timestamp
-        };
-    }
-
-
-    function calculateReturnTokens(timestamp) {
-        const currentTime = Date.now();
-
-        const elapsedTime = Math.floor((currentTime - timestamp) / unitOfTime);
-
-        return elapsedTime * tokenValuePerTime;
-    }
-
-    this.takeToken               = takeToken;
-    this.getLimitByCost          = getLimitByCost;
-    this.getRemainingTokenByCost = getRemainingTokenByCost;
-}
-
-module.exports = TokenBucket;
-
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Client.js":[function(require,module,exports){
-(function (Buffer){
-const http = require('http');
-const url = require('url');
-const stream = require('stream');
-
-/**
- * Wraps a request and augments it with a "do" method to modify it in a "fluent builder" style
- * @param {string} url
- * @param {*} body
- * @constructor
- */
-function Request(url, body) {
-    this.request = {
-        options: url,
-        body
-    };
-
-    this.do = function (modifier) {
-        modifier(this.request);
-        return this;
-    };
-
-    this.getHttpRequest = function () {
-        return this.request;
-    };
-}
-
-
-/**
- * Modifies request.options to contain the url parsed instead of as string
- * @param {Object} request - Object that contains options and body
- */
-function urlToOptions(request) {
-    const parsedUrl = url.parse(request.options);
-
-    // TODO: movie headers declaration from here
-    request.options = {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        path: parsedUrl.pathname,
-        headers: {}
-    };
-}
-
-
-/**
- * Transforms the request.body in a type that can be sent through network if it is needed
- * @param {Object} request - Object that contains options and body
- */
-function serializeBody(request) {
-    if (!request.body) {
-        return;
-    }
-
-    const handler = {
-        get: function (target, name) {
-            return name in target ? target[name] : (data) => data;
-        }
-    };
-
-    const bodySerializationMapping = new Proxy({
-        'Object': (data) => JSON.stringify(data),
-    }, handler);
-
-    request.body = bodySerializationMapping[request.body.constructor.name](request.body);
-}
-
-/**
- *
- * @param {Object} request - Object that contains options and body
- */
-function bodyContentLength(request) {
-    if (!request.body) {
-        return;
-    }
-
-    if (request.body.constructor.name in [ 'String', 'Buffer', 'ArrayBuffer' ]) {
-        request.options.headers['Content-Length'] = Buffer.byteLength(request.body);
-    }
-}
-
-
-function Client() {
-    /**
-     *
-     * @param {Request} customRequest
-     * @param modifiers - array of functions that modify the request
-     * @returns {Object} - with url and body properties
-     */
-    function request(customRequest, modifiers) {
-        for (let i = 0; i < modifiers.length; ++i) {
-            customRequest.do(modifiers[i]);
-        }
-
-        return customRequest.getHttpRequest();
-    }
-
-    function getReq(url, config, callback) {
-        const modifiers = [
-            urlToOptions,
-            (request) => {request.options.headers = config.headers || {};}
-        ];
-
-        const packedRequest = request(new Request(url, config.body), modifiers);
-        const httpRequest = http.request(packedRequest.options, callback);
-        httpRequest.end();
-
-        return httpRequest;
-    }
-
-    function postReq(url, config, callback) {
-        const modifiers = [
-            urlToOptions,
-            (request) => {request.options.method = 'POST'; },
-            (request) => {request.options.headers = config.headers || {}; },
-            serializeBody,
-            bodyContentLength
-        ];
-
-        const packedRequest = request(new Request(url, config.body), modifiers);
-        const httpRequest = http.request(packedRequest.options, callback);
-
-        if (config.body instanceof stream.Readable) {
-            config.body.pipe(httpRequest);
-        }
-        else {
-            httpRequest.end(packedRequest.body, config.encoding || 'utf8');
-        }
-        return httpRequest;
-    }
-
-    function deleteReq(url, config, callback) {
-        const modifiers = [
-            urlToOptions,
-            (request) => {request.options.method = 'DELETE';},
-            (request) => {request.options.headers = config.headers || {};},
-        ];
-
-        const packedRequest = request(new Request(url, config.body), modifiers);
-        const httpRequest = http.request(packedRequest.options, callback);
-        httpRequest.end();
-
-        return httpRequest;
-    }
-
-    this.get = getReq;
-    this.post = postReq;
-    this.delete = deleteReq;
-}
-
-/**
- * Swap third and second parameter if only two are provided and converts arguments to array
- * @param {Object} params
- * @returns {Array} - arguments as array
- */
-function parametersPreProcessing(params) {
-    const res = [];
-
-    if (typeof params[0] !== 'string') {
-        throw new Error('First parameter must be a string (url)');
-    }
-
-    const parsedUrl = url.parse(params[0]);
-
-    if (!parsedUrl.hostname) {
-        throw new Error('First argument (url) is not valid');
-    }
-
-    if (params.length >= 3) {
-        if (typeof params[1] !== 'object' || !params[1]) {
-            throw new Error('When 3 parameters are provided the second parameter must be a not null object');
-        }
-
-        if (typeof params[2] !== 'function') {
-            throw new Error('When 3 parameters are provided the third parameter must be a function');
-        }
-    }
-
-    if (params.length === 2) {
-        if (typeof params[1] !== 'function') {
-            throw new Error('When 2 parameters are provided the second one must be a function');
-        }
-
-        params[2] = params[1];
-        params[1] = {};
-    }
-
-    const properties = Object.keys(params);
-    for(let i = 0, len = properties.length; i < len; ++i) {
-        res.push(params[properties[i]]);
-    }
-
-    return res;
-}
-
-const handler = {
-    get(target, propName) {
-        if (!target[propName]) {
-            console.log(propName, "Not implemented!");
-        } else {
-            return function () {
-                const args = parametersPreProcessing(arguments);
-                return target[propName].apply(target, args);
-            };
-        }
-    }
-};
-
-module.exports = function () {
-    return new Proxy(new Client(), handler);
-};
-}).call(this,require("buffer").Buffer)
-
-},{"buffer":false,"http":false,"stream":false,"url":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Middleware.js":[function(require,module,exports){
-const querystring = require('querystring');
-
-function matchUrl(pattern, url) {
-	const result = {
-		match: true,
-		params: {},
-		query: {}
-	};
-
-	const queryParametersStartIndex = url.indexOf('?');
-	if(queryParametersStartIndex !== -1) {
-		const urlQueryString = url.substr(queryParametersStartIndex + 1); // + 1 to ignore the '?'
-		result.query = querystring.parse(urlQueryString);
-		url = url.substr(0, queryParametersStartIndex);
-	}
-
-    const patternTokens = pattern.split('/');
-    const urlTokens = url.split('/');
-
-    if(urlTokens[urlTokens.length - 1] === '') {
-        urlTokens.pop();
-    }
-
-    if (patternTokens.length !== urlTokens.length) {
-        result.match = false;
-    }
-
-    if(patternTokens[patternTokens.length - 1] === '*') {
-        result.match = true;
-        patternTokens.pop();
-    }
-
-    for (let i = 0; i < patternTokens.length && result.match; ++i) {
-        if (patternTokens[i].startsWith(':')) {
-            result.params[patternTokens[i].substring(1)] = urlTokens[i];
-        } else if (patternTokens[i] !== urlTokens[i]) {
-            result.match = false;
-        }
-    }
-
-    return result;
-}
-
-function isTruthy(value) {
-    return !!value;
-
-}
-
-function methodMatch(pattern, method) {
-    if (!pattern || !method) {
-        return true;
-    }
-
-    return pattern === method;
-}
-
-function Middleware() {
-    const registeredMiddlewareFunctions = [];
-
-    function use(method, url, fn) {
-        method = method ? method.toLowerCase() : undefined;
-        registeredMiddlewareFunctions.push({method, url, fn});
-    }
-
-    this.use = function (...params) {
-	    let args = [ undefined, undefined, undefined ];
-
-	    switch (params.length) {
-            case 0:
-				throw Error('Use method needs at least one argument.');
-				
-            case 1:
-                if (typeof params[0] !== 'function') {
-                    throw Error('If only one argument is provided it must be a function');
-                }
-
-                args[2] = params[0];
-
-                break;
-            case 2:
-                if (typeof params[0] !== 'string' || typeof params[1] !== 'function') {
-                    throw Error('If two arguments are provided the first one must be a string (url) and the second a function');
-                }
-
-                args[1]=params[0];
-                args[2]=params[1];
-
-                break;
-            default:
-                if (typeof params[0] !== 'string' || typeof params[1] !== 'string' || typeof params[2] !== 'function') {
-                    throw Error('If three or more arguments are provided the first one must be a string (HTTP verb), the second a string (url) and the third a function');
-                }
-
-                if (!([ 'get', 'post', 'put', 'delete', 'patch', 'head', 'connect', 'options', 'trace' ].includes(params[0].toLowerCase()))) {
-                    throw new Error('If three or more arguments are provided the first one must be a HTTP verb but none could be matched');
-                }
-
-                args = params;
-
-                break;
-        }
-
-        use.apply(this, args);
-    };
-
-
-    /**
-     * Starts execution from the first registered middleware function
-     * @param {Object} req
-     * @param {Object} res
-     */
-    this.go = function go(req, res) {
-        execute(0, req.method.toLowerCase(), req.url, req, res);
-    };
-
-    /**
-     * Executes a middleware if it passes the method and url validation and calls the next one when necessary
-     * @param index
-     * @param method
-     * @param url
-     * @param params
-     */
-    function execute(index, method, url, ...params) {
-        if (!registeredMiddlewareFunctions[index]) {
-            if(index===0){
-                console.error("No handlers registered yet!");
-            }
-            return;
-        }
-
-	    const registeredMethod = registeredMiddlewareFunctions[index].method;
-	    const registeredUrl = registeredMiddlewareFunctions[index].url;
-	    const fn = registeredMiddlewareFunctions[index].fn;
-
-	    if (!methodMatch(registeredMethod, method)) {
-            execute(++index, method, url, ...params);
-            return;
-        }
-
-        if (isTruthy(registeredUrl)) {
-            const urlMatch = matchUrl(registeredUrl, url);
-
-            if (!urlMatch.match) {
-                execute(++index, method, url, ...params);
-                return;
-            }
-
-            if (params[0]) {
-                params[0].params = urlMatch.params;
-                params[0].query  = urlMatch.query;
-            }
-        }
-
-        let counter = 0;
-
-        fn(...params, (err) => {
-            counter++;
-            if (counter > 1) {
-                console.warn('You called next multiple times, only the first one will be executed');
-                return;
-            }
-
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            execute(++index, method, url, ...params);
-        });
-    }
-}
-
-module.exports = Middleware;
-
-},{"querystring":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Router.js":[function(require,module,exports){
-function Router(server) {
-    this.use = function use(url, callback) {
-        callback(serverWrapper(url, server));
-    };
-}
-
-function serverWrapper(baseUrl, server) {
-    if (baseUrl.endsWith('/')) {
-        baseUrl = baseUrl.substring(0, baseUrl.length - 1);
-    }
-
-    return {
-        use(url, reqResolver) {
-            server.use(baseUrl + url, reqResolver);
-        },
-        get(url, reqResolver) {
-            server.get(baseUrl + url, reqResolver);
-        },
-        post(url, reqResolver) {
-            server.post(baseUrl + url, reqResolver);
-        },
-        put(url, reqResolver) {
-            server.put(baseUrl + url, reqResolver);
-        },
-        delete(url, reqResolver) {
-            server.delete(baseUrl + url, reqResolver);
-        },
-        options(url, reqResolver) {
-            server.options(baseUrl + url, reqResolver);
-        }
-    };
-}
-
-module.exports = Router;
-
-},{}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Server.js":[function(require,module,exports){
-const Middleware = require('./Middleware');
-const http = require('http');
-const https = require('https');
-
-function Server(sslOptions) {
-    const middleware = new Middleware();
-    const server = _initServer(sslOptions);
-
-
-    this.use = function use(url, callback) {
-        //TODO: find a better way
-        if (arguments.length >= 2) {
-            middleware.use(url, callback);
-        } else if (arguments.length === 1) {
-            callback = url;
-            middleware.use(callback);
-        }
-
-    };
-
-
-    this.get = function getReq(reqUrl, reqResolver) {
-        middleware.use("GET", reqUrl, reqResolver);
-    };
-
-    this.post = function postReq(reqUrl, reqResolver) {
-        middleware.use("POST", reqUrl, reqResolver);
-    };
-
-    this.put = function putReq(reqUrl, reqResolver) {
-        middleware.use("PUT", reqUrl, reqResolver);
-    };
-
-    this.delete = function deleteReq(reqUrl, reqResolver) {
-        middleware.use("DELETE", reqUrl, reqResolver);
-    };
-
-    this.options = function optionsReq(reqUrl, reqResolver) {
-        middleware.use("OPTIONS", reqUrl, reqResolver);
-    };
-
-
-    /* INTERNAL METHODS */
-
-    function _initServer(sslConfig) {
-        if (sslConfig) {
-            return https.createServer(sslConfig, middleware.go);
-        } else {
-            return http.createServer(middleware.go);
-        }
-    }
-
-    return new Proxy(this, {
-       get(target, prop, receiver) {
-           if(typeof target[prop] !== "undefined") {
-               return target[prop];
-           }
-
-           if(typeof server[prop] === "function") {
-               return function(...args) {
-                   server[prop](...args);
-               }
-           } else {
-               return server[prop];
-           }
-       }
-    });
-}
-
-module.exports = Server;
-},{"./Middleware":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Middleware.js","http":false,"https":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\httpUtils.js":[function(require,module,exports){
-const fs = require('fs');
-const path = require('path');
-
-function setDataHandler(request, callback) {
-    let bodyContent = '';
-
-    request.on('data', function (dataChunk) {
-        bodyContent += dataChunk;
-    });
-
-    request.on('end', function () {
-        callback(undefined, bodyContent);
-    });
-
-    request.on('error', callback);
-}
-
-function setDataHandlerMiddleware(request, response, next) {
-    if (request.headers['content-type'] !== 'application/octet-stream') {
-        setDataHandler(request, function (error, bodyContent) {
-            request.body = bodyContent;
-            next(error);
-        });
-    } else {
-        return next();
-    }
-}
-
-function sendErrorResponse(error, response, statusCode) {
-    console.error(error);
-    response.statusCode = statusCode;
-    response.end();
-}
-
-function bodyParser(req, res, next) {
-    let bodyContent = '';
-
-    req.on('data', function (dataChunk) {
-        bodyContent += dataChunk;
-    });
-
-    req.on('end', function () {
-        req.body = bodyContent;
-        next();
-    });
-
-    req.on('error', function (err) {
-        next(err);
-    });
-}
-
-function serveStaticFile(baseFolder, ignorePath) {
-    return function (req, res) {
-        const url = req.url.substring(ignorePath.length);
-        const filePath = path.join(baseFolder, url);
-        fs.stat(filePath, (err) => {
-            if (err) {
-                res.statusCode = 404;
-                res.end();
-                return;
-            }
-
-            if (url.endsWith('.html')) {
-                res.contentType = 'text/html';
-            } else if (url.endsWith('.css')) {
-                res.contentType = 'text/css';
-            } else if (url.endsWith('.js')) {
-                res.contentType = 'text/javascript';
-            }
-
-            const fileStream = fs.createReadStream(filePath);
-            fileStream.pipe(res);
-
-        });
-    };
-}
-
-module.exports = {setDataHandler, setDataHandlerMiddleware, sendErrorResponse, bodyParser, serveStaticFile};
-
-},{"fs":false,"path":false}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\index.js":[function(require,module,exports){
-const Client = require('./classes/Client');
-const Server = require('./classes/Server');
-const httpUtils = require('./httpUtils');
-const Router = require('./classes/Router');
-
-module.exports = {Server, Client, httpUtils, Router};
-
-
-},{"./classes/Client":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Client.js","./classes/Router":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Router.js","./classes/Server":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\classes\\Server.js","./httpUtils":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\httpUtils.js"}],"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\utils.js":[function(require,module,exports){
-(function (Buffer){
-function readMessageBufferFromHTTPStream(reqORres, callback){
-    const contentType = reqORres.headers['content-type'];
-
-    if (contentType === 'application/octet-stream') {
-        const contentLength = Number.parseInt(reqORres.headers['content-length'], 10);
-
-        if(Number.isNaN(contentLength)){
-            return callback(new Error("Wrong content length header received!"));
-        }
-
-        streamToBuffer(reqORres, contentLength, (err, bodyAsBuffer) => {
-            if(err) {
-                return callback(err);
-            }
-            callback(undefined, bodyAsBuffer);
-        });
-    } else {
-        callback(new Error("Wrong message format received!"));
-    }
-
-    function streamToBuffer(stream, bufferSize, callback) {
-        const buffer = Buffer.alloc(bufferSize);
-        let currentOffset = 0;
-
-        stream.on('data', function(chunk){
-            const chunkSize = chunk.length;
-            const nextOffset = chunkSize + currentOffset;
-
-            if (currentOffset > bufferSize - 1) {
-                stream.close();
-                return callback(new Error('Stream is bigger than reported size'));
-            }
-
-            write2Buffer(buffer, chunk, currentOffset);
-            currentOffset = nextOffset;
-
-        });
-        stream.on('end', function(){
-            callback(undefined, buffer);
-        });
-        stream.on('error', callback);
-    }
-
-    function write2Buffer(buffer, dataToAppend, offset) {
-        const dataSize = dataToAppend.length;
-
-        for (let i = 0; i < dataSize; i++) {
-            buffer[offset++] = dataToAppend[i];
-        }
-    }
-}
-
-module.exports.readMessageBufferFromStream = readMessageBufferFromHTTPStream;
-}).call(this,require("buffer").Buffer)
-
-},{"buffer":false}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js":[function(require,module,exports){
+},{"./Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","buffer":false,"crypto":false}],"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\array-set.js":[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -9769,126 +12623,57 @@ function compareByGeneratedPositionsInflated(mappingA, mappingB) {
 }
 exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
 
-},{}],"buffer-crc32":[function(require,module,exports){
-var Buffer = require('buffer').Buffer;
+},{}],"adler32":[function(require,module,exports){
 
-var CRC_TABLE = [
-  0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
-  0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
-  0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07,
-  0x90bf1d91, 0x1db71064, 0x6ab020f2, 0xf3b97148, 0x84be41de,
-  0x1adad47d, 0x6ddde4eb, 0xf4d4b551, 0x83d385c7, 0x136c9856,
-  0x646ba8c0, 0xfd62f97a, 0x8a65c9ec, 0x14015c4f, 0x63066cd9,
-  0xfa0f3d63, 0x8d080df5, 0x3b6e20c8, 0x4c69105e, 0xd56041e4,
-  0xa2677172, 0x3c03e4d1, 0x4b04d447, 0xd20d85fd, 0xa50ab56b,
-  0x35b5a8fa, 0x42b2986c, 0xdbbbc9d6, 0xacbcf940, 0x32d86ce3,
-  0x45df5c75, 0xdcd60dcf, 0xabd13d59, 0x26d930ac, 0x51de003a,
-  0xc8d75180, 0xbfd06116, 0x21b4f4b5, 0x56b3c423, 0xcfba9599,
-  0xb8bda50f, 0x2802b89e, 0x5f058808, 0xc60cd9b2, 0xb10be924,
-  0x2f6f7c87, 0x58684c11, 0xc1611dab, 0xb6662d3d, 0x76dc4190,
-  0x01db7106, 0x98d220bc, 0xefd5102a, 0x71b18589, 0x06b6b51f,
-  0x9fbfe4a5, 0xe8b8d433, 0x7807c9a2, 0x0f00f934, 0x9609a88e,
-  0xe10e9818, 0x7f6a0dbb, 0x086d3d2d, 0x91646c97, 0xe6635c01,
-  0x6b6b51f4, 0x1c6c6162, 0x856530d8, 0xf262004e, 0x6c0695ed,
-  0x1b01a57b, 0x8208f4c1, 0xf50fc457, 0x65b0d9c6, 0x12b7e950,
-  0x8bbeb8ea, 0xfcb9887c, 0x62dd1ddf, 0x15da2d49, 0x8cd37cf3,
-  0xfbd44c65, 0x4db26158, 0x3ab551ce, 0xa3bc0074, 0xd4bb30e2,
-  0x4adfa541, 0x3dd895d7, 0xa4d1c46d, 0xd3d6f4fb, 0x4369e96a,
-  0x346ed9fc, 0xad678846, 0xda60b8d0, 0x44042d73, 0x33031de5,
-  0xaa0a4c5f, 0xdd0d7cc9, 0x5005713c, 0x270241aa, 0xbe0b1010,
-  0xc90c2086, 0x5768b525, 0x206f85b3, 0xb966d409, 0xce61e49f,
-  0x5edef90e, 0x29d9c998, 0xb0d09822, 0xc7d7a8b4, 0x59b33d17,
-  0x2eb40d81, 0xb7bd5c3b, 0xc0ba6cad, 0xedb88320, 0x9abfb3b6,
-  0x03b6e20c, 0x74b1d29a, 0xead54739, 0x9dd277af, 0x04db2615,
-  0x73dc1683, 0xe3630b12, 0x94643b84, 0x0d6d6a3e, 0x7a6a5aa8,
-  0xe40ecf0b, 0x9309ff9d, 0x0a00ae27, 0x7d079eb1, 0xf00f9344,
-  0x8708a3d2, 0x1e01f268, 0x6906c2fe, 0xf762575d, 0x806567cb,
-  0x196c3671, 0x6e6b06e7, 0xfed41b76, 0x89d32be0, 0x10da7a5a,
-  0x67dd4acc, 0xf9b9df6f, 0x8ebeeff9, 0x17b7be43, 0x60b08ed5,
-  0xd6d6a3e8, 0xa1d1937e, 0x38d8c2c4, 0x4fdff252, 0xd1bb67f1,
-  0xa6bc5767, 0x3fb506dd, 0x48b2364b, 0xd80d2bda, 0xaf0a1b4c,
-  0x36034af6, 0x41047a60, 0xdf60efc3, 0xa867df55, 0x316e8eef,
-  0x4669be79, 0xcb61b38c, 0xbc66831a, 0x256fd2a0, 0x5268e236,
-  0xcc0c7795, 0xbb0b4703, 0x220216b9, 0x5505262f, 0xc5ba3bbe,
-  0xb2bd0b28, 0x2bb45a92, 0x5cb36a04, 0xc2d7ffa7, 0xb5d0cf31,
-  0x2cd99e8b, 0x5bdeae1d, 0x9b64c2b0, 0xec63f226, 0x756aa39c,
-  0x026d930a, 0x9c0906a9, 0xeb0e363f, 0x72076785, 0x05005713,
-  0x95bf4a82, 0xe2b87a14, 0x7bb12bae, 0x0cb61b38, 0x92d28e9b,
-  0xe5d5be0d, 0x7cdcefb7, 0x0bdbdf21, 0x86d3d2d4, 0xf1d4e242,
-  0x68ddb3f8, 0x1fda836e, 0x81be16cd, 0xf6b9265b, 0x6fb077e1,
-  0x18b74777, 0x88085ae6, 0xff0f6a70, 0x66063bca, 0x11010b5c,
-  0x8f659eff, 0xf862ae69, 0x616bffd3, 0x166ccf45, 0xa00ae278,
-  0xd70dd2ee, 0x4e048354, 0x3903b3c2, 0xa7672661, 0xd06016f7,
-  0x4969474d, 0x3e6e77db, 0xaed16a4a, 0xd9d65adc, 0x40df0b66,
-  0x37d83bf0, 0xa9bcae53, 0xdebb9ec5, 0x47b2cf7f, 0x30b5ffe9,
-  0xbdbdf21c, 0xcabac28a, 0x53b39330, 0x24b4a3a6, 0xbad03605,
-  0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
-  0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
-  0x2d02ef8d
-];
+"use strict";
 
-if (typeof Int32Array !== 'undefined') {
-  CRC_TABLE = new Int32Array(CRC_TABLE);
-}
+var algorithm = require('./lib/algorithm');
+var Hash = require('./lib/Hash');
+var register = require('./lib/register');
 
-function newEmptyBuffer(length) {
-  var buffer = new Buffer(length);
-  buffer.fill(0x00);
-  return buffer;
-}
+exports.sum = algorithm.sum.bind(algorithm);
+exports.roll = algorithm.roll.bind(algorithm);
+exports.Hash = Hash;
+exports.register = register;
 
-function ensureBuffer(input) {
-  if (Buffer.isBuffer(input)) {
-    return input;
-  }
-
-  var hasNewBufferAPI =
-      typeof Buffer.alloc === "function" &&
-      typeof Buffer.from === "function";
-
-  if (typeof input === "number") {
-    return hasNewBufferAPI ? Buffer.alloc(input) : newEmptyBuffer(input);
-  }
-  else if (typeof input === "string") {
-    return hasNewBufferAPI ? Buffer.from(input) : new Buffer(input);
-  }
-  else {
-    throw new Error("input must be buffer, number, or string, received " +
-                    typeof input);
-  }
-}
-
-function bufferizeInt(num) {
-  var tmp = ensureBuffer(4);
-  tmp.writeInt32BE(num, 0);
-  return tmp;
-}
-
-function _crc32(buf, previous) {
-  buf = ensureBuffer(buf);
-  if (Buffer.isBuffer(previous)) {
-    previous = previous.readUInt32BE(0);
-  }
-  var crc = ~~previous ^ -1;
-  for (var n = 0; n < buf.length; n++) {
-    crc = CRC_TABLE[(crc ^ buf[n]) & 0xff] ^ (crc >>> 8);
-  }
-  return (crc ^ -1);
-}
-
-function crc32() {
-  return bufferizeInt(_crc32.apply(null, arguments));
-}
-crc32.signed = function () {
-  return _crc32.apply(null, arguments);
+},{"./lib/Hash":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js","./lib/algorithm":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\algorithm.js","./lib/register":"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\register.js"}],"bar-fs-adapter":[function(require,module,exports){
+module.exports.createFsAdapter = () => {
+    const FsAdapter = require("./lib/FsAdapter");
+    return new FsAdapter();
 };
-crc32.unsigned = function () {
-  return _crc32.apply(null, arguments) >>> 0;
+},{"./lib/FsAdapter":"D:\\Catalin\\Munca\\privatesky\\modules\\bar-fs-adapter\\lib\\FsAdapter.js"}],"bar":[function(require,module,exports){
+
+const ArchiveConfigurator = require("./lib/ArchiveConfigurator");
+const createFolderBrickStorage = require("./lib/FolderBrickStorage").createFolderBrickStorage;
+const createFileBrickStorage = require("./lib/FileBrickStorage").createFileBrickStorage;
+
+ArchiveConfigurator.prototype.registerStorageProvider("FolderBrickStorage", createFolderBrickStorage);
+ArchiveConfigurator.prototype.registerStorageProvider("FileBrickStorage", createFileBrickStorage);
+
+module.exports.ArchiveConfigurator = ArchiveConfigurator;
+module.exports.createBrick = (config) => {
+    const Brick = require("./lib/Brick");
+    return new Brick(config);
 };
 
-module.exports = crc32;
+module.exports.createArchive = (archiveConfigurator) => {
+    const Archive = require("./lib/Archive");
+    return new Archive(archiveConfigurator);
+};
+module.exports.createArchiveConfigurator = () => {
+    return new ArchiveConfigurator();
+};
 
-},{"buffer":false}],"buffer-from":[function(require,module,exports){
+module.exports.createBarMap = (header) => {
+    const BarMap = require("./lib/FolderBarMap");
+    return new BarMap(header);
+};
+
+module.exports.Seed = require('./lib/Seed');
+module.exports.createFolderBrickStorage = createFolderBrickStorage;
+module.exports.createFileBrickStorage = createFileBrickStorage;
+
+},{"./lib/Archive":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Archive.js","./lib/ArchiveConfigurator":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\ArchiveConfigurator.js","./lib/Brick":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Brick.js","./lib/FileBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FileBrickStorage.js","./lib/FolderBarMap":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBarMap.js","./lib/FolderBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\FolderBrickStorage.js","./lib/Seed":"D:\\Catalin\\Munca\\privatesky\\modules\\bar\\lib\\Seed.js"}],"buffer-from":[function(require,module,exports){
 (function (Buffer){
 var toString = Object.prototype.toString
 
@@ -10046,15 +12831,50 @@ module.exports = {
     createStandardAPIsForSwarms: require("./lib/utilityFunctions/base").createForObject,
     initialise: initialise
 };
-},{"./constants":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js","./lib/InterceptorRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\InterceptorRegistry.js","./lib/loadLibrary":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\loadLibrary.js","./lib/parallelJoinPoint":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\parallelJoinPoint.js","./lib/serialJoinPoint":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\serialJoinPoint.js","./lib/swarmDescription":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\swarmDescription.js","./lib/utilityFunctions/base":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\utilityFunctions\\base.js","crypto":false,"path":false,"soundpubsub":"soundpubsub"}],"edfs-middleware":[function(require,module,exports){
-module.exports.getEDFSMiddleware = () => require("./lib/EDFSMiddleware");
-module.exports.createEDFSClient = (url) => {
-    const EDFSClient = require("./lib/EDFSClient");
-    return new EDFSClient(url);
+},{"./constants":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js","./lib/InterceptorRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\InterceptorRegistry.js","./lib/loadLibrary":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\loadLibrary.js","./lib/parallelJoinPoint":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\parallelJoinPoint.js","./lib/serialJoinPoint":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\serialJoinPoint.js","./lib/swarmDescription":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\swarmDescription.js","./lib/utilityFunctions/base":"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\lib\\utilityFunctions\\base.js","crypto":false,"path":false,"soundpubsub":false}],"dossier":[function(require,module,exports){
+const se = require("swarm-engine");
+if(typeof $$ === "undefined" || typeof $$.swarmEngine === "undefined"){
+    se.initialise();
+}
+
+module.exports.load = function(seed, identity, callback){
+    const pathName = "path";
+    const path = require(pathName);
+    const powerCord = new se.OuterThreadPowerCord(path.join(process.env.PSK_ROOT_INSTALATION_FOLDER, "psknode/bundles/threadBoot.js"), false, seed);
+
+    let cord_identity;
+    try{
+        const crypto = require("pskcrypto");
+        cord_identity = crypto.pskHash(seed, "hex");
+        $$.swarmEngine.plug(cord_identity, powerCord);
+    }catch(err){
+        return callback(err);
+    }
+    $$.interactions.startSwarmAs(cord_identity, "transactionHandler", "start", identity, "TooShortBlockChainWorkaroundDeleteThis", "add").onReturn(err => {
+        if (err) {
+            return callback(err);
+        }
+
+        const handler = {
+            attachTo : $$.interactions.attachTo,
+            startTransaction : function (transactionTypeName, methodName, ...args) {
+                //todo: get identity from context somehow
+                return $$.interactions.startSwarmAs(cord_identity, "transactionHandler", "start", identity, transactionTypeName, methodName, ...args);
+            }
+        };
+        //todo implement a way to know when thread is ready
+        setTimeout(()=>{
+            callback(undefined, handler);
+        }, 100);
+    });
+};
+},{"pskcrypto":"pskcrypto","swarm-engine":"swarm-engine"}],"edfs-brick-storage":[function(require,module,exports){
+module.exports.create = (endpoint) => {
+    const EDFSBrickStorage = require("./EDFSBrickStorage");
+    return new EDFSBrickStorage(endpoint)
 };
 
-
-},{"./lib/EDFSClient":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSClient.js","./lib/EDFSMiddleware":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-middleware\\lib\\EDFSMiddleware.js"}],"edfs":[function(require,module,exports){
+},{"./EDFSBrickStorage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs-brick-storage\\EDFSBrickStorage.js"}],"edfs":[function(require,module,exports){
 require("./brickTransportStrategies/brickTransportStrategiesRegistry");
 const constants = require("./moduleConstants");
 
@@ -10102,308 +12922,7 @@ module.exports = {
     },
     constants: constants
 };
-},{"./brickTransportStrategies/FetchBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js","./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js","./brickTransportStrategies/brickTransportStrategiesRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js","./lib/EDFS":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js","./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","./seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","bar":false,"overwrite-require":"overwrite-require"}],"node-fd-slicer":[function(require,module,exports){
-(function (Buffer,setImmediate){
-var fs = require('fs');
-var util = require('util');
-var stream = require('stream');
-var Readable = stream.Readable;
-var Writable = stream.Writable;
-var PassThrough = stream.PassThrough;
-var Pend = require('./modules/node-pend');
-var EventEmitter = require('events').EventEmitter;
-
-exports.createFromBuffer = createFromBuffer;
-exports.createFromFd = createFromFd;
-exports.BufferSlicer = BufferSlicer;
-exports.FdSlicer = FdSlicer;
-
-util.inherits(FdSlicer, EventEmitter);
-function FdSlicer(fd, options) {
-  options = options || {};
-  EventEmitter.call(this);
-
-  this.fd = fd;
-  this.pend = new Pend();
-  this.pend.max = 1;
-  this.refCount = 0;
-  this.autoClose = !!options.autoClose;
-}
-
-FdSlicer.prototype.read = function(buffer, offset, length, position, callback) {
-  var self = this;
-  self.pend.go(function(cb) {
-    fs.read(self.fd, buffer, offset, length, position, function(err, bytesRead, buffer) {
-      cb();
-      callback(err, bytesRead, buffer);
-    });
-  });
-};
-
-FdSlicer.prototype.write = function(buffer, offset, length, position, callback) {
-  var self = this;
-  self.pend.go(function(cb) {
-    fs.write(self.fd, buffer, offset, length, position, function(err, written, buffer) {
-      cb();
-      callback(err, written, buffer);
-    });
-  });
-};
-
-FdSlicer.prototype.createReadStream = function(options) {
-  return new ReadStream(this, options);
-};
-
-FdSlicer.prototype.createWriteStream = function(options) {
-  return new WriteStream(this, options);
-};
-
-FdSlicer.prototype.ref = function() {
-  this.refCount += 1;
-};
-
-FdSlicer.prototype.unref = function() {
-  var self = this;
-  self.refCount -= 1;
-
-  if (self.refCount > 0) return;
-  if (self.refCount < 0) throw new Error("invalid unref");
-
-  if (self.autoClose) {
-    fs.close(self.fd, onCloseDone);
-  }
-
-  function onCloseDone(err) {
-    if (err) {
-      self.emit('error', err);
-    } else {
-      self.emit('close');
-    }
-  }
-};
-
-util.inherits(ReadStream, Readable);
-function ReadStream(context, options) {
-  options = options || {};
-  Readable.call(this, options);
-
-  this.context = context;
-  this.context.ref();
-
-  this.start = options.start || 0;
-  this.endOffset = options.end;
-  this.pos = this.start;
-  this.destroyed = false;
-}
-
-ReadStream.prototype._read = function(n) {
-  var self = this;
-  if (self.destroyed) return;
-
-  var toRead = Math.min(self._readableState.highWaterMark, n);
-  if (self.endOffset != null) {
-    toRead = Math.min(toRead, self.endOffset - self.pos);
-  }
-  if (toRead <= 0) {
-    self.destroyed = true;
-    self.push(null);
-    self.context.unref();
-    return;
-  }
-  self.context.pend.go(function(cb) {
-    if (self.destroyed) return cb();
-    var buffer = new Buffer(toRead);
-    fs.read(self.context.fd, buffer, 0, toRead, self.pos, function(err, bytesRead) {
-      if (err) {
-        self.destroy(err);
-      } else if (bytesRead === 0) {
-        self.destroyed = true;
-        self.push(null);
-        self.context.unref();
-      } else {
-        self.pos += bytesRead;
-        self.push(buffer.slice(0, bytesRead));
-      }
-      cb();
-    });
-  });
-};
-
-ReadStream.prototype.destroy = function(err) {
-  if (this.destroyed) return;
-  err = err || new Error("stream destroyed");
-  this.destroyed = true;
-  this.emit('error', err);
-  this.context.unref();
-};
-
-util.inherits(WriteStream, Writable);
-function WriteStream(context, options) {
-  options = options || {};
-  Writable.call(this, options);
-
-  this.context = context;
-  this.context.ref();
-
-  this.start = options.start || 0;
-  this.endOffset = (options.end == null) ? Infinity : +options.end;
-  this.bytesWritten = 0;
-  this.pos = this.start;
-  this.destroyed = false;
-
-  this.on('finish', this.destroy.bind(this));
-}
-
-WriteStream.prototype._write = function(buffer, encoding, callback) {
-  var self = this;
-  if (self.destroyed) return;
-
-  if (self.pos + buffer.length > self.endOffset) {
-    var err = new Error("maximum file length exceeded");
-    err.code = 'ETOOBIG';
-    self.destroy();
-    callback(err);
-    return;
-  }
-  self.context.pend.go(function(cb) {
-    if (self.destroyed) return cb();
-    fs.write(self.context.fd, buffer, 0, buffer.length, self.pos, function(err, bytes) {
-      if (err) {
-        self.destroy();
-        cb();
-        callback(err);
-      } else {
-        self.bytesWritten += bytes;
-        self.pos += bytes;
-        self.emit('progress');
-        cb();
-        callback();
-      }
-    });
-  });
-};
-
-WriteStream.prototype.destroy = function() {
-  if (this.destroyed) return;
-  this.destroyed = true;
-  this.context.unref();
-};
-
-util.inherits(BufferSlicer, EventEmitter);
-function BufferSlicer(buffer, options) {
-  EventEmitter.call(this);
-
-  options = options || {};
-  this.refCount = 0;
-  this.buffer = buffer;
-  this.maxChunkSize = options.maxChunkSize || Number.MAX_SAFE_INTEGER;
-}
-
-BufferSlicer.prototype.read = function(buffer, offset, length, position, callback) {
-  var end = position + length;
-  var delta = end - this.buffer.length;
-  var written = (delta > 0) ? delta : length;
-  this.buffer.copy(buffer, offset, position, end);
-  setImmediate(function() {
-    callback(null, written);
-  });
-};
-
-BufferSlicer.prototype.write = function(buffer, offset, length, position, callback) {
-  buffer.copy(this.buffer, position, offset, offset + length);
-  setImmediate(function() {
-    callback(null, length, buffer);
-  });
-};
-
-BufferSlicer.prototype.createReadStream = function(options) {
-  options = options || {};
-  var readStream = new PassThrough(options);
-  readStream.destroyed = false;
-  readStream.start = options.start || 0;
-  readStream.endOffset = options.end;
-  // by the time this function returns, we'll be done.
-  readStream.pos = readStream.endOffset || this.buffer.length;
-
-  // respect the maxChunkSize option to slice up the chunk into smaller pieces.
-  var entireSlice = this.buffer.slice(readStream.start, readStream.pos);
-  var offset = 0;
-  while (true) {
-    var nextOffset = offset + this.maxChunkSize;
-    if (nextOffset >= entireSlice.length) {
-      // last chunk
-      if (offset < entireSlice.length) {
-        readStream.write(entireSlice.slice(offset, entireSlice.length));
-      }
-      break;
-    }
-    readStream.write(entireSlice.slice(offset, nextOffset));
-    offset = nextOffset;
-  }
-
-  readStream.end();
-  readStream.destroy = function() {
-    readStream.destroyed = true;
-  };
-  return readStream;
-};
-
-BufferSlicer.prototype.createWriteStream = function(options) {
-  var bufferSlicer = this;
-  options = options || {};
-  var writeStream = new Writable(options);
-  writeStream.start = options.start || 0;
-  writeStream.endOffset = (options.end == null) ? this.buffer.length : +options.end;
-  writeStream.bytesWritten = 0;
-  writeStream.pos = writeStream.start;
-  writeStream.destroyed = false;
-  writeStream._write = function(buffer, encoding, callback) {
-    if (writeStream.destroyed) return;
-
-    var end = writeStream.pos + buffer.length;
-    if (end > writeStream.endOffset) {
-      var err = new Error("maximum file length exceeded");
-      err.code = 'ETOOBIG';
-      writeStream.destroyed = true;
-      callback(err);
-      return;
-    }
-    buffer.copy(bufferSlicer.buffer, writeStream.pos, 0, buffer.length);
-
-    writeStream.bytesWritten += buffer.length;
-    writeStream.pos = end;
-    writeStream.emit('progress');
-    callback();
-  };
-  writeStream.destroy = function() {
-    writeStream.destroyed = true;
-  };
-  return writeStream;
-};
-
-BufferSlicer.prototype.ref = function() {
-  this.refCount += 1;
-};
-
-BufferSlicer.prototype.unref = function() {
-  this.refCount -= 1;
-
-  if (this.refCount < 0) {
-    throw new Error("invalid unref");
-  }
-};
-
-function createFromBuffer(buffer, options) {
-  return new BufferSlicer(buffer, options);
-}
-
-function createFromFd(fd, options) {
-  return new FdSlicer(fd, options);
-}
-
-}).call(this,require("buffer").Buffer,require("timers").setImmediate)
-
-},{"./modules/node-pend":"D:\\Catalin\\Munca\\privatesky\\modules\\node-fd-slicer\\modules\\node-pend\\index.js","buffer":false,"events":false,"fs":false,"stream":false,"timers":false,"util":false}],"overwrite-require":[function(require,module,exports){
+},{"./brickTransportStrategies/FetchBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\FetchBrickTransportStrategy.js","./brickTransportStrategies/HTTPBrickTransportStrategy":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\HTTPBrickTransportStrategy.js","./brickTransportStrategies/brickTransportStrategiesRegistry":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\brickTransportStrategies\\brickTransportStrategiesRegistry.js","./lib/EDFS":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\lib\\EDFS.js","./moduleConstants":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\moduleConstants.js","./seedCage":"D:\\Catalin\\Munca\\privatesky\\modules\\edfs\\seedCage\\index.js","bar":"bar","overwrite-require":"overwrite-require"}],"overwrite-require":[function(require,module,exports){
 (function (global){
 /*
  require and $$.require are overwriting the node.js defaults in loading modules for increasing security, speed and making it work to the privatesky runtime build with browserify.
@@ -10754,34 +13273,7 @@ if ($$.environmentType === or.constants.BROWSER_ENVIRONMENT_TYPE) {
 } else {
 	require("./lib/psk-node-client");
 }
-},{"./lib/psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","./lib/psk-browser-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-browser-client.js","./lib/psk-node-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-node-client.js","overwrite-require":"overwrite-require"}],"psk-security-context":[function(require,module,exports){
-const RawCSBSecurityContext = require("./lib/RawCSBSecurityContext");
-const RootCSBSecurityContext = require("./lib/RootCSBSecurityContext");
-const SecurityContext = require("./lib/SecurityContext");
-const EncryptedSecret = require("./lib/EncryptedSecret");
-const PSKSignature = require("./lib/PSKSignature");
-
-module.exports.createSecurityContext = (securityContextType, ...args) => {
-    switch (securityContextType) {
-        case "RootCSBSecurityContext":
-            return new RootCSBSecurityContext(...args);
-        case "RawCSBSecurityContext":
-            return new RawCSBSecurityContext(...args);
-        default:
-            return new SecurityContext(...args);
-    }
-};
-
-module.exports.createEncryptedSecret = (serializedEncryptedSecret) => {
-    return new EncryptedSecret(serializedEncryptedSecret);
-};
-
-
-module.exports.createPSKSignature = (serializedPSKSignature) => {
-    return new PSKSignature(serializedPSKSignature);
-};
-
-},{"./lib/EncryptedSecret":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\EncryptedSecret.js","./lib/PSKSignature":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\PSKSignature.js","./lib/RawCSBSecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RawCSBSecurityContext.js","./lib/RootCSBSecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\RootCSBSecurityContext.js","./lib/SecurityContext":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-security-context\\lib\\SecurityContext.js"}],"pskcrypto":[function(require,module,exports){
+},{"./lib/psk-abstract-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-abstract-client.js","./lib/psk-browser-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-browser-client.js","./lib/psk-node-client":"D:\\Catalin\\Munca\\privatesky\\modules\\psk-http-client\\lib\\psk-node-client.js","overwrite-require":"overwrite-require"}],"pskcrypto":[function(require,module,exports){
 const PskCrypto = require("./lib/PskCrypto");
 const ssutil = require("./signsensusDS/ssutil");
 
@@ -10792,11 +13284,18 @@ module.exports.hashValues = ssutil.hashValues;
 module.exports.DuplexStream = require("./lib/utils/DuplexStream");
 
 module.exports.isStream = require("./lib/utils/isStream");
-},{"./lib/PskCrypto":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js","./lib/utils/DuplexStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\DuplexStream.js","./lib/utils/isStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\isStream.js","./signsensusDS/ssutil":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\signsensusDS\\ssutil.js"}],"soundpubsub":[function(require,module,exports){
-module.exports = {
-					soundPubSub: require("./lib/soundPubSub").soundPubSub
-};
-},{"./lib/soundPubSub":"D:\\Catalin\\Munca\\privatesky\\modules\\soundpubsub\\lib\\soundPubSub.js"}],"source-map-support":[function(require,module,exports){
+},{"./lib/PskCrypto":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\PskCrypto.js","./lib/utils/DuplexStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\DuplexStream.js","./lib/utils/isStream":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\lib\\utils\\isStream.js","./signsensusDS/ssutil":"D:\\Catalin\\Munca\\privatesky\\modules\\pskcrypto\\signsensusDS\\ssutil.js"}],"pskwallet/index.js":[function(require,module,exports){
+(function (__dirname){
+const pskConsole = require('swarmutils').createPskConsole();
+const pathModule = "path";
+const path = require(pathModule);
+process.env.PSK_ROOT_INSTALATION_FOLDER = path.resolve("." + __dirname + "/../..");
+require("./cmds");
+pskConsole.runCommand();
+
+}).call(this,"/modules/pskwallet")
+
+},{"./cmds":"D:\\Catalin\\Munca\\privatesky\\modules\\pskwallet\\cmds\\index.js","swarmutils":"swarmutils"}],"source-map-support":[function(require,module,exports){
 var SourceMapConsumer = require('source-map').SourceMapConsumer;
 var path = require('path');
 
@@ -11375,7 +13874,33 @@ exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGene
 exports.SourceMapConsumer = require('./lib/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = require('./lib/source-node').SourceNode;
 
-},{"./lib/source-map-consumer":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js","./lib/source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./lib/source-node":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js"}],"swarmutils":[function(require,module,exports){
+},{"./lib/source-map-consumer":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-consumer.js","./lib/source-map-generator":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-map-generator.js","./lib/source-node":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map\\lib\\source-node.js"}],"swarm-engine":[function(require,module,exports){
+module.exports = {
+    initialise:function(...args){
+        if(typeof $$.swarmEngine === "undefined"){
+            const SwarmEngine = require('./SwarmEngine');
+            $$.swarmEngine = new SwarmEngine(...args);
+        }else{
+            $$.throw("Swarm engine already initialized!");
+        }
+    },
+    OuterIsolatePowerCord: require("./powerCords/OuterIsolatePowerCord"),
+    InnerIsolatePowerCord: require("./powerCords/InnerIsolatePowerCord"),
+    OuterThreadPowerCord: require("./powerCords/OuterThreadPowerCord"),
+    InnerThreadPowerCord: require("./powerCords/InnerThreadPowerCord"),
+    RemoteChannelPairPowerCord: require("./powerCords/RemoteChannelPairPowerCord"),
+    RemoteChannelPowerCord: require("./powerCords/RemoteChannelPowerCord"),
+    SmartRemoteChannelPowerCord:require("./powerCords/SmartRemoteChannelPowerCord"),
+    BootScripts: require('./bootScripts')
+};
+
+const or = require("overwrite-require");
+const browserContexts = [or.constants.BROWSER_ENVIRONMENT_TYPE, or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
+if (browserContexts.indexOf($$.environmentType) !== -1) {
+    module.exports.IframePowerCord = require("./powerCords/browser/IframePowerCord");
+    module.exports.HostPowerCord = require("./powerCords/browser/HostPowerCord");
+}
+},{"./SwarmEngine":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\SwarmEngine.js","./bootScripts":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\bootScripts\\index.js","./powerCords/InnerIsolatePowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\InnerIsolatePowerCord.js","./powerCords/InnerThreadPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\InnerThreadPowerCord.js","./powerCords/OuterIsolatePowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\OuterIsolatePowerCord.js","./powerCords/OuterThreadPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\OuterThreadPowerCord.js","./powerCords/RemoteChannelPairPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\RemoteChannelPairPowerCord.js","./powerCords/RemoteChannelPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\RemoteChannelPowerCord.js","./powerCords/SmartRemoteChannelPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\SmartRemoteChannelPowerCord.js","./powerCords/browser/HostPowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\HostPowerCord.js","./powerCords/browser/IframePowerCord":"D:\\Catalin\\Munca\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\IframePowerCord.js","overwrite-require":"overwrite-require"}],"swarmutils":[function(require,module,exports){
 (function (global){
 module.exports.OwM = require("./lib/OwM");
 module.exports.beesHealer = require("./lib/beesHealer");
@@ -11409,399 +13934,5 @@ if(typeof global.$$.uidGenerator == "undefined"){
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/Combos":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js","./lib/OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js","./lib/Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","./lib/SwarmPacker":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js","./lib/TaskCounter":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js","./lib/beesHealer":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js","./lib/pingpongFork":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js","./lib/pskconsole":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js","./lib/safe-uuid":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js","./lib/uidGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js"}],"virtualmq":[function(require,module,exports){
-const path = require("path");
-const httpWrapper = require('./libs/http-wrapper');
-const EDFSMiddleware = require("edfs-middleware").getEDFSMiddleware();
-const Server = httpWrapper.Server;
-const Router = httpWrapper.Router;
-const TokenBucket = require('./libs/TokenBucket');
-
-const signatureHeaderName = process.env.vmq_signature_header_name || 'x-signature';
-
-function VirtualMQ({listeningPort, rootFolder, sslConfig}, callback) {
-	const port = listeningPort || 8080;
-	const tokenBucket = new TokenBucket(600000, 1, 10);
-	const CSB_storage_folder = "uploads";
-
-	let bindFinish = (err)=>{
-		if(err){
-			console.log(err);
-			if(callback){
-				callback(err);
-			}
-			return;
-		}
-
-		this.close = server.close;
-		$$.flow.start("BricksManager").init(path.join(rootFolder, CSB_storage_folder), function (err, result) {
-			if (err) {
-				throw err;
-			} else {
-				console.log("BricksManager is using folder", result);
-				registerEndpoints();
-				if (callback) {
-					callback();
-				}
-			}
-		});
-	};
-
-	const server = new Server(sslConfig);
-	server.listen(port, (err) => {
-		if(err){
-			console.log(err);
-			if(callback){
-				callback(err);
-			}
-		}
-	});
-
-	server.on('listening', bindFinish);
-
-	function registerEndpoints() {
-		const router = new Router(server);
-		router.use("/EDFS", (newServer) => {
-			new EDFSMiddleware(newServer);
-		});
-
-		server.use(function (req, res, next) {
-			res.setHeader('Access-Control-Allow-Origin', req.headers.origin || req.headers.host);
-			res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-			res.setHeader('Access-Control-Allow-Headers', `Content-Type, Content-Length, X-Content-Length, Access-Control-Allow-Origin, ${signatureHeaderName}`);
-			res.setHeader('Access-Control-Allow-Credentials', true);
-			next();
-		});
-
-        server.use(function (req, res, next) {
-            const ip = res.socket.remoteAddress;
-
-            tokenBucket.takeToken(ip, tokenBucket.COST_MEDIUM, function(err, remainedTokens) {
-            	res.setHeader('X-RateLimit-Limit', tokenBucket.getLimitByCost(tokenBucket.COST_MEDIUM));
-            	res.setHeader('X-RateLimit-Remaining', tokenBucket.getRemainingTokenByCost(remainedTokens, tokenBucket.COST_MEDIUM));
-
-            	if(err) {
-            		if (err === TokenBucket.ERROR_LIMIT_EXCEEDED) {
-						res.statusCode = 429;
-					} else {
-						res.statusCode = 500;
-					}
-
-            		res.end();
-            		return;
-            	}
-
-            	next();
-            });
-        });
-
-		//folder can be userId/tripId/...
-		server.post('/files/upload/:folder', function (req,res) {
-			let fileManager = require('./fileManager');
-			fileManager.upload(req, (err, result)=>{
-				if(err){
-					res.statusCode = 500;
-					res.end();
-				}else{
-					res.statusCode = 200;
-					res.end(JSON.stringify(result));
-				}
-			})
-		});
-
-		server.get('/files/download/:filepath', function (req,res) {
-			let fileManager = require('./fileManager');
-			fileManager.download(req, res, (err, result)=>{
-				if(err){
-					res.statusCode = 404;
-					res.end();
-				}else{
-					res.statusCode = 200;
-					result.pipe(res);
-					result.on('finish', () => {
-						res.end();
-					})
-				}
-			})
-		});
-
-
-		server.options('/*', function (req, res) {
-			const headers = {};
-			// IE8 does not allow domains to be specified, just the *
-			headers["Access-Control-Allow-Origin"] = req.headers.origin;
-			// headers["Access-Control-Allow-Origin"] = "*";
-			headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-			headers["Access-Control-Allow-Credentials"] = true;
-			headers["Access-Control-Max-Age"] = '3600'; //one hour
-			headers["Access-Control-Allow-Headers"] = `Content-Type, Content-Length, X-Content-Length, Access-Control-Allow-Origin, User-Agent, ${signatureHeaderName}`;
-			res.writeHead(200, headers);
-			res.end();
-		});
-
-		require("./ChannelsManager.js")(server);
-
-		server.use(function (req, res) {
-			res.statusCode = 404;
-			res.end();
-		});
-	}
-}
-
-module.exports.createVirtualMQ = function(port, folder, sslConfig, callback){
-	if(typeof sslConfig === 'function') {
-		callback = sslConfig;
-		sslConfig = undefined;
-	}
-
-	return new VirtualMQ({listeningPort:port, rootFolder:folder, sslConfig}, callback);
-};
-
-module.exports.getVMQRequestFactory = function(virtualMQAddress, zeroMQAddress) {
-	const VMQRequestFactory = require('./VMQRequestFactory');
-
-	return new VMQRequestFactory(virtualMQAddress, zeroMQAddress);
-};
-
-module.exports.getHttpWrapper = function() {
-	return require('./libs/http-wrapper');
-};
-
-},{"./ChannelsManager.js":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\ChannelsManager.js","./VMQRequestFactory":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\VMQRequestFactory.js","./fileManager":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\fileManager.js","./libs/TokenBucket":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\TokenBucket.js","./libs/http-wrapper":"D:\\Catalin\\Munca\\privatesky\\modules\\virtualmq\\libs\\http-wrapper\\src\\index.js","edfs-middleware":"edfs-middleware","path":false}],"zmq_adapter":[function(require,module,exports){
-(function (Buffer){
-const defaultForwardAddress = process.env.vmq_zeromq_forward_address || "tcp://127.0.0.1:5001";
-const defaultSubAddress = process.env.vmq_zeromq_sub_address || "tcp://127.0.0.1:5000";
-const defaultPubAddress = process.env.vmq_zeromq_pub_address || "tcp://127.0.0.1:5001";
-
-const zeroMQModuleName = "zeromq";
-let zmq = require(zeroMQModuleName);
-
-function registerKiller(children){
-    const events = ["SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM", "SIGHUP"];
-
-    events.forEach(function(event){
-        process.on(event, function(...args){
-            children.forEach(function(child){
-                console.log("Something bad happened.", event, ...args);
-                try{
-                    child.close();
-                }catch(err){
-                    //..
-                    console.log(err);
-                }
-            });
-        });
-    });
-}
-
-function ZeromqForwarder(bindAddress){
-
-    let socket = zmq.socket("pub");
-    let initialized = false;
-
-    function connect(){
-        socket.monitor();
-        socket.connect(bindAddress);
-
-        socket.on("connect",(fd)=>{
-            console.log(`[Forwarder] connected on ${bindAddress}`);
-            initialized = true;
-            sendBuffered();
-        });
-    }
-
-    connect();
-
-    registerKiller([socket]);
-
-    const Queue = require("swarmutils").Queue;
-    let buffered = new Queue();
-
-    let sendBuffered = ()=>{
-        while(buffered.length>0){
-            this.send(...buffered.pop());
-        }
-    };
-
-    this.send = function(channel, ...args){
-        if(initialized){
-            //console.log("[Forwarder] Putting message on socket", args);
-            socket.send([channel, ...args], undefined, (...args)=>{
-                //console.log("[Forwarder] message sent");
-            });
-        }else{
-            //console.log("[Forwarder] Saving it for later");
-            buffered.push([channel, ...args]);
-        }
-    }
-}
-
-function ZeromqProxyNode(subAddress, pubAddress, signatureChecker){
-
-    const publishersNode = zmq.createSocket('xsub');
-    const subscribersNode = zmq.createSocket('xpub');
-
-    // By default xpub only signals new subscriptions
-    // Settings it to verbose = 1 , will signal on every new subscribe
-    // uncomment next lines if messages are lost
-    subscribersNode.setsockopt(zmq.ZMQ_XPUB_VERBOSE, 1);
-
-    publishersNode.on('message', deliverMessage);
-
-    function deliverMessage(channel, message){
-        //console.log(`[Proxy] - Received message on channel ${channel.toString()}`);
-        let ch = channelTranslationDictionary[channel.toString()];
-        if(ch){
-            //console.log("[Proxy] - Sending message on channel", ch);
-            subscribersNode.send([Buffer.from(ch), message]);
-        }else{
-            //console.log(`[Proxy] - message dropped!`);
-        }
-        //subscribersNode.send([channel, message]);
-    }
-
-    let channelTranslationDictionary = {};
-
-    subscribersNode.on('message', manageSubscriptions);
-
-    function manageSubscriptions(subscription){
-        //console.log("[Proxy] - manage message", subscription.toString());
-
-        let message = subscription.toString();
-        let type = subscription[0];
-        message = message.substr(1);
-
-        //console.log(`[Proxy] - Trying to send ${type==1?"subscribe":"unsubscribe"} type of message`);
-
-        if(typeof signatureChecker === "undefined"){
-            //console.log("[Proxy] - No signature checker defined then transparent proxy...", subscription);
-            publishersNode.send(subscription);
-            return;
-        }
-
-        try{
-            //console.log("[Proxy] - let's deserialize and start analize");
-            let deserializedData = JSON.parse(message);
-            //TODO: check deserializedData.signature
-            //console.log("[Proxy] - Start checking message signature");
-            signatureChecker(deserializedData.channelName, deserializedData.signature, (err, res)=>{
-                if(err){
-                    //...
-                    //console.log("Err", err);
-                }else{
-                    let newSub = Buffer.alloc(deserializedData.channelName.length+1);
-                    let ch = Buffer.from(deserializedData.channelName);
-                    if(type===1){
-                        newSub.write("01", 0, 1, "hex");
-                    }else{
-                        newSub.write("00", 0, 1, "hex");
-                    }
-
-                    ch.copy(newSub, 1);
-                    //console.log("[Proxy] - sending subscription", /*"\n\t\t", subscription.toString('hex'), "\n\t\t", newSub.toString('hex'),*/ newSub);
-                    channelTranslationDictionary[deserializedData.channelName] = message;
-                    publishersNode.send(newSub);
-                    return;
-                }
-            });
-        }catch(err){
-            if(message.toString()!==""){
-                //console.log("Something went wrong. Subscription will not be made.", err);
-            }
-        }
-    }
-
-    try{
-        publishersNode.bindSync(pubAddress);
-        subscribersNode.bindSync(subAddress);
-        console.log(`\nStarting ZeroMQ proxy on [subs:${subAddress}] [pubs:${pubAddress}]\n`);
-    }catch(err){
-        console.log("Caught error on binding", err);
-        throw new Error("No zeromq!!!");
-    }
-
-    registerKiller([publishersNode, subscribersNode]);
-}
-
-function ZeromqConsumer(bindAddress, monitorFunction){
-
-    let socket = zmq.socket("sub");
-
-    if(typeof monitorFunction === "function"){
-        let events = ["connect", "connect_delay", "connect_retry", "listen", "bind_error", "accept", "accept_error", "close", "close_error", "disconnect"];
-        socket.monitor();
-        events.forEach((eventType)=>{
-            socket.on(eventType, (...args)=>{
-                monitorFunction(eventType, ...args);
-            });
-        });
-    }
-
-    function connect(callback){
-        socket.connect(bindAddress);
-        socket.on("connect", callback);
-    }
-
-    let subscriptions = {};
-    let connected = false;
-
-    this.subscribe = function(channelName, signature, callback){
-        let subscription = JSON.stringify({channelName, signature:signature});
-        if(!subscriptions[subscription]){
-            subscriptions[subscription] = [];
-        }
-
-        subscriptions[subscription].push(callback);
-
-        if(!connected){
-            connect(()=>{
-                connected = true;
-                for(var subscription in subscriptions){
-                    socket.subscribe(subscription);
-                }
-            });
-        }else{
-            socket.subscribe(subscription);
-        }
-    };
-
-    this.close = function(){
-        socket.close();
-    };
-
-    socket.on("message", (channel, receivedMessage)=>{
-       let callbacks = subscriptions[channel];
-       if(!callbacks || callbacks.length === 0){
-           return console.log(`No subscriptions found for channel ${channel}. Message dropped!`);
-       }
-       for(let i = 0; i<callbacks.length; i++){
-           let cb = callbacks[i];
-           cb(channel, receivedMessage);
-       }
-    });
-}
-
-let instance;
-module.exports.getForwarderInstance = function(address){
-    if(!instance){
-        address = address || defaultForwardAddress;
-        instance = new ZeromqForwarder(address);
-    }
-    return instance;
-};
-
-module.exports.createZeromqProxyNode = function(subAddress, pubAddress, signatureChecker){
-    subAddress = subAddress || defaultSubAddress;
-    pubAddress = pubAddress || defaultPubAddress;
-    return new ZeromqProxyNode(subAddress, pubAddress, signatureChecker);
-};
-
-module.exports.createZeromqConsumer = function(bindAddress, monitorFunction){
-    return new ZeromqConsumer(bindAddress, monitorFunction);
-};
-
-module.exports.registerKiller = registerKiller;
-}).call(this,require("buffer").Buffer)
-
-},{"buffer":false,"swarmutils":"swarmutils"}]},{},["D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\virtualMQ.js"])
-//# sourceMappingURL=virtualMQ.js.map
+},{"./lib/Combos":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Combos.js","./lib/OwM":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\OwM.js","./lib/Queue":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\Queue.js","./lib/SwarmPacker":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\SwarmPacker.js","./lib/TaskCounter":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\TaskCounter.js","./lib/beesHealer":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\beesHealer.js","./lib/pingpongFork":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pingpongFork.js","./lib/pskconsole":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\pskconsole.js","./lib/safe-uuid":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\safe-uuid.js","./lib/uidGenerator":"D:\\Catalin\\Munca\\privatesky\\modules\\swarmutils\\lib\\uidGenerator.js"}]},{},["D:\\Catalin\\Munca\\privatesky\\builds\\tmp\\walletBoot.js"])
+//# sourceMappingURL=walletBoot.js.map
