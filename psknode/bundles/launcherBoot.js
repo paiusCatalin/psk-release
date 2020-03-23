@@ -74,16 +74,15 @@ global.launcherBootLoadModules = function(){
 	if(typeof $$.__runtimeModules["boot-script"] === "undefined"){
 		$$.__runtimeModules["boot-script"] = require("swarm-engine/bootScripts/launcherBootScript");
 	}
-}
+};
 if (true) {
 	launcherBootLoadModules();
-}; 
+}
 global.launcherBootRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("launcherBoot");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("launcherBoot");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"adler32":"adler32","bar":"bar","bar-fs-adapter":"bar-fs-adapter","buffer-from":"buffer-from","edfs":"edfs","edfs-brick-storage":"edfs-brick-storage","edfs-middleware":"edfs-middleware","overwrite-require":"overwrite-require","psk-http-client":"psk-http-client","psk-security-context":"psk-security-context","pskcrypto":"pskcrypto","source-map":"source-map","source-map-support":"source-map-support","swarm-engine/bootScripts/launcherBootScript":"swarm-engine/bootScripts/launcherBootScript","swarmutils":"swarmutils","syndicate":"syndicate","zmq_adapter":"zmq_adapter"}],"D:\\Catalin\\Munca\\privatesky\\modules\\adler32\\lib\\Hash.js":[function(require,module,exports){
@@ -537,6 +536,7 @@ function Archive(archiveConfigurator) {
     this.getFolderHash = (folderBarPath, callback) => {
         loadBarMapThenExecute(() => {
             const fileList = barMap.getFileList(folderBarPath);
+            fileList.sort();
             let xor;
             for (let i = 0; i < fileList.length - 1; i++) {
                 xor = crypto.xorBuffers(__computeFileHash(fileList[i]), __computeFileHash(fileList[i + 1]));
@@ -802,15 +802,16 @@ function Archive(archiveConfigurator) {
         }
     };
 
-    this.addFile = (fsFilePath, barPath, callback) => {
-        if (typeof barPath === "function") {
-            callback = barPath;
-            barPath = fsFilePath;
+    this.addFile = (fsFilePath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
         }
         loadBarMapThenExecute(__addFile, callback);
 
         function __addFile() {
-            createBricks(fsFilePath, barPath, archiveConfigurator.getBufferSize(), (err) => {
+            createBricks(fsFilePath, barPath, archiveConfigurator.getBufferSize(), options.encrypt, (err) => {
                 if (err) {
                     return callback(err);
                 }
@@ -825,29 +826,39 @@ function Archive(archiveConfigurator) {
         }
     };
 
-    /* TODO: do not create multiple BARMaps... */
-    this.addFiles = (arrWithFilePaths, barPath, callback) => {
+    this.addFiles = (arrWithFilePaths, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
+        }
+
         let arr = arrWithFilePaths.slice();
-        let self = this;
+
+        loadBarMapThenExecute(() => {
+            recAdd()
+        }, callback);
 
         function recAdd() {
             if (arr.length > 0) {
                 let filePath = arr.pop();
-
                 let fileName = path.basename(filePath);
-                self.addFile(filePath, barPath + "/" + fileName, function (err, res) {
+
+                createBricks(filePath, barPath + "/" + fileName, archiveConfigurator.getBufferSize(), options.encrypt,(err) => {
                     if (err) {
-                        callback(err);
-                    } else {
-                        recAdd();
+                        return callback(err);
                     }
+
+                    recAdd();
                 });
             } else {
-                callback(null, true);
+                barMap.setConfig(archiveConfigurator);
+                if (archiveConfigurator.getMapEncryptionKey()) {
+                    barMap.setEncryptionKey(archiveConfigurator.getMapEncryptionKey());
+                }
+                storageProvider.putBarMap(barMap, callback);
             }
         }
-
-        recAdd();
     };
 
     this.extractFile = (fsFilePath, barPath, callback) => {
@@ -971,10 +982,11 @@ function Archive(archiveConfigurator) {
         }, callback);
     };
 
-    this.addFolder = (fsFolderPath, barPath, callback) => {
-        if (typeof barPath === "function") {
-            callback = barPath;
-            barPath = fsFolderPath;
+    this.addFolder = (fsFolderPath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
         }
         const filesIterator = archiveFsAdapter.getFilesIterator(fsFolderPath);
 
@@ -991,7 +1003,7 @@ function Archive(archiveConfigurator) {
 
                 if (typeof file !== "undefined") {
                     const normalizedFilePath = file.split(path.sep).join("/");
-                    createBricks(path.join(rootFsPath, file), barPath + "/" + normalizedFilePath, archiveConfigurator.getBufferSize(), (err) => {
+                    createBricks(path.join(rootFsPath, file), barPath + "/" + normalizedFilePath, archiveConfigurator.getBufferSize(), options.encrypt, (err) => {
                         if (err) {
                             return callback(err);
                         }
@@ -1056,6 +1068,13 @@ function Archive(archiveConfigurator) {
         storageProvider.putBarMap(barMap, callback);
     };
 
+    this.delete = (barPath, callback) => {
+        loadBarMapThenExecute(() => {
+            barMap.delete(barPath);
+            callback();
+        }, callback);
+    };
+
     this.listFiles = (folderBarPath, callback) => {
         if (typeof folderBarPath === "function") {
             callback = folderBarPath;
@@ -1077,8 +1096,7 @@ function Archive(archiveConfigurator) {
         }, callback);
     };
 
-    this.clone = (targetStorage, preserveKeys = true, callback
-    ) => {
+    this.clone = (targetStorage, preserveKeys = true, callback) => {
         targetStorage.getBarMap((err, targetBarMap) => {
             if (err) {
                 return callback(err);
@@ -1191,8 +1209,11 @@ function Archive(archiveConfigurator) {
         });
     }
 
-    function createBricks(fsFilePath, barPath, blockSize, callback) {
-
+    function createBricks(fsFilePath, barPath, blockSize, areEncrypted, callback) {
+        if (typeof areEncrypted === "function") {
+            callback = areEncrypted;
+            areEncrypted = true;
+        }
         archiveFsAdapter.getFileSize(fsFilePath, (err, fileSize) => {
             if (err) {
                 return callback(err);
@@ -1203,8 +1224,6 @@ function Archive(archiveConfigurator) {
                 ++noBlocks;
             }
 
-            //todo: check if emptyList is called ok in this place.
-            // the scenario: adding a new file at an existing barPath should overwrite the initial content found there.
             if (!barMap.isEmpty(barPath)) {
                 barMap.emptyList(barPath);
             }
@@ -1216,8 +1235,8 @@ function Archive(archiveConfigurator) {
                         return callback(err);
                     }
 
+                    archiveConfigurator.setIsEncrypted(areEncrypted);
                     const brick = new Brick(archiveConfigurator);
-
                     brick.setRawData(blockData);
                     barMap.add(barPath, brick);
                     storageProvider.putBrick(brick, (err) => {
@@ -1281,6 +1300,14 @@ function ArchiveConfigurator() {
 
     this.getBufferSize = () => {
         return config.bufferSize;
+    };
+
+    this.setIsEncrypted = (flag) => {
+        config.isEncrypted = flag;
+    };
+
+    this.getIsEncrypted = () => {
+        return config.isEncrypted;
     };
 
     this.setStorageProvider = (storageProviderName, ...args) => {
@@ -1477,22 +1504,22 @@ function Brick(config) {
     let transformParameters;
     let transform = transformFactory.createBrickTransform(config);
 
-    this.setConfig = (newConfig)=> {
+    this.setConfig = (newConfig) => {
         config = newConfig;
         if (transform) {
             transform.setConfig(newConfig);
-        }else{
+        } else {
             transform = transformFactory.createBrickTransform(config);
         }
     };
 
-    this.createNewTransform = ()=> {
+    this.createNewTransform = () => {
         transform = transformFactory.createBrickTransform(config);
         transformParameters = undefined;
         transformData();
     };
 
-    this.getHash = ()=> {
+    this.getHash = () => {
         if (!hash) {
             hash = crypto.pskHash(this.getTransformedData()).toString("hex");
         }
@@ -1515,7 +1542,7 @@ function Brick(config) {
     this.getSeed = () => {
         return config.getSeed().toString();
     };
-    this.getAdler32 = ()=> {
+    this.getAdler32 = () => {
         return adler32.sum(this.getTransformedData());
     };
 
@@ -1526,7 +1553,7 @@ function Brick(config) {
         }
     };
 
-    this.getRawData = ()=> {
+    this.getRawData = () => {
         if (rawData) {
             return rawData;
         }
@@ -1547,11 +1574,11 @@ function Brick(config) {
         throw new Error("The brick does not contain any data.");
     };
 
-    this.setTransformedData = (data)=> {
+    this.setTransformedData = (data) => {
         transformedData = data;
     };
 
-    this.getTransformedData = ()=> {
+    this.getTransformedData = () => {
         if (!transformedData) {
             transformData();
         }
@@ -1567,14 +1594,14 @@ function Brick(config) {
         throw new Error("The brick does not contain any data.");
     };
 
-    this.getTransformParameters = ()=> {
+    this.getTransformParameters = () => {
         if (!transformedData) {
             transformData();
         }
         return transformParameters;
     };
 
-    this.setTransformParameters =  (newTransformParams) =>{
+    this.setTransformParameters = (newTransformParams) => {
         if (!newTransformParams) {
             return;
         }
@@ -1589,11 +1616,11 @@ function Brick(config) {
         });
     };
 
-    this.getRawSize = ()=> {
+    this.getRawSize = () => {
         return rawData.length;
     };
 
-    this.getTransformedSize = ()=> {
+    this.getTransformedSize = () => {
         if (!transformedData) {
             return rawData.length;
         }
@@ -2032,6 +2059,33 @@ function FolderBarMap(header) {
         header[filePath].splice(indexToRemove, 1);
     };
 
+    this.delete = (barPath) => {
+        if (typeof barPath === "undefined") {
+            throw Error("No path was provided");
+        }
+
+        if (barPath === "/" || barPath === "") {
+            header = {};
+        } else {
+            const splitPath = barPath.split("/");
+            if (splitPath[0] === "") {
+                splitPath.shift();
+            }
+            __removeRecursively(header, splitPath);
+        }
+
+        function __removeRecursively(folderObj, splitPath) {
+            const folderName = splitPath.shift();
+            if (folderObj[folderName]) {
+                if (splitPath.length === 0) {
+                    folderObj[folderName] = undefined;
+                } else {
+                    __removeRecursively(folderObj[folderName], splitPath);
+                }
+            }
+        }
+    };
+
     this.getDictionaryObject = () => {
         let objectDict = {};
         Object.keys(header).forEach((fileName) => {
@@ -2207,7 +2261,7 @@ function FolderBarMap(header) {
     this.getFolderList = (barPath) => {
         let folders = [];
         if (!barPath || barPath === "" || barPath === "/") {
-             __getAllFolders(header, "");
+            __getAllFolders(header, "");
             return folders;
         } else {
             const splitPath = barPath.split("/");
@@ -2775,7 +2829,7 @@ function EncryptionGenerator(config) {
         delete decryptionParameters.data;
         return {
             data: data,
-            params:decryptionParameters
+            params: decryptionParameters
         };
     };
 
@@ -2794,10 +2848,14 @@ function EncryptionGenerator(config) {
             return;
         }
 
+        if (config.getIsEncrypted() === false) {
+            return;
+        }
+
         const encOptions = config.getEncryptionOptions();
-        if(transformParameters && transformParameters.key){
+        if (transformParameters && transformParameters.key) {
             key = transformParameters.key;
-        }else{
+        } else {
             key = pskEncryption.generateEncryptionKey(algorithm);
         }
 
@@ -2819,6 +2877,11 @@ function EncryptionGenerator(config) {
         if (!algorithm) {
             return;
         }
+
+        if (config.getIsEncrypted() === false) {
+            return;
+        }
+
         const encOptions = config.getEncryptionOptions();
         let authTagLength = 0;
         if (!config.getEncryptionOptions() || !config.getAuthTagLength()) {
@@ -3623,33 +3686,104 @@ function RawDossier(endpoint, seed) {
         createBlockchain(bar).start(callback);
     };
 
-    this.addFolder = (fsFolderPath, barPath, callback) => {
-        bar.addFolder(fsFolderPath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    this.addFolder = (fsFolderPath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
+        }
+
+        if (options.depth === 0) {
+            bar.addFolder(fsFolderPath, barPath, options, (err, barMapDigest) => callback(err, barMapDigest));
+        } else {
+            loadBarForPath(barPath, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.addFolder(fsFolderPath, dossierContext.relativePath, options, callback);
+            });
+        }
     };
 
-    this.addFile = (fsFilePath, barPath, callback) => {
-        bar.addFile(fsFilePath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    this.addFile = (fsFilePath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
+        }
+        if (options.depth === 0) {
+            bar.addFolder(fsFilePath, barPath, options, (err, barMapDigest) => callback(err, barMapDigest));
+        } else {
+            loadBarForPath(barPath, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.addFile(fsFilePath, dossierContext.relativePath, options, callback);
+            });
+        }
     };
 
     this.readFile = (fileBarPath, callback) => {
-        this.loadBarForPath(fileBarPath, (err, dossierContext) => {
+
+        loadBarForPath(fileBarPath, (err, dossierContext) => {
             if (err) {
                 return callback(err);
             }
 
-            dossierContext.rawDossier.readFile(dossierContext.relativePath, callback);
+            dossierContext.archive.readFile(dossierContext.relativePath, callback);
         });
     };
 
-    this.extractFolder = bar.extractFolder;
+    this.extractFolder = (fsFolderPath, barPath, callback) => {
+        loadBarForPath(barPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
 
-    this.extractFile = bar.extractFile;
-
-    this.writeFile = (barPath, data, callback) => {
-        bar.writeFile(barPath, data, (err, barMapDigest) => callback(err, barMapDigest));
+            dossierContext.archive.extractFolder(fsFolderPath, dossierContext.relativePath, callback);
+        });
     };
 
-    this.listFiles = bar.listFiles;
+    this.extractFile = (fsFilePath, barPath, callback) => {
+        loadBarForPath(barPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.archive.extractFile(fsFilePath, dossierContext.relativePath, callback);
+        });
+    };
+
+    this.writeFile = (path, data, depth, callback) => {
+        if (typeof depth === "function") {
+            callback = depth;
+            depth = undefined;
+        }
+
+        if (depth === 0) {
+            bar.writeFile(path, data, callback);
+        } else {
+            loadBarForPath(path, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.writeFile(dossierContext.relativePath, data, callback);
+            });
+        }
+    };
+
+    this.listFiles = (path, callback) => {
+        loadBarForPath(path, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.archive.listFiles(dossierContext.relativePath, callback);
+        });
+    };
 
     this.mount = (path, name, archiveIdentifier, callback) => {
         bar.readFile(constants.MANIFEST_FILE, (err, data) => {
@@ -3734,8 +3868,8 @@ function RawDossier(endpoint, seed) {
         return barModule.createArchive(archiveConfigurator);
     }
 
-    this.loadBarForPath = (path, callback) => {
-        return __loadBarForPathRecursively(bar, "", path, callback);
+    function loadBarForPath(path, callback) {
+        __loadBarForPathRecursively(bar, "", path, callback);
 
         function __loadBarForPathRecursively(archive, prefixPath, relativePath, callback) {
             archive.listFiles((err, files) => {
@@ -3764,10 +3898,10 @@ function RawDossier(endpoint, seed) {
                             pth = prefixPath + "/" + relativePath;
                         }
                     }
-                    return file === pth;
+                    return file.startsWith(pth);
                 });
                 if (barPath) {
-                    return callback(undefined, {rawDossier: archive, prefixPath, relativePath});
+                    return callback(undefined, {archive, prefixPath, relativePath});
                 } else {
                     let splitPath = relativePath.split("/");
                     if (splitPath[0] === "") {

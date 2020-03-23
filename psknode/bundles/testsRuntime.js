@@ -54,16 +54,15 @@ global.testsRuntimeLoadModules = function(){
 	if(typeof $$.__runtimeModules["swarm-engine"] === "undefined"){
 		$$.__runtimeModules["swarm-engine"] = require("swarm-engine");
 	}
-}
+};
 if (false) {
 	testsRuntimeLoadModules();
-}; 
+}
 global.testsRuntimeRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("testsRuntime");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("testsRuntime");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"blockchain":"blockchain","buffer-from":"buffer-from","dossier":"dossier","double-check":"double-check","edfs":"edfs","overwrite-require":"overwrite-require","pskcrypto":"pskcrypto","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","swarm-engine":"swarm-engine","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\blockchain\\OBFT\\OBFTImplementation.js":[function(require,module,exports){
@@ -4570,33 +4569,104 @@ function RawDossier(endpoint, seed) {
         createBlockchain(bar).start(callback);
     };
 
-    this.addFolder = (fsFolderPath, barPath, callback) => {
-        bar.addFolder(fsFolderPath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    this.addFolder = (fsFolderPath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
+        }
+
+        if (options.depth === 0) {
+            bar.addFolder(fsFolderPath, barPath, options, (err, barMapDigest) => callback(err, barMapDigest));
+        } else {
+            loadBarForPath(barPath, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.addFolder(fsFolderPath, dossierContext.relativePath, options, callback);
+            });
+        }
     };
 
-    this.addFile = (fsFilePath, barPath, callback) => {
-        bar.addFile(fsFilePath, barPath, (err, barMapDigest) => callback(err, barMapDigest));
+    this.addFile = (fsFilePath, barPath, options, callback) => {
+        if (typeof options === "function") {
+            callback = options;
+            options = {};
+            options.encrypt = true;
+        }
+        if (options.depth === 0) {
+            bar.addFolder(fsFilePath, barPath, options, (err, barMapDigest) => callback(err, barMapDigest));
+        } else {
+            loadBarForPath(barPath, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.addFile(fsFilePath, dossierContext.relativePath, options, callback);
+            });
+        }
     };
 
     this.readFile = (fileBarPath, callback) => {
-        this.loadBarForPath(fileBarPath, (err, dossierContext) => {
+
+        loadBarForPath(fileBarPath, (err, dossierContext) => {
             if (err) {
                 return callback(err);
             }
 
-            dossierContext.rawDossier.readFile(dossierContext.relativePath, callback);
+            dossierContext.archive.readFile(dossierContext.relativePath, callback);
         });
     };
 
-    this.extractFolder = bar.extractFolder;
+    this.extractFolder = (fsFolderPath, barPath, callback) => {
+        loadBarForPath(barPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
 
-    this.extractFile = bar.extractFile;
-
-    this.writeFile = (barPath, data, callback) => {
-        bar.writeFile(barPath, data, (err, barMapDigest) => callback(err, barMapDigest));
+            dossierContext.archive.extractFolder(fsFolderPath, dossierContext.relativePath, callback);
+        });
     };
 
-    this.listFiles = bar.listFiles;
+    this.extractFile = (fsFilePath, barPath, callback) => {
+        loadBarForPath(barPath, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.archive.extractFile(fsFilePath, dossierContext.relativePath, callback);
+        });
+    };
+
+    this.writeFile = (path, data, depth, callback) => {
+        if (typeof depth === "function") {
+            callback = depth;
+            depth = undefined;
+        }
+
+        if (depth === 0) {
+            bar.writeFile(path, data, callback);
+        } else {
+            loadBarForPath(path, (err, dossierContext) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                dossierContext.archive.writeFile(dossierContext.relativePath, data, callback);
+            });
+        }
+    };
+
+    this.listFiles = (path, callback) => {
+        loadBarForPath(path, (err, dossierContext) => {
+            if (err) {
+                return callback(err);
+            }
+
+            dossierContext.archive.listFiles(dossierContext.relativePath, callback);
+        });
+    };
 
     this.mount = (path, name, archiveIdentifier, callback) => {
         bar.readFile(constants.MANIFEST_FILE, (err, data) => {
@@ -4681,8 +4751,8 @@ function RawDossier(endpoint, seed) {
         return barModule.createArchive(archiveConfigurator);
     }
 
-    this.loadBarForPath = (path, callback) => {
-        return __loadBarForPathRecursively(bar, "", path, callback);
+    function loadBarForPath(path, callback) {
+        __loadBarForPathRecursively(bar, "", path, callback);
 
         function __loadBarForPathRecursively(archive, prefixPath, relativePath, callback) {
             archive.listFiles((err, files) => {
@@ -4711,10 +4781,10 @@ function RawDossier(endpoint, seed) {
                             pth = prefixPath + "/" + relativePath;
                         }
                     }
-                    return file === pth;
+                    return file.startsWith(pth);
                 });
                 if (barPath) {
-                    return callback(undefined, {rawDossier: archive, prefixPath, relativePath});
+                    return callback(undefined, {archive, prefixPath, relativePath});
                 } else {
                     let splitPath = relativePath.split("/");
                     if (splitPath[0] === "") {

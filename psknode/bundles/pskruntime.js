@@ -52,16 +52,15 @@ global.pskruntimeLoadModules = function(){
 	if(typeof $$.__runtimeModules["swarm-engine"] === "undefined"){
 		$$.__runtimeModules["swarm-engine"] = require("swarm-engine");
 	}
-}
+};
 if (false) {
 	pskruntimeLoadModules();
-}; 
+}
 global.pskruntimeRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("pskruntime");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("pskruntime");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"@msgpack/msgpack":"@msgpack/msgpack","buffer-from":"buffer-from","callflow":"callflow","psk-security-context":"psk-security-context","pskbuffer":"pskbuffer","psklogger":"psklogger","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","swarm-engine":"swarm-engine","swarmutils":"swarmutils","syndicate":"syndicate"}],"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js":[function(require,module,exports){

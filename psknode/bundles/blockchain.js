@@ -17,16 +17,15 @@ global.blockchainLoadModules = function(){
 	if(typeof $$.__runtimeModules["blockchain"] === "undefined"){
 		$$.__runtimeModules["blockchain"] = require("blockchain");
 	}
-}
+};
 if (false) {
 	blockchainLoadModules();
-}; 
+}
 global.blockchainRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("blockchain");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("blockchain");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"blockchain":"blockchain","buffer-from":"buffer-from","source-map":"source-map","source-map-support":"source-map-support"}],"D:\\Catalin\\Munca\\privatesky\\modules\\blockchain\\OBFT\\OBFTImplementation.js":[function(require,module,exports){

@@ -101,16 +101,15 @@ global.sandboxBaseLoadModules = function(){
 	if(typeof $$.__runtimeModules["process/browser.js"] === "undefined"){
 		$$.__runtimeModules["process/browser.js"] = require("process/browser.js");
 	}
-}
+};
 if (true) {
 	sandboxBaseLoadModules();
-}; 
+}
 global.sandboxBaseRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("sandboxBase");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("sandboxBase");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,require("timers").setImmediate,arguments[3],arguments[4],arguments[5],arguments[6],require("timers").clearImmediate,"/builds/tmp/sandboxBase_intermediar.js","/builds/tmp")
 
 },{"assert":"assert","base64-js":"base64-js","buffer":"buffer","buffer-from":"buffer-from","callflow":"callflow","events":"events","ieee754":"ieee754","inherits":"inherits","overwrite-require":"overwrite-require","path":"path","process/browser.js":"process/browser.js","pskbuffer":"pskbuffer","psklogger":"psklogger","querystring":"querystring","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","stream":"stream","string_decoder":"string_decoder","swarm-engine":"swarm-engine","swarmutils":"swarmutils","timers":"timers","url":"url","util":"util","zlib":"zlib"}],"D:\\Catalin\\Munca\\privatesky\\modules\\callflow\\constants.js":[function(require,module,exports){

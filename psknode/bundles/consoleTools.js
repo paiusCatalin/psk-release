@@ -29,16 +29,15 @@ global.consoleToolsLoadModules = function(){
 	if(typeof $$.__runtimeModules["csb-wizard"] === "undefined"){
 		$$.__runtimeModules["csb-wizard"] = require("csb-wizard");
 	}
-}
+};
 if (false) {
 	consoleToolsLoadModules();
-}; 
+}
 global.consoleToolsRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("consoleTools");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("consoleTools");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"buffer-crc32":"buffer-crc32","buffer-from":"buffer-from","csb-wizard":"csb-wizard","node-fd-slicer":"node-fd-slicer","pskwallet":"pskwallet","source-map":"source-map","source-map-support":"source-map-support"}],"D:\\Catalin\\Munca\\privatesky\\modules\\csb-wizard\\CSBWizard.js":[function(require,module,exports){

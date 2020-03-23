@@ -78,16 +78,15 @@ global.webshimsLoadModules = function(){
 	if(typeof $$.__runtimeModules["timers"] === "undefined"){
 		$$.__runtimeModules["timers"] = require("timers");
 	}
-}
+};
 if (false) {
 	webshimsLoadModules();
-}; 
+}
 global.webshimsRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("webshims");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("webshims");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"assert":"assert","buffer":"buffer","crypto":"crypto","events":"events","os":"os","overwrite-require":"overwrite-require","path":"path","source-map-support":"D:\\Catalin\\Munca\\privatesky\\node_modules\\source-map-support\\source-map-support.js","stream":"stream","timers":"timers","util":"util","zlib":"zlib"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){

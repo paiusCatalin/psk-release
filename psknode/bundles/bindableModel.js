@@ -29,16 +29,15 @@ global.bindableModelLoadModules = function(){
 	if(typeof $$.__runtimeModules["psk-bindable-model"] === "undefined"){
 		$$.__runtimeModules["psk-bindable-model"] = require("psk-bindable-model");
 	}
-}
+};
 if (false) {
 	bindableModelLoadModules();
-}; 
+}
 global.bindableModelRequire = require;
-if (typeof $$ !== "undefined") {            
-    $$.requireBundle("bindableModel");
-    };
-    require('source-map-support').install({});
-    
+if (typeof $$ !== "undefined") {
+	$$.requireBundle("bindableModel");
+}
+require('source-map-support').install({});
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"buffer-from":"buffer-from","overwrite-require":"overwrite-require","psk-bindable-model":"psk-bindable-model","soundpubsub":"soundpubsub","source-map":"source-map","source-map-support":"source-map-support","swarmutils":"swarmutils"}],"D:\\Catalin\\Munca\\privatesky\\modules\\overwrite-require\\moduleConstants.js":[function(require,module,exports){
@@ -612,9 +611,10 @@ class PskBindableModel {
         /**
          * @param {string} expressionName
          * @param {callback} callback
+         * @param {...string} var_args Variable number of chains to watch. First argument can be an array of chains
          * @throws {Error}
          */
-        root.addExpression = function (expressionName, callback) {
+        root.addExpression = function (expressionName, callback, ...args) {
             if (typeof expressionName !== 'string' || !expressionName.length) {
                 throw new Error("Expression name must be a valid string");
             }
@@ -623,9 +623,25 @@ class PskBindableModel {
                 throw new Error("Expression must have a callback");
             }
 
-            expressions[expressionName] = function () {
-                return callback.call(root);
-            };
+            let watchChain = [];
+            if (args.length) {
+                let chainList = args;
+
+                if (Array.isArray(chainList[0])) {
+                    chainList = chainList[0];
+                }
+
+                watchChain = chainList.filter((chain) => {
+                    return typeof chain === 'string' && chain.length;
+                });
+            }
+
+            expressions[expressionName] = {
+                watchChain,
+                callback: function () {
+                    return callback.call(root);
+                }
+            }
         }
 
         /**
@@ -634,11 +650,11 @@ class PskBindableModel {
          * @throws {Error}
          */
         root.evaluateExpression = function (expressionName) {
-            if (typeof expressions[expressionName] !== 'function') {
+            if (!this.hasExpression(expressionName)) {
                 throw new Error(`Expression "${expressionName}" is not defined`);
             }
 
-            return expressions[expressionName]();
+            return expressions[expressionName].callback();
         }
 
         /**
@@ -646,7 +662,33 @@ class PskBindableModel {
          * @return {boolean}
          */
         root.hasExpression = function (expressionName) {
-            return typeof expressions[expressionName] === 'function';
+            if (typeof expressions[expressionName] === 'object' &&
+                typeof expressions[expressionName].callback === 'function') {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Watch expression chains
+         *
+         * @param {string} expressionName
+         * @param {callback} callback
+         */
+        root.onChangeExpressionChain = function (expressionName, callback) {
+            if (!this.hasExpression(expressionName)) {
+                throw new Error(`Expression "${expressionName}" is not defined`);
+            }
+
+            const expr = expressions[expressionName];
+
+            if (!expr.watchChain.length) {
+                return;
+            }
+
+            for (let i = 0; i < expr.watchChain.length; i++) {
+                this.onChange(expr.watchChain[i], callback);
+            }
         }
 
         return root;
